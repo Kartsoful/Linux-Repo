@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="fi">
+<head>
+<meta charset="utf-8">
+<title>QWER LED-peli</title>
+<style>
+  body{background:#0b0f14;color:#e7eef8;font-family:Inter,Arial;margin:0;padding:20px}
+  .lanes{display:flex;gap:20px;justify-content:center;margin-top:40px}
+  .lane{width:100px;height:100px;border-radius:20px;background:#1b2330;
+        display:flex;align-items:center;justify-content:center;
+        font-size:28px;font-weight:700;transition:background 0.2s,box-shadow 0.2s}
+  .lane.active{box-shadow:0 0 25px 10px currentColor}
+  .lane.q{color:#ffd54f}
+  .lane.w{color:#4fc3f7}
+  .lane.e{color:#66bb6a}
+  .lane.r{color:#f06292}
+  header{display:flex;justify-content:space-between;align-items:center}
+  button{margin-left:10px;padding:6px 12px;border-radius:6px;border:0;cursor:pointer;background:#1b2330;color:#fff}
+  .hud{margin-top:20px;font-size:18px}
+</style>
+</head>
+<body>
+  <header>
+    <h1>Q W E R – LED-peli</h1>
+    <div>
+      <button id="startBtn">Start</button>
+      <button id="stopBtn">Stop</button>
+    </div>
+  </header>
+
+  <div class="lanes">
+    <div class="lane q">Q</div>
+    <div class="lane w">W</div>
+    <div class="lane e">E</div>
+    <div class="lane r">R</div>
+  </div>
+
+  <div class="hud">
+    Score: <span id="score">0</span> | 
+    Combo: <span id="combo">0</span> | 
+    Misses: <span id="misses">0</span>
+  </div>
+
+<script>
+(() => {
+  const lanes=['q','w','e','r'];
+  const freqs={q:520,w:440,e:370,r:300};
+  const elements={
+    q:document.querySelector('.lane.q'),
+    w:document.querySelector('.lane.w'),
+    e:document.querySelector('.lane.e'),
+    r:document.querySelector('.lane.r')
+  };
+
+  const scoreEl=document.getElementById('score');
+  const comboEl=document.getElementById('combo');
+  const missesEl=document.getElementById('misses');
+
+  let score=0,combo=0,misses=0;
+  let running=false;
+  let interval=478;           // lähtönopeus 0–79 pts
+  let nextThreshold=80;       // ensimmäinen nopeutus
+  let sequence=[];            
+  let playerIndex=0; 
+  let timer=null;
+  let audioCtx=null;
+  let lastLane=null; 
+
+  function ensureAudio(){if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)();}
+
+  function playTone(freq){
+    ensureAudio();
+    const now=audioCtx.currentTime;
+    const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+    o.frequency.value=freq;o.type='sine';
+    g.gain.setValueAtTime(0.001,now);
+    g.gain.exponentialRampToValueAtTime(0.25,now+0.01);
+    g.gain.exponentialRampToValueAtTime(0.001,now+0.3);
+    o.connect(g);g.connect(audioCtx.destination);
+    o.start(now);o.stop(now+0.35);
+  }
+
+  function flashLane(l){
+    const el=elements[l];
+    if(!el) return;
+    el.classList.add('active');
+    setTimeout(()=>el.classList.remove('active'),250);
+  }
+
+  function nextLight(){
+    if(!running) return;
+    let lane;
+    do {
+      lane=lanes[Math.floor(Math.random()*lanes.length)];
+    } while(lane===lastLane);
+    lastLane=lane;
+
+    sequence.push(lane); 
+    flashLane(lane);
+    playTone(freqs[lane]);
+    timer=setTimeout(nextLight,interval);
+  }
+
+  function startGame(){
+    if(running) return;
+    running=true;
+    score=0;combo=0;misses=0;
+    interval=478;           // lähtönopeus
+    nextThreshold=80;       // ensimmäinen nopeutus
+    sequence=[];playerIndex=0;lastLane=null;
+    updateHUD();
+    nextLight();
+  }
+
+  function stopGame(){
+    running=false;
+    clearTimeout(timer);
+    sequence=[];playerIndex=0;
+  }
+
+  function updateHUD(){
+    scoreEl.textContent=score;
+    comboEl.textContent=combo;
+    missesEl.textContent=misses;
+  }
+
+  function checkSpeed(){
+    // Nopeutus alkaa vasta 80 pts
+    if(score >= 80 && score >= nextThreshold){
+      interval *= 0.9;   // 10% nopeutus
+      nextThreshold += 10;
+    }
+  }
+
+  function handleKey(k){
+    if(!running) return;
+    if(playerIndex >= sequence.length) return;
+    const expected=sequence[playerIndex];
+    if(k === expected){
+      score += 1; combo += 1; playerIndex++;
+      updateHUD();
+      checkSpeed();
+    } else {
+      combo=0; misses+=1;
+      updateHUD();
+      stopGame();
+      alert("Väärä nappi! Peli päättyi. Pisteet: "+score);
+    }
+  }
+
+  document.addEventListener('keydown',e=>{
+    const k=e.key.toLowerCase();
+    if(k===' '){if(running)stopGame();else startGame();}
+    if(lanes.includes(k)) handleKey(k);
+  });
+  document.getElementById('startBtn').onclick=startGame;
+  document.getElementById('stopBtn').onclick=stopGame;
+})();
+</script>
+</body>
+</html>
