@@ -94,11 +94,19 @@
 
 /* ei koskaan “paina pohjaan” */
 #spede .cell:focus { outline: none; }
+#spede .cell.active {
+  border-color: #007bff !important;
+  box-shadow: 0 0 10px rgba(0,0,0,.1) !important;
+  transform: scale(1.05) !important;
+}
+
+/* Käyttäjän klikin "painalluslook" pois, mutta ilman !important:ia */
 #spede .cell:active {
-  transform: none !important;
-  box-shadow: none !important;
-  filter: none !important;
-  background: #fff !important;}
+  transform: none;
+  box-shadow: none;
+  filter: none;
+  background: #fff;
+}
 </style>
 
 
