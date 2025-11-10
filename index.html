@@ -66,6 +66,33 @@ body {
   background-size: 1200% 1200%;
   animation: bgshift 20s ease infinite;
 }
+
+#spede {
+    margin-top: .5rem;
+    display: grid;
+    grid-template-columns: repeat(3, 70px);
+    grid-template-rows: repeat(3, 70px);
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+  }
+  /* sijoitus: ylös, vasen, oikea, alas ristikkoon */
+  #spede .cell[data-dir="UP"]    { grid-column: 2; grid-row: 1; }
+  #spede .cell[data-dir="LEFT"]  { grid-column: 1; grid-row: 2; }
+  #spede .cell[data-dir="RIGHT"] { grid-column: 3; grid-row: 2; }
+  #spede .cell[data-dir="DOWN"]  { grid-column: 2; grid-row: 3; }
+
+  #spede .cell {
+    user-select: none;
+    display: flex; align-items: center; justify-content: center;
+    border: 2px solid #ccc; border-radius: 10px;
+    font-size: 28px; width: 70px; height: 70px;
+    background: #fff; cursor: pointer; transition: transform .05s;
+  }
+  #spede .cell.active { border-color: #007bff; box-shadow: 0 0 10px rgba(0,0,0,.1); transform: scale(1.05); }
+  #spede .cell.good   { background: #d1e7dd; border-color: #198754; }
+  #spede .cell.bad    { background: #f8d7da; border-color: #dc3545; }
+  .muted { color:#555; font-size:.95rem }
 </style>
 
 
@@ -77,12 +104,21 @@ body {
 <img src="LH2.gif" alt="Linux harjoitus GIF" width="400">
 <p><p></p>
 
-<!-- ===== LISÄYS: pistelaskuri + canvas TÄHÄN ===== -->
+<!-- ===== REPLACEMENT: Speden pelit -reaktiopeli ===== -->
 <div id="scoreboard">
   Pisteet: <span id="score">0</span> — Ennätys: <span id="best">0</span>
 </div>
-<canvas id="game" width="300" height="300"></canvas>
-<!-- ===== LISÄYS LOPPU ===== -->
+
+<div id="spede">
+  <div class="cell" data-dir="UP">▲</div>
+  <div class="cell" data-dir="LEFT">◀</div>
+  <div class="cell" data-dir="RIGHT">▶</div>
+  <div class="cell" data-dir="DOWN">▼</div>
+</div>
+
+<p id="hint" class="muted">Paina nuolta kun se syttyy! (myös näppäimistön nuolet käy)</p>
+<!-- ===== REPLACEMENT END ===== -->
+
 
 <script>
 /* Ajan päivitys (nykyinen koodi) */
@@ -100,98 +136,118 @@ updateTime();
 setInterval(updateTime, 1000);
 </script>
 
-<!-- ===== LISÄYS: matopeli + pistelaskuri TÄHÄN (uusi <script>) ===== -->
 <script>
-const c = document.getElementById('game');
-const ctx = c.getContext('2d');
-const box = 15;
-
-let snake = [{x:150, y:150}];
-let dir = 'RIGHT';
-let food = spawnFood();
-let score = 0;
-let best = Number(localStorage.getItem('best') || 0);
-
+const cells = Array.from(document.querySelectorAll('#spede .cell'));
 const scoreEl = document.getElementById('score');
 const bestEl  = document.getElementById('best');
+const hintEl  = document.getElementById('hint');
+
+let score = 0, best = Number(localStorage.getItem('best_spede') || 0);
 bestEl.textContent = best;
 
-// estetään selaimen vieritys nuolinäppäimillä
+let target = null;         // nykyinen tavoitesuunta
+let timer  = null;         // aikarajan ajastin
+let period = 1000;         // 1 Hz aloitus (ms / kierros)
+const minPeriod = 250;     // ei kiihdytetä tämän alle
+let streak = 0;            // onnistumisten määrä (kiihdytysväli)
+
+const dirs = ['UP','DOWN','LEFT','RIGHT'];
+let lastDir = null;        // jotta ei tule samaa peräkkäin
+
+// ÄÄNET: eri taajuus per suunta
+const freqs = { UP: 880, RIGHT: 660, DOWN: 330, LEFT: 440 };
+let actx;
+function playTone(dir, duration = 0.12) {
+  try {
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    if (actx.state === 'suspended') actx.resume();
+    const o = actx.createOscillator();
+    const g = actx.createGain();
+    o.type = 'sine';
+    o.frequency.value = freqs[dir] || 440;
+    g.gain.value = 0.0001;
+    o.connect(g); g.connect(actx.destination);
+    const now = actx.currentTime;
+    g.gain.exponentialRampToValueAtTime(0.2, now + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+    o.start(now);
+    o.stop(now + duration + 0.02);
+  } catch(_) {}
+}
+
+// estä nuolilla vieritys
 window.addEventListener('keydown', e => {
-  if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", " "].includes(e.key)) {
-    e.preventDefault();
-  }
-}, { passive: false });
+  if (["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"," "].includes(e.key)) e.preventDefault();
+}, { passive:false });
 
 document.addEventListener('keydown', e => {
-  if (e.key === 'ArrowUp' && dir !== 'DOWN') dir = 'UP';
-  if (e.key === 'ArrowDown' && dir !== 'UP') dir = 'DOWN';
-  if (e.key === 'ArrowLeft' && dir !== 'RIGHT') dir = 'LEFT';
-  if (e.key === 'ArrowRight' && dir !== 'LEFT') dir = 'RIGHT';
+  if (e.key === 'ArrowUp')    hit('UP');
+  if (e.key === 'ArrowDown')  hit('DOWN');
+  if (e.key === 'ArrowLeft')  hit('LEFT');
+  if (e.key === 'ArrowRight') hit('RIGHT');
 });
+cells.forEach(c => c.addEventListener('click', () => hit(c.dataset.dir)));
 
-function spawnFood() {
-  return {
-    x: Math.floor(Math.random() * (c.width / box)) * box,
-    y: Math.floor(Math.random() * (c.height / box)) * box
-  };
+function clearStates() { cells.forEach(c => c.classList.remove('active','good','bad')); }
+
+function pickDir() {
+  // valitse sattumanvarainen suunta, mutta ei sama kuin viime kierroksella
+  const choices = dirs.filter(d => d !== lastDir);
+  return choices[Math.floor(Math.random()*choices.length)];
 }
 
-function resetGame() {
+function light(dir) {
+  clearStates();
+  const el = cells.find(c => c.dataset.dir === dir);
+  if (el) el.classList.add('active');
+  playTone(dir);
+}
+
+function nextRound() {
+  target = pickDir();
+  lastDir = target;
+  light(target);
+  clearTimeout(timer);
+  timer = setTimeout(() => miss(), period);
+  hintEl.textContent = `Tahti: ${(1000/period).toFixed(2)} Hz`;
+}
+
+function hit(dir) {
+  if (!target) return;
+  const el = cells.find(c => c.dataset.dir === dir);
+  if (!el) return;
+
+  if (dir === target) {
+    // oikein
+    el.classList.add('good');
+    clearTimeout(timer);
+    score += 1; streak += 1;
+    scoreEl.textContent = score;
+
+    // jokaisen 10 onnistumisen jälkeen kiihdytä 10 %
+    if (streak % 10 === 0) period = Math.max(minPeriod, Math.round(period * 0.9));
+
+    setTimeout(nextRound, 120);
+  } else {
+    // väärin
+    el.classList.add('bad');
+    miss();
+  }
+}
+
+function miss() {
+  target = null;
   if (score > best) {
     best = score;
-    localStorage.setItem('best', best);
+    localStorage.setItem('best_spede', best);
     bestEl.textContent = best;
   }
-  snake = [{x:150, y:150}];
-  dir = 'RIGHT';
-  food = spawnFood();
-  score = 0;
+  score = 0; streak = 0; period = 1000; // reset: takaisin 1 Hz
   scoreEl.textContent = score;
+  hintEl.textContent = "Hups! Aloitetaan alusta — paina, kun nuoli syttyy.";
+  setTimeout(() => { hintEl.textContent = "Paina nuolta kun se syttyy!"; nextRound(); }, 800);
 }
 
-function tick() {
-  // tausta
-  ctx.fillStyle = '#fff';
-  ctx.fillRect(0, 0, c.width, c.height);
-
-  // ruoka
-  ctx.fillStyle = '#dc3545';
-  ctx.fillRect(food.x, food.y, box, box);
-
-  // käärme
-  ctx.fillStyle = '#198754';
-  for (let s of snake) ctx.fillRect(s.x, s.y, box, box);
-
-  // uusi pää
-  let head = {...snake[0]};
-  if (dir === 'UP') head.y -= box;
-  if (dir === 'DOWN') head.y += box;
-  if (dir === 'LEFT') head.x -= box;
-  if (dir === 'RIGHT') head.x += box;
-
-  // törmäykset
-  if (
-    head.x < 0 || head.y < 0 ||
-    head.x >= c.width || head.y >= c.height ||
-    snake.some(s => s.x === head.x && s.y === head.y)
-  ) {
-    resetGame();
-    return;
-  }
-
-  snake.unshift(head);
-
-  // söikö ruoan?
-  if (head.x === food.x && head.y === food.y) {
-    score += 1;
-    scoreEl.textContent = score;
-    food = spawnFood();
-  } else {
-    snake.pop();
-  }
-}
-
-setInterval(tick, 120);
+// käynnistä peli
+nextRound();
 </script>
-<!-- ===== LISÄYS LOPPU ===== -->
