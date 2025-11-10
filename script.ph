@@ -6,7 +6,6 @@
 # vaihda tähän kotikansiosi
 cd /home/ubuntu/<kansio, johon tiedostot ladataan Github:sta>
 
-# vaihda repon tilalle oman reposition osoite
 git pull
 
 # siirtää tiedoston juureen, josta Nginx hakee staattisen html-tiedoston
