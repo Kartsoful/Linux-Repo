@@ -54,6 +54,18 @@
     max-width: 300px;
     max-height: 300px;
   }
+
+@keyframes bgshift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+body {
+  background: linear-gradient(270deg, #74b9ff, #81ecec, #55efc4, #ffeaa7, #fab1a0, #ff7675);
+  background-size: 1200% 1200%;
+  animation: bgshift 20s ease infinite;
+}
 </style>
 
 
