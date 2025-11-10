@@ -79,22 +79,26 @@
   #spede .cell[data-dir="RIGHT"] { grid-column: 3; grid-row: 2; }
   #spede .cell[data-dir="DOWN"]  { grid-column: 2; grid-row: 3; }
 
-  #spede .cell {
-    user-select: none;
-    display: flex; align-items: center; justify-content: center;
-    border: 2px solid #ccc; border-radius: 10px;
-    font-size: 28px; width: 70px; height: 70px;
-    background: #fff; cursor: pointer; transition: transform .05s;
-    -webkit-tap-highlight-color: transparent; outline: none;
-  }
-  #spede .cell.active { border-color: #007bff; box-shadow: 0 0 10px rgba(0,0,0,.1); transform: scale(1.05); }
-  #spede .cell.good   { background: #d1e7dd; border-color: #198754; }
-  #spede .cell.bad    { background: #f8d7da; border-color: #dc3545; }
-  .muted { color:#555; font-size:.95rem }
+#spede .cell {
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid #ccc; border-radius: 10px;
+  font-size: 28px; width: 70px; height: 70px;
+  background: #fff; cursor: pointer;
+  /* EI siirtymiä -> ei “pehmeää painumista” */
+  transition: none;
+}
 
-  /* ——— Estä “nappi pohjaan” -ilme: ei :active-efektiä, ei fokuskehää ——— */
-  #spede .cell:focus { outline: none; }
-  #spede .cell:active { transform: none !important; box-shadow: none !important; filter: none !important; }
+/* ei koskaan “paina pohjaan” */
+#spede .cell:focus { outline: none; }
+#spede .cell:active {
+  transform: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+  background: #fff !important;}
 </style>
 
 
