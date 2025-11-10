@@ -117,26 +117,11 @@ body {
 </div>
 
 <p id="hint" class="muted">Paina nuolta kun se syttyy! (myös näppäimistön nuolet käy)</p>
+<p id="hint" class="muted">Välilyönti käynnistää pelin</p>
 
 <div id="queue" style="margin-top:.25rem;font-size:1.2rem;"></div>
 <!-- ===== REPLACEMENT END ===== -->
 
-
-<script>
-/* Ajan päivitys (nykyinen koodi) */
-async function updateTime() {
-  try {
-    const r = await fetch('/time', {cache:'no-store'});
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    const j = await r.json();
-    document.getElementById('t').textContent = j.time || 'virhe';
-  } catch(e) {
-    document.getElementById('t').textContent = 'virhe';
-  }
-}
-updateTime();
-setInterval(updateTime, 1000);
-</script>
 
 <script>
 const cells = Array.from(document.querySelectorAll('#spede .cell'));
@@ -149,22 +134,23 @@ bestEl.textContent = best;
 const DIRS  = ['UP','DOWN','LEFT','RIGHT'];
 const FREQS = { UP: 880, RIGHT: 660, DOWN: 330, LEFT: 440 };
 
-let started = false;        // onko spacea painettu joskus
-let running = false;        // onko peli käynnissä nyt
-let period  = 1000;         // 1 Hz aloitus (ms)
-let streak  = 0;            // peräkkäiset onnistumiset (kiihdytys 10 kpl)
-let lastDir = null;         // ettei samaa peräkkäin
-let queue   = [];           // sisäinen jono (EI näytetä)
-let genTimer = null;        // tuottajan interval
-const MAX_Q = 5;            // jos jono > tämä, reset
-const MIN_PERIOD = 250;     // ei kiihdytetä tämän alle
+let started = false;       // onko välilyöntiä painettu
+let running = false;       // peli käynnissä
+let period  = 1000;        // ms / isku (1 Hz aloitus)
+let streak  = 0;           // onnistumiset (nopeutus joka 10.)
+let lastDir = null;        // ettei tule samaa peräkkäin
+let currentDir = null;     // tämän iskun kohde
+let responded = false;     // painettiinko oikein tällä iskulla
+let beatTimer = null;      // pää-iskujen interval
+const FLASH_MS   = 180;    // kauanko valo palaa
+const MIN_PERIOD = 250;    // alin tahti
 
 // estä selaimen scroll nuolilla/space
 window.addEventListener('keydown', e=>{
   if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key)) e.preventDefault();
 },{passive:false});
 
-// Space = käynnistä yksi kertaa
+// käynnistä vain kerran välilyönnillä
 window.addEventListener('keydown', e=>{
   if (e.key === ' ' && !started) {
     started = true;
@@ -172,25 +158,27 @@ window.addEventListener('keydown', e=>{
   }
 });
 
-// Nuolinäppäimet = vastaus
+// syöte
 window.addEventListener('keydown', e=>{
   if (!running) return;
-  if (e.key === 'ArrowUp')    onHit('UP');
-  if (e.key === 'ArrowDown')  onHit('DOWN');
-  if (e.key === 'ArrowLeft')  onHit('LEFT');
-  if (e.key === 'ArrowRight') onHit('RIGHT');
+  if (e.key === 'ArrowUp')    onPress('UP');
+  if (e.key === 'ArrowDown')  onPress('DOWN');
+  if (e.key === 'ArrowLeft')  onPress('LEFT');
+  if (e.key === 'ArrowRight') onPress('RIGHT');
 });
 
 // (valinnainen) hiiriklikki
-cells.forEach(c => c.addEventListener('click', ()=>{ if (running) onHit(c.dataset.dir); }));
+cells.forEach(c => c.addEventListener('click', ()=>{ if (running) onPress(c.dataset.dir); }));
 
 function playTone(dir, dur=0.12){
   try {
     window._actx = window._actx || new (window.AudioContext||window.webkitAudioContext)();
     if (_actx.state === 'suspended') _actx.resume();
     const o=_actx.createOscillator(), g=_actx.createGain();
-    o.type='sine'; o.frequency.value = FREQS[dir] || 440;
-    g.gain.value=0.0001; o.connect(g); g.connect(_actx.destination);
+    o.type = 'sine';
+    o.frequency.value = FREQS[dir] || 440;
+    g.gain.value = 0.0001;
+    o.connect(g); g.connect(_actx.destination);
     const t=_actx.currentTime;
     g.gain.exponentialRampToValueAtTime(0.2, t+0.02);
     g.gain.exponentialRampToValueAtTime(0.0001, t+dur);
@@ -200,17 +188,6 @@ function playTone(dir, dur=0.12){
 
 function clearStates(){ cells.forEach(c=>c.classList.remove('active','good','bad')); }
 
-function currentHead(){ return queue[0] || null; }
-
-function highlightHead(){
-  clearStates();
-  const head = currentHead();
-  if (!head) return;
-  const el = cells.find(c => c.dataset.dir === head);
-  if (el) el.classList.add('active');
-  playTone(head);
-}
-
 function pickDir(){
   const choices = DIRS.filter(d => d !== lastDir);
   const d = choices[Math.floor(Math.random()*choices.length)];
@@ -218,74 +195,73 @@ function pickDir(){
   return d;
 }
 
-// tuota jatkuvasti uutta jonoon riippumatta pelaajasta
-function produceOnce(){
-  if (!running) return;
-  queue.push(pickDir());
-  // jos jono oli tyhjä ennen pushia, nyt tuli uusi head -> sytytä
-  if (queue.length === 1) highlightHead();
-  // jos pelaaja ei pysy perässä ja jono kasvaa liian pitkäksi -> häviö
-  if (queue.length > MAX_Q) miss();
+function flash(dir){
+  clearStates();
+  const el = cells.find(c => c.dataset.dir === dir);
+  if (!el) return;
+  el.classList.add('active');
+  playTone(dir);
+  setTimeout(()=>{ el.classList.remove('active'); }, FLASH_MS);
 }
 
-function scheduleProducer(){
-  clearInterval(genTimer);
-  genTimer = setInterval(produceOnce, period);
+function startBeatLoop(){
+  clearInterval(beatTimer);
+  beatTimer = setInterval(beat, period);
 }
 
 function startGame(){
-  // nollaus ja käyntiin
-  queue = [];
-  score = 0;
-  streak = 0;
-  period = 1000;
+  score = 0; streak = 0; period = 1000; lastDir = null;
   scoreEl.textContent = score;
   running = true;
-  scheduleProducer();
-  produceOnce(); // aloita heti
+  currentDir = null; responded = false;
+  startBeatLoop();
+  beat(); // heti ensimmäinen isku
 }
 
-function onHit(dir){
-  const head = currentHead();
-  const el = cells.find(c => c.dataset.dir === dir);
-  if (!head || !el) return;
-
-  if (dir === head) {
-    el.classList.add('good');
-    // syö jonon kärki
-    queue.shift();
-    score += 1; streak += 1;
-    scoreEl.textContent = score;
-
-    // kiihdytä joka 10. oikein
-    if (streak % 10 === 0) {
-      period = Math.max(MIN_PERIOD, Math.round(period * 0.9));
-      scheduleProducer(); // päivitä tuottajan nopeus
+function beat(){
+  // arvioi edellinen isku (paitsi ensimmäinen, jolloin currentDir on null)
+  if (currentDir !== null) {
+    if (responded) {
+      // oikein ajoissa
+      score++; streak++;
+      scoreEl.textContent = score;
+      if (streak % 10 === 0) {
+        period = Math.max(MIN_PERIOD, Math.round(period * 0.9));
+        startBeatLoop(); // päivitä tahti
+      }
+    } else {
+      // ei vastattu ajoissa
+      return miss();
     }
+  }
 
-    // näytä seuraava kärki (jos jono ei tyhjentynyt)
-    highlightHead();
+  // uusi isku
+  currentDir = pickDir();
+  responded = false;
+  flash(currentDir);
+}
 
-  } else {
-    el.classList.add('bad');
-    miss();
+function onPress(dir){
+  // väärä painallus kesken iskun -> häviö heti
+  if (dir !== currentDir) {
+    const el = cells.find(c => c.dataset.dir === dir);
+    if (el) { clearStates(); el.classList.add('bad'); setTimeout(clearStates, 200); }
+    return miss();
+  }
+  // oikein — merkitään vastatuksi, näytetään pieni vihreä välähdys
+  if (!responded) {
+    responded = true;
+    const el = cells.find(c => c.dataset.dir === dir);
+    if (el) { el.classList.add('good'); setTimeout(()=>el.classList.remove('good'), 120); }
   }
 }
 
 function miss(){
   running = false;
-  clearInterval(genTimer);
-  if (score > best) {
-    best = score;
-    localStorage.setItem('best_spede', best);
-    bestEl.textContent = best;
-  }
-  // resetoi kaikki ja käynnistä automaattisesti uudelleen pienen tauon jälkeen
-  queue = [];
+  clearInterval(beatTimer);
+  if (score > best) { best = score; localStorage.setItem('best_spede', best); bestEl.textContent = best; }
+  // reset & auto-restart lyhyen tauon jälkeen
   clearStates();
-  const restartDelay = 800; // ms
-  setTimeout(() => { running = true; startGame(); }, restartDelay);
+  setTimeout(startGame, 800);
 }
 </script>
-
-
