@@ -4,10 +4,10 @@
 # juureen, mistä Nginx-hakee staattisen html-tiedot
 
 # vaihda tähän kotikansiosi
-cd /home/ubuntu
+cd /home/ubuntu/<kansio, johon tiedostot ladataan Github:sta>
 
 # vaihda repon tilalle oman reposition osoite
-git clone <git.repo>
+git pull
 
 # siirtää tiedoston juureen, josta Nginx hakee staattisen html-tiedoston
 sudo mv <~/repon_nimi/index.html> /var/www/html/index.html
