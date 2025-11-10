@@ -2,6 +2,7 @@
 
 # Scriptillä ladataan git repo ja siirretään repon index.html tiedosto
 # juureen, mistä Nginx-hakee staattisen html-tiedot
+# siirrä tämä juureen /home/<oma_tunnus>/<repo-kansio>/
 
 # vaihda tähän kotikansiosi
 cd /home/<oma_tunnus>/<repo-kansio>/
