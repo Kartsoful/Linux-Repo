@@ -1,8 +1,24 @@
 <!doctype html><html lang="fi"><meta charset="utf-8">
 <title>LEMP-demo</title>
 <style>
-  body {font-family: system-ui; margin: 2rem;}
-  .time {font-weight: 700; color: #007bff;}
+  body {
+    font-family: system-ui;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* pystysuunnassa keskelle */
+    align-items: center;      /* vaakasuunnassa keskelle */
+    text-align: center;
+    background: #378ee6;      /* vaalea tausta (valinnainen) */
+  }
+  .time {
+    font-weight: 700;
+    color: #ff5100;
+  }
+  img {
+    margin-top: 1rem;
+  }
 </style>
 <h1>Staattinen Nginx-sivun testailuja</h1>
 <p>SQL-palvelimen aika: <span id="t" class="time">...</span></p>
