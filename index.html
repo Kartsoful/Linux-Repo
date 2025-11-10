@@ -171,7 +171,7 @@ function playTone(dir, dur=0.12){
     o.start(t); o.stop(t+dur+0.02);
   } catch(_) {}
 }
-function playFail(dur = 0.5) {
+function playFail(dur = 1) {
   try {
     window._actx = window._actx || new (window.AudioContext||window.webkitAudioContext)();
     if (_actx.state === 'suspended') _actx.resume();
