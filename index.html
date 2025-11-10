@@ -1,5 +1,6 @@
 <!doctype html><html lang="fi"><meta charset="utf-8">
 <title>LEMP-demo</title>
+
 <style>
   body {
     font-family: system-ui;
@@ -12,16 +13,27 @@
     padding-top: 2rem;    /* etäisyys yläreunasta */
     background: #f8f9fa;  /* valinnainen tausta */
   }
-
   .time {
     font-weight: 700;
     color: #007bff;
   }
-
   img {
     margin-top: 1rem;
   }
+
+  /* ===== LISÄYS: pelin tyylit ===== */
+  #scoreboard {
+    margin-top: 2rem;
+    font-weight: 600;
+  }
+  canvas#game {
+    margin-top: 0.75rem;
+    border: 1px solid #ccc;
+    background: #fff;
+  }
+  /* ===== LISÄYS LOPPU ===== */
 </style>
+
 <h1>Staattinen Nginx-sivun testailuja</h1>
 <p>SQL-palvelimen aika: <span id="t" class="time">...</span></p>
 
@@ -29,7 +41,15 @@
 <img src="LH2.gif" alt="Linux harjoitus GIF" width="400">
 <p><p></p>
 
+<!-- ===== LISÄYS: pistelaskuri + canvas TÄHÄN ===== -->
+<div id="scoreboard">
+  Pisteet: <span id="score">0</span> — Ennätys: <span id="best">0</span>
+</div>
+<canvas id="game" width="300" height="300"></canvas>
+<!-- ===== LISÄYS LOPPU ===== -->
+
 <script>
+/* Ajan päivitys (nykyinen koodi) */
 async function updateTime() {
   try {
     const r = await fetch('/time', {cache:'no-store'});
@@ -40,9 +60,95 @@ async function updateTime() {
     document.getElementById('t').textContent = 'virhe';
   }
 }
-
-// heti sivun latautuessa
 updateTime();
-// ja sen jälkeen päivitys 1 sekunnin välein
 setInterval(updateTime, 1000);
 </script>
+
+<!-- ===== LISÄYS: matopeli + pistelaskuri TÄHÄN (uusi <script>) ===== -->
+<script>
+const c = document.getElementById('game');
+const ctx = c.getContext('2d');
+const box = 15;
+
+let snake = [{x:150, y:150}];
+let dir = 'RIGHT';
+let food = spawnFood();
+let score = 0;
+let best = Number(localStorage.getItem('best') || 0);
+
+const scoreEl = document.getElementById('score');
+const bestEl  = document.getElementById('best');
+bestEl.textContent = best;
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowUp' && dir !== 'DOWN') dir = 'UP';
+  if (e.key === 'ArrowDown' && dir !== 'UP') dir = 'DOWN';
+  if (e.key === 'ArrowLeft' && dir !== 'RIGHT') dir = 'LEFT';
+  if (e.key === 'ArrowRight' && dir !== 'LEFT') dir = 'RIGHT';
+});
+
+function spawnFood() {
+  return {
+    x: Math.floor(Math.random() * (c.width / box)) * box,
+    y: Math.floor(Math.random() * (c.height / box)) * box
+  };
+}
+
+function resetGame() {
+  if (score > best) {
+    best = score;
+    localStorage.setItem('best', best);
+    bestEl.textContent = best;
+  }
+  snake = [{x:150, y:150}];
+  dir = 'RIGHT';
+  food = spawnFood();
+  score = 0;
+  scoreEl.textContent = score;
+}
+
+function tick() {
+  // tausta
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, c.width, c.height);
+
+  // ruoka
+  ctx.fillStyle = '#dc3545';
+  ctx.fillRect(food.x, food.y, box, box);
+
+  // käärme
+  ctx.fillStyle = '#198754';
+  for (let s of snake) ctx.fillRect(s.x, s.y, box, box);
+
+  // uusi pää
+  let head = {...snake[0]};
+  if (dir === 'UP') head.y -= box;
+  if (dir === 'DOWN') head.y += box;
+  if (dir === 'LEFT') head.x -= box;
+  if (dir === 'RIGHT') head.x += box;
+
+  // törmäykset
+  if (
+    head.x < 0 || head.y < 0 ||
+    head.x >= c.width || head.y >= c.height ||
+    snake.some(s => s.x === head.x && s.y === head.y)
+  ) {
+    resetGame();
+    return;
+  }
+
+  snake.unshift(head);
+
+  // söikö ruoan?
+  if (head.x === food.x && head.y === food.y) {
+    score += 1;
+    scoreEl.textContent = score;
+    food = spawnFood();
+  } else {
+    snake.pop();
+  }
+}
+
+setInterval(tick, 120);
+</script>
+<!-- ===== LISÄYS LOPPU ===== -->
