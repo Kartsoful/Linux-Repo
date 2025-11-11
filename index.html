@@ -131,6 +131,9 @@
 </div>
 
 <p class="muted">Välilyönti käynnistää pelin — nuolinäppäimillä perässä</p>
+
+<div id="top10" style="margin-top:.75rem; max-width: 360px;"></div>
+
 <!-- ===== Spede END ===== -->
 
 
@@ -274,14 +277,35 @@ function startGame(){
   produceOnce();             // heti eka arvonta
 }
 
+async function postScore(finalScore){
+  try {
+    // Kysy nimimerkki (vain kerran)
+    let nick = localStorage.getItem('nick') || '';
+    if (!nick) {
+      nick = prompt('Nimimerkki (max 32 merkkiä)?') || 'anon';
+      nick = nick.trim().slice(0,32);
+      localStorage.setItem('nick', nick);
+    }
+
+    await fetch('/score', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({nick, score: finalScore})
+    });
+  } catch (e) {
+    console.error('Pisteen tallennus epäonnistui:', e);
+  }
+}
+
 function stopGame(){
   running = false;
   clearInterval(prodTimer);
+  // tallenna ennätys selaimeen kuten ennen
   if (score > best) {
-    best = score;
-    localStorage.setItem('best_spede', best);
-    bestEl.textContent = best;
+    best = score; localStorage.setItem('best_spede', best); bestEl.textContent = best;
   }
+  // LÄHETÄ PISTE PALVELIMELLE
+  postScore(score);
 }
 
 function onHit(dir){
@@ -304,4 +328,24 @@ function onHit(dir){
   const el = cells.find(c => c.dataset.dir === dir);
   if (el) { el.classList.add('good'); setTimeout(()=>el.classList.remove('good'), 120); }
 }
+
+async function refreshTop(){
+  try{
+    const r = await fetch('/scores', {cache:'no-store'});
+    if(!r.ok) return;
+    const list = await r.json();
+    const el = document.getElementById('top10');
+    el.innerHTML = `
+      <h3 style="margin:.25rem 0 .25rem 0">Top 10</h3>
+      <ol style="padding-left:1.2rem; text-align:left; margin:.25rem auto;">
+        ${list.map(i => `<li><b>${escapeHtml(i.nick)}</b> — ${i.score}</li>`).join('')}
+      </ol>`;
+  }catch(_){}
+}
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+// hae alussa ja vaikka 10 sek välein
+refreshTop();
+setInterval(refreshTop, 10000);
+
 </script>
