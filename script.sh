@@ -8,5 +8,6 @@ cd /home/ubuntu/Linux-Repo/
 
 git pull
 
-# siirtää tiedoston juureen, josta Nginx hakee staattisen html-tiedoston
+# siirtää päivitetyt tiedoston oikeisiin paikkoihin
 sudo mv ~/Linux-Repo/index.html /var/www/html/index.html
+sudo mv ~/Linux-Repo/app.py ~/lemp-app/app.py
