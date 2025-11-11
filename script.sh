@@ -1,11 +1,9 @@
 #!/bin/bash
 
-# Scriptillä ladataan git repo ja siirretään repon index.html tiedosto
-# juureen, mistä Nginx-hakee staattisen html-tiedot
+# Scriptillä ladataan git repo ja siirretään
+# päivitetyt tiedostot niille kuuluville sijainneille
 
-# vaihda tähän kotikansiosi
 cd /home/ubuntu/Linux-Repo/
-
 git pull
 
 # siirtää päivitetyt tiedoston oikeisiin paikkoihin
