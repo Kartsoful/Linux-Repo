@@ -123,6 +123,8 @@
   Pisteet: <span id="score">0</span> — Oma ennätys: <span id="best">0</span>
 </div>
 
+<button id="startBtn" style="margin-top:0.5rem;padding:10px 20px;font-size:1.1rem;border-radius:8px;border:none;background:#007bff;color:#fff;">Aloita peli</button>
+
 <div id="spede">
   <div class="cell" data-dir="UP">▲</div>
   <div class="cell" data-dir="LEFT">◀</div>
@@ -171,6 +173,7 @@ let queue   = [];          // sisäinen jono (ei näytetä)
 let prodTimer = null;      // tuottajan interval
 const FLASH_MS   = 160;    // kuinka kauan valo vilkkuu
 const MIN_PERIOD = 250;    // alaraja tahdille
+let started = false;
 
 /* ÄÄNET */
 function playTone(dir, dur=0.12){
@@ -204,19 +207,20 @@ function playFail(dur = 1) {
   } catch(_) {}
 }
 
-/* Estä scroll, fokus ja “nappi pohjaan” */
+// Estä scroll, fokus ja “nappi pohjaan”
 window.addEventListener('keydown', e=>{
   if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key)) e.preventDefault();
 },{passive:false});
+
 cells.forEach(c => {
   c.setAttribute('draggable','false');
   c.setAttribute('tabindex','-1');
-  c.addEventListener('mousedown', e => e.preventDefault()); // ei :active-lookia
-});
-
-/* Space = start (ei pysäytä) */
-window.addEventListener('keydown', e=>{
-  if (e.key === ' ' && !running) startGame();
+  c.addEventListener('mousedown', e => e.preventDefault());
+  c.addEventListener('touchstart', e => {
+    e.preventDefault();
+    if (running) onHit(c.dataset.dir);
+  }, {passive:false});
+  c.addEventListener('click', () => { if (running) onHit(c.dataset.dir); });
 });
 
 /* syöte: nuolinäppäimet */
@@ -226,6 +230,14 @@ window.addEventListener('keydown', e=>{
   if (e.key === 'ArrowDown')  onHit('DOWN');
   if (e.key === 'ArrowLeft')  onHit('LEFT');
   if (e.key === 'ArrowRight') onHit('RIGHT');
+});
+
+// Space = start
+window.addEventListener('keydown', e => {
+  if (e.key === ' ' && !running) {
+    started = true;
+    startGame();
+  }
 });
 
 /* (valinnainen) klikkituki */
@@ -265,6 +277,14 @@ function rescheduleProducer(){
   clearInterval(prodTimer);
   prodTimer = setInterval(produceOnce, period);
 }
+
+document.getElementById('startBtn').addEventListener('click', () => {
+  if (!running) {
+    if (!started) started = true;
+    startGame();
+  }
+});
+
 
 function startGame(){
   queue = [];
