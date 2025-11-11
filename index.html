@@ -279,13 +279,9 @@ function startGame(){
 
 async function postScore(finalScore){
   try {
-    // Kysy nimimerkki (vain kerran)
-    let nick = localStorage.getItem('nick') || '';
-    if (!nick) {
-      nick = prompt('Nimimerkki (max 32 merkkiä)?') || 'anon';
-      nick = nick.trim().slice(0,32);
-      localStorage.setItem('nick', nick);
-    }
+    // kysytään nimi joka kerta
+    let nick = prompt('Nimimerkki (max 32 merkkiä)?') || 'anon';
+    nick = nick.trim().slice(0,32);
 
     await fetch('/score', {
       method: 'POST',
@@ -296,6 +292,7 @@ async function postScore(finalScore){
     console.error('Pisteen tallennus epäonnistui:', e);
   }
 }
+
 
 function stopGame(){
   running = false;
