@@ -5,7 +5,7 @@ import plotly.express as px
 def main():
     st.title("Plot some data")
     df = pd.read_csv("investment_profit.csv")
-    ff = px.scatter(df, x="Time", y="Amount")
+    ff = px.scatter(df, x="Sijoitettu paaoma", y="Amount")
     st.plotly_chart(ff, use_container_width=True)
 
 if __name__ == "__main__":
