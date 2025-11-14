@@ -37,7 +37,7 @@ def main():
     fig = px.line(
         df,
         x="pvm",
-        y="Lämpötila [°C]",
+        y=selected,
         markers=True,
         title="Vuorokauden keskilämpötila",
     )
