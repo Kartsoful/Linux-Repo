@@ -26,7 +26,7 @@ def main():
     selected = st.multiselect(
         "Valitse kaupungit:",
         options=city_cols,
-        default=city_cols,  # oletuksena kaikki
+        default="Oulu",  # oletuksena kaikki
     )
 
     if not selected:
