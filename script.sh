@@ -14,5 +14,7 @@ sudo cp ~/Linux-Repo/lemp-app /etc/nginx/sites-available/lemp-app
 sudo cp ~/Linux-Repo/lemp-app.service /etc/systemd/system/lemp-app.service
 
 # Startataan service uudelleen
+sudo systemctl reload nginx
 sudo systemctl restart lemp-app
 sudo systemctl daemon-reload
+
