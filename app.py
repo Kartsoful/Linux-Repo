@@ -10,9 +10,9 @@ app = Flask(__name__)
 def db():
     return mysql.connector.connect(
         host="127.0.0.1",
-        user="user",          # vaihda omiin
-        password="password",   # vaihda omiin
-        database="database"    # vaihda omiin
+        user="kartso",          # vaihda omiin
+        password="kartso123",   # vaihda omiin
+        database="exampledb"    # vaihda omiin
     )
 
 # --- etusivu ---
