@@ -2,16 +2,10 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-# ---------- TYYLIT ----------
+# ---------- PERUS-TYYLIT (ilman taustaväriä) ----------
 st.markdown("""
     <style>
-        /* Tausta koko appille */
-        .stApp {
-            background: linear-gradient(135deg, #0a0f24 0%, #1a2a6c 50%, #3d9ecf 100%);
-            color: white;
-        }
-
-        /* Keskimmäinen "kortti" sisällölle */
+        /* Card-tyyppinen keskialue */
         .block-container {
             max-width: 900px;
             padding-top: 40px;
@@ -45,7 +39,7 @@ st.markdown("""
             color: #ffffff !important;
         }
 
-        /* Varoitusboxit jne */
+        /* Varoitukset tummemmaksi */
         .stAlert {
             background-color: rgba(0, 0, 0, 0.45) !important;
         }
@@ -68,13 +62,13 @@ def load_data():
 # ---------- APP ----------
 
 def main():
+    df = load_data()
+
     st.markdown("<h1>Lämpötilat MySQL-tietokannasta</h1>", unsafe_allow_html=True)
     st.markdown(
         "<p style='text-align:center; margin-bottom:25px;'>Valitse yksi tai useampi kaupunki, joiden vuorokauden keskilämpötilat haluat nähdä.</p>",
         unsafe_allow_html=True,
     )
-
-    df = load_data()
 
     # Kaikki sarakkeet jotka eivät ole pvm tai id = paikkakuntia
     city_cols = [c for c in df.columns if c not in ("pvm", "id")]
@@ -96,7 +90,45 @@ def main():
         st.warning("Valitse vähintään yksi kaupunki.")
         return
 
-    # Piirretään kuvaaja
+    # ----- LASKE KESKIARVO VALITUILLE KAUPUNGEILLE -----
+    # Kaikkien valittujen kaupunkien kaikkien lämpötilojen keskiarvo
+    avg_temp = df[selected].stack().mean()
+
+    # Valitse taustagradientti keskiarvon perusteella
+    if avg_temp <= 0:
+        # kylmä
+        bg_gradient = "linear-gradient(135deg, #001f3f 0%, #003f7f 40%, #0074d9 100%)"
+        label = "Kylmä"
+    elif avg_temp <= 10:
+        # viileä
+        bg_gradient = "linear-gradient(135deg, #1a2a6c 0%, #3d5afe 40%, #00bcd4 100%)"
+        label = "Viileä"
+    else:
+        # lämmin
+        bg_gradient = "linear-gradient(135deg, #7b1fa2 0%, #ff7043 40%, #ff9800 100%)"
+        label = "Lämmin"
+
+    # Injektoi taustaväri dynaamisesti .stApp:iin
+    st.markdown(f"""
+        <style>
+            .stApp {{
+                background: {bg_gradient};
+                color: white;
+                transition: background 1.2s ease-in-out;
+            }}
+        </style>
+    """, unsafe_allow_html=True)
+
+
+    # Näytä keskiarvo ja luokitus
+    st.markdown(
+        f"<p style='text-align:center; font-size:18px; margin-top:5px;'>"
+        f"Valittujen kaupunkien keskilämpötila: <b>{avg_temp:.1f} °C</b> ({label})"
+        f"</p>",
+        unsafe_allow_html=True,
+    )
+
+    # ----- PIIRRÄ KUVA -----
     fig = px.line(
         df,
         x="pvm",
