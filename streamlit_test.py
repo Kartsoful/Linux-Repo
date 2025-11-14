@@ -37,9 +37,9 @@ def main():
     fig = px.line(
         df,
         x="pvm",
-        y=selected,
+        y="Lämpötila [°C]",
         markers=True,
-        title="Lämpötilat paikkakunnittain",
+        title="Vuorokauden keskilämpötila",
     )
 
     st.plotly_chart(fig, use_container_width=True)
