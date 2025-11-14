@@ -15,11 +15,11 @@ def main():
     st.write("Sarakkeet:", list(df.columns))
 
     # Oletus: Date = x-akseli, kaikki muut sarakkeet (esim. Paaoma, 2%, 4%, 6%) = viivat
-    y_cols = [c for c in df.columns if c != "Aika [kk]"]
+    y_cols = [c for c in df.columns if c != "Date"]
 
     fig = px.line(
         df,
-        x="Aika [kk]",
+        x="Date",
         y=y_cols,
         markers=True,
         title="Trendiviivat"
