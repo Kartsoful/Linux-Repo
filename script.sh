@@ -14,6 +14,7 @@ sudo cp ~/Linux-Repo/lemp-app /etc/nginx/sites-available/lemp-app
 sudo cp ~/Linux-Repo/lemp-app.service /etc/systemd/system/lemp-app.service
 sudo cp ~/Linux-Repo/streamlit_test.py /home/ubuntu/lemp-app/streamlit_test.py
 sudo cp ~/Linux-Repo/Electric_prices.csv /home/ubuntu/lemp-app/Electric_prices.csv
+sudo cp ~/Linux-Repo/streamlit.service /etc/systemd/system/streamlit.service
 
 # Startataan service uudelleen
 sudo systemctl reload nginx
