@@ -5,21 +5,24 @@ import plotly.express as px
 def main():
     st.title("Electric price - Test")
 
-    # Lue CSV
+    # Lue data
     df = pd.read_csv("Electric_prices.csv", sep=",")
 
-    # Siivoa sarakeotsikoista puolipisteet pois
-    df.columns = [c.replace(";", "") for c in df.columns]
+    # Siivoa otsikot: poista mahdolliset ; ja välilyönnit alusta/lopusta
+    df.columns = [c.strip().replace(";", "") for c in df.columns]
 
-    # Tarkista mitä sarakkeita oikeasti on (debug)
-    st.write("Columns:", list(df.columns))
+    # Näytä debugina mitä sarakkeita oikeasti on
+    st.write("Sarakkeet:", list(df.columns))
 
-    # Jos sarakkeet ovat Paaoma, 2%, 4%, 6%, piiretään ne
+    # Oletus: Date = x-akseli, kaikki muut sarakkeet (esim. Paaoma, 2%, 4%, 6%) = viivat
+    y_cols = [c for c in df.columns if c != "Date"]
+
     fig = px.line(
         df,
         x="Date",
-        y=["Paaoma", "2%", "4%", "6%"],  # monta trendiviivaa
+        y=y_cols,
         markers=True,
+        title="Trendiviivat"
     )
 
     st.plotly_chart(fig, use_container_width=True)
