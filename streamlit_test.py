@@ -14,18 +14,18 @@ def mySql():
 
 def main():
     st.title("Plot data from MySql")
-    st.write("Lämpötiloja ")
+    st.write("Lämpötiloja")
     data = mySql()
     #plot data
 
-    options = st.multiselect(
-    "Minkä kaupungin lämpötilat?",
-    ["Utsjoki", "Oulu", "Helsinki"],
-    default=["Oulu"],
-)
+#     options = st.multiselect(
+#     "Minkä kaupungin lämpötilat?",
+#     ["Utsjoki", "Oulu", "Helsinki"],
+#     default=["Oulu"],
+# )
 
-    df2 = pd.DataFrame(data, columns=["Päivittäinen lämpötila"])
-    lampotila = px.line(df2, x=df2.index, y=options)
+    df2 = pd.DataFrame(data, columns=["Oulu"])
+    lampotila = px.line(df2, x=df2.index, y="Oulu")
     st.plotly_chart(lampotila, use_container_width=True)
 
 if __name__ == "__main__":
