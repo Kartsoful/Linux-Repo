@@ -10,3 +10,8 @@ git pull
 sudo mv ~/Linux-Repo/index.html /var/www/html/index.html
 sudo mv ~/Linux-Repo/app.py ~/lemp-app/app.py
 sudo mv ~/Linux-Repo/lemp-app /etc/nginx/sites-available/lemp-app
+sudo mv ~/Linux-Repo/lemp-app.service /etc/systemd/system/lemp-app.service
+
+// Startataan service uudelleen
+sudo systemctl restart lemp-app
+sudo systemctl daemon-reload
