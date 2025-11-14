@@ -2,28 +2,44 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-st.title("Investment Profit Analysis")
+def main():
+    st.title("Investment Profit Scatter Plot")
 
-# Lue tiedosto oikein
-@st.cache_data  # Vähentää uudelleenlukua, jos data ei muutu
-def load_data():
+    # Lue tiedosto (sep=';' ja decimal=',' eurooppalaiselle formaatille)
     df = pd.read_csv('investment_profit.csv', sep=';', decimal=',')
-    return df
 
-df = load_data()
+    # Debuggaus: Näytä sarakkeet ja data
+    st.subheader("Ladattu data (ensimmäiset rivit)")
+    st.write("Sarakkeet:", df.columns.tolist())
+    st.dataframe(df.head())
 
-# Debuggaus: Näytä sarakkeet ja data
-st.subheader("Ladattu data (ensimmäiset rivit)")
-st.write("Sarakkeet:", df.columns.tolist())
-st.dataframe(df.head(10))  # Näyttää taulun
+    # Tarkista x-sarake
+    if 'SijoitettuPaaoma' not in df.columns:
+        st.error("Saraketta 'SijoitettuPaaoma' ei löytynyt! Tarkista nimi: " + str(df.columns))
+        return
 
-# Esimerkki: Piirrä kaavio (x = sijoitettu pääoma, y = tuotto 0,01 %:lla)
-# Korvaa '0,01' haluamallasi sarakkeella, jos tarvitset toista tuottoa
-if 'Sijoitettu_paaoma' in df.columns and '0,01' in df.columns:
-    st.subheader("Tuotto kaaviona (0,01 % tuotto)")
-    st.line_chart(df, x='Sijoitettu_paaoma', y='0,01')
-else:
-    st.error("Sarakkeita ei löytynyt – tarkista data.")
+    # Valitse y-sarake (tuotto): Listaa saatavilla olevat tuotto-sarakkeet
+    tuotto_sarakkeet = [col for col in df.columns if col.startswith('0,')]
+    if not tuotto_sarakkeet:
+        st.error("Yhtään tuotto-saraketta (kuten '0,01') ei löytynyt!")
+        return
 
-# Jos haluat käsitellä NaN-arvoja (esim. täytä nollilla), lisää tämä:
-# df = df.fillna(0)
+    selected_y = st.selectbox("Valitse tuotto-sarake y-akselille:", tuotto_sarakkeet, index=0)
+
+    # Tarkista valittu y-sarake
+    if selected_y not in df.columns:
+        st.error(f"Saraketta '{selected_y}' ei löytynyt!")
+        return
+
+    # Korjattu scatter-plot: x = SijoitettuPaaoma, y = valittu tuotto
+    fig = px.scatter(df, x='SijoitettuPaaoma', y=selected_y, 
+                     title=f'Tuotto vs. Sijoitettu Pääoma ({selected_y} % tuotto)')
+    fig.update_layout(xaxis_title='Sijoitettu Pääoma', yaxis_title='Tuotto')
+    st.plotly_chart(fig)
+
+    # Jos haluat poistaa NaN-arvot (jos dataa puuttuu), lisää ennen plottausta:
+    # df_plot = df.dropna(subset=['SijoitettuPaaoma', selected_y])
+    # fig = px.scatter(df_plot, ...)
+
+if __name__ == "__main__":
+    main()
