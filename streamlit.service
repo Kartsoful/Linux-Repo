@@ -3,10 +3,10 @@ Description=Streamlit Server
 After=network.target
 [Service]
 User=ubuntu
-WorkingDirectory=/home/ubuntu/test/Stream_CSC
-ExecStart=/bin/bash -c "source /home/ubuntu/test/venv/bin/activate && pip
-install -r /home/ubuntu/test/Stream_CSC/.streamlit/requirements.txt &&
-streamlit run /home/ubuntu/test/Stream_CSC/Streamlit_test.py"
+WorkingDirectory=/home/ubuntu/lemp-app/
+ExecStart=/bin/bash -c "source /home/ubuntu/lemp-app/venv/bin/activate && pip
+install -r /home/ubuntu/lemp-app/.streamlit/requirements.txt &&
+streamlit run /home/ubuntu/lemp-app/streamlit_test.py"
 Restart=always
 [Install]
 WantedBy=multi-user.target
