@@ -95,11 +95,11 @@ def main():
     avg_temp = df[selected].stack().mean()
 
     # Valitse taustagradientti keskiarvon perusteella
-    if avg_temp <= 0:
+    if avg_temp <= 3:
         # kylmä
         bg_gradient = "linear-gradient(135deg, #001f3f 0%, #003f7f 40%, #0074d9 100%)"
         label = "Kylmä"
-    elif avg_temp <= 10:
+    elif avg_temp <= 8:
         # viileä
         bg_gradient = "linear-gradient(135deg, #1a2a6c 0%, #3d5afe 40%, #00bcd4 100%)"
         label = "Viileä"
