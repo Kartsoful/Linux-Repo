@@ -8,7 +8,8 @@ def main():
     ff = px.line(
         df,
         x="Date",
-        y=["Paaoma", "2%", "4%", "6%"]
+        y=["Paaoma", "2%", "4%", "6%"],   # useampi sarake listana
+        markers=True
     )
     st.plotly_chart(ff, use_container_width=True)
 
