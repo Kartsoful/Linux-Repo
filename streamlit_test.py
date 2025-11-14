@@ -1,60 +1,45 @@
 import streamlit as st
 import pandas as pd
-import plotly.express as px
 
-def main():
-    st.title("Investment Profit Trend Lines: Aika vs. Tuotto")
+st.set_page_config(page_title="Sijoitustrendit", layout="wide")
+st.title("Sijoitustrendit ajassa")
 
-    # Lue tiedosto OIKEIN: nimi 'investmentProfit.csv', sep=';' ja decimal=','
-    try:
-        df = pd.read_csv('investmentProfit.csv', sep=';', decimal=',')
-    except FileNotFoundError:
-        st.error("Tiedostoa 'investmentProfit.csv' ei löytynyt! Varmista sijainti.")
-        return
+# --- LUE TIEDOSTO SUORAAN ---
+file_path = "investmentProfit.csv"
 
-    # Debuggaus: Näytä sarakkeet ja data (tarkista täältä nimi!)
-    st.subheader("Ladattu data (ensimmäiset rivit)")
-    st.write("Sarakkeet:", df.columns.tolist())  # Kopioi nimi täältä, jos herja!
-    st.dataframe(df.head(10))
+df = pd.read_csv(
+    file_path,
+    sep=";",
+    decimal=",",
+    quotechar='"',
+    engine="python"
+)
 
-    # Tarkista x-sarake (aika: 'kk')
-    if 'kk' not in df.columns:
-        st.error("Saraketta 'kk' (aika) ei löytynyt! Tarkista lista yllä.")
-        return
+# Poista tyhjät / ylimääräiset sarakkeet lopusta
+df = df.dropna(axis=1, how="all")
+df = df.loc[:, ~df.columns.str.contains("^Unnamed")]
 
-    # Tarkista 'sijoitettuPaaoma' (jos tarvitset myöhemmin, esim. väreihin)
-    if 'sijoitettuPaaoma' not in df.columns:
-        st.error("Saraketta 'sijoitettuPaaoma' ei löytynyt! Tarkista nimi ylläolevasta listasta.")
-        return
+# Varmista, että kk on numeerinen
+df["kk"] = pd.to_numeric(df["kk"], errors="coerce")
 
-    # Hae tuotto-sarakkeet (y-akselin viivat)
-    tuotto_sarakkeet = [col for col in df.columns if col.startswith('0,')]
-    if not tuotto_sarakkeet:
-        st.error("Tuotto-sarakkeita ei löytynyt! Tarkista data.")
-        return
+# Näytä raakadata
+st.subheader("Raakadata")
+st.dataframe(df)
 
-    # Valitse mitkä viivat piirretään (multi-select: kaikki oletuksena)
-    selected_tuotto = st.multiselect("Valitse tuotto-viivat (y-akseli):", tuotto_sarakkeet, default=tuotto_sarakkeet)
+# Y-sarakkeet (kaikki muut kuin "kk")
+numeric_cols = [c for c in df.columns if c != "kk"]
 
-    if not selected_tuotto:
-        st.warning("Valitse ainakin yksi tuotto-sarake!")
-        return
+st.subheader("Valitse piirtosarakkeet")
+selected_cols = st.multiselect(
+    "Valitse mitä sarakkeita piirretään Y-akselille",
+    numeric_cols,
+    default=numeric_cols
+)
 
-    # Poista NaN-rivit relevanttien sarakkeiden osalta
-    df_plot = df.dropna(subset=['kk'] + selected_tuotto)
+if not selected_cols:
+    st.warning("Valitse vähintään yksi sarake nähdäksesi trendin.")
+else:
+    plot_df = df.set_index("kk")[selected_cols]
 
-    # Line chart: x='kk' (aika), y=selected_tuotto (useita viivoja), color='sijoitettuPaaoma' (värit pääoman mukaan)
-    fig = px.line(df_plot, x='kk', y=selected_tuotto,
-                  color='sijoitettuPaaoma',  # Värit viivoja eri pääomilla (jos haluat; poista jos ei)
-                  title='Tuotto-trendit aikajanalla (x: kuukaudet, y: tuotto)',
-                  labels={'kk': 'Kuukaudet (aika)', 'value': 'Tuotto-arvo', 'sijoitettuPaaoma': 'Pääoma-väri'})
-    fig.update_layout(hovermode='x unified')  # Parempi hover-tieto
-    st.plotly_chart(fig, use_container_width=True)
-
-    # Tilastot bonus: Näytä keskiarvot valituille sarakkeille
-    st.subheader("Keskiarvot valituille tuotoille")
-    keskiarvot = df_plot[selected_tuotto].mean()
-    st.bar_chart(keskiarvot)
-
-if __name__ == "__main__":
-    main()
+    st.subheader("Trendikäyrät")
+    st.line_chart(plot_df)
