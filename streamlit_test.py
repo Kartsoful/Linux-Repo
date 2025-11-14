@@ -3,58 +3,58 @@ import pandas as pd
 import plotly.express as px
 
 def main():
-    st.title("Investment Profit Scatter Plot")
+    st.title("Investment Profit Trend Lines: Aika vs. Tuotto")
 
-    # Lue tiedosto OIKEIN: uusi nimi, sep=';' ja decimal=',' desimaaleille
+    # Lue tiedosto OIKEIN: nimi 'investmentProfit.csv', sep=';' ja decimal=','
     try:
         df = pd.read_csv('investmentProfit.csv', sep=';', decimal=',')
     except FileNotFoundError:
-        st.error("Tiedostoa 'investmentProfit.csv' ei löytynyt! Varmista, että se on samassa kansiossa.")
+        st.error("Tiedostoa 'investmentProfit.csv' ei löytynyt! Varmista sijainti.")
         return
 
-    # Debuggaus: Näytä sarakkeet ja data (poista myöhemmin jos ei tarvita)
+    # Debuggaus: Näytä sarakkeet ja data (tarkista täältä nimi!)
     st.subheader("Ladattu data (ensimmäiset rivit)")
-    st.write("Sarakkeet:", df.columns.tolist())
+    st.write("Sarakkeet:", df.columns.tolist())  # Kopioi nimi täältä, jos herja!
     st.dataframe(df.head(10))
 
-    # Tarkista x-sarake
+    # Tarkista x-sarake (aika: 'kk')
+    if 'kk' not in df.columns:
+        st.error("Saraketta 'kk' (aika) ei löytynyt! Tarkista lista yllä.")
+        return
+
+    # Tarkista 'sijoitettuPaaoma' (jos tarvitset myöhemmin, esim. väreihin)
     if 'sijoitettuPaaoma' not in df.columns:
         st.error("Saraketta 'sijoitettuPaaoma' ei löytynyt! Tarkista nimi ylläolevasta listasta.")
         return
 
-    # Valitse y-sarake: Tuotto-sarakkeet (kuten '0,01')
+    # Hae tuotto-sarakkeet (y-akselin viivat)
     tuotto_sarakkeet = [col for col in df.columns if col.startswith('0,')]
     if not tuotto_sarakkeet:
         st.error("Tuotto-sarakkeita ei löytynyt! Tarkista data.")
         return
 
-    selected_y = st.selectbox("Valitse tuotto-sarake y-akselille (esim. 0,01 %):", tuotto_sarakkeet, index=0)
+    # Valitse mitkä viivat piirretään (multi-select: kaikki oletuksena)
+    selected_tuotto = st.multiselect("Valitse tuotto-viivat (y-akseli):", tuotto_sarakkeet, default=tuotto_sarakkeet)
 
-    # Valinnainen: Suodata kk (kuukaudet) -sarakkeella
-    selected_kk = st.slider("Suodata kuukaudet (kk):", min_value=0, max_value=df['kk'].max() if 'kk' in df.columns else 0, value=0)
-
-    # Tarkista valittu y-sarake
-    if selected_y not in df.columns:
-        st.error(f"Saraketta '{selected_y}' ei löytynyt!")
+    if not selected_tuotto:
+        st.warning("Valitse ainakin yksi tuotto-sarake!")
         return
 
-    # Poista NaN-rivit ja suodata kk
-    df_plot = df.dropna(subset=['sijoitettuPaaoma', selected_y])
-    if 'kk' in df.columns:
-        df_plot = df_plot[df_plot['kk'] >= selected_kk]
+    # Poista NaN-rivit relevanttien sarakkeiden osalta
+    df_plot = df.dropna(subset=['kk'] + selected_tuotto)
 
-    # Korjattu scatter-plot
-    fig = px.scatter(df_plot, x='sijoitettuPaaoma', y=selected_y,
-                     title=f'Tuotto vs. Sijoitettu Pääoma ({selected_y} tuotto, kk >= {selected_kk})',
-                     labels={'sijoitettuPaaoma': 'Sijoitettu Pääoma', selected_y: 'Tuotto', 'kk': 'Kuukaudet'})
+    # Line chart: x='kk' (aika), y=selected_tuotto (useita viivoja), color='sijoitettuPaaoma' (värit pääoman mukaan)
+    fig = px.line(df_plot, x='kk', y=selected_tuotto,
+                  color='sijoitettuPaaoma',  # Värit viivoja eri pääomilla (jos haluat; poista jos ei)
+                  title='Tuotto-trendit aikajanalla (x: kuukaudet, y: tuotto)',
+                  labels={'kk': 'Kuukaudet (aika)', 'value': 'Tuotto-arvo', 'sijoitettuPaaoma': 'Pääoma-väri'})
+    fig.update_layout(hovermode='x unified')  # Parempi hover-tieto
     st.plotly_chart(fig, use_container_width=True)
 
-    # Bonus: Line chart 'kk' vs. tuotto (jos haluat aikajanaa)
-    if 'kk' in df.columns and len(df_plot) > 1:
-        st.subheader("Tuotto aikajanalla (line chart)")
-        fig_line = px.line(df_plot, x='kk', y=selected_y, color='sijoitettuPaaoma',
-                           title=f'Tuotto kehitys kuukausittain ({selected_y})')
-        st.plotly_chart(fig_line, use_container_width=True)
+    # Tilastot bonus: Näytä keskiarvot valituille sarakkeille
+    st.subheader("Keskiarvot valituille tuotoille")
+    keskiarvot = df_plot[selected_tuotto].mean()
+    st.bar_chart(keskiarvot)
 
 if __name__ == "__main__":
     main()
