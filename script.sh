@@ -13,6 +13,7 @@ sudo cp ~/Linux-Repo/app.py ~/lemp-app/app.py
 sudo cp ~/Linux-Repo/lemp-app/etc/nginx/sites-available/lemp-app
 sudo cp ~/Linux-Repo/lemp-app.service /etc/systemd/system/lemp-app.service
 sudo cp ~/Linux-Repo/lemp-app/streamlit_test.py /home/ubuntu/streamlit_test.py
+sudo cp ~/Linux-Repo/lemp-app/investmentProfit.csv /home/ubuntu/investmentProfit.csv
 
 # Startataan service uudelleen
 sudo systemctl reload nginx
