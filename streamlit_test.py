@@ -14,8 +14,8 @@ def load_data():
     return df
 
 def main():
-    st.title("Plot data from MySql")
-    st.write("Lämpötiloja (lampotilat-taulusta)")
+    st.title("Lämpötilatiedot MySQL-tietokannasta")
+    st.write("Valitse haluamasi kaupungit")
 
     df = load_data()
 
