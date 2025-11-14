@@ -10,9 +10,9 @@ git pull
 sudo cp ~/Linux-Repo/index.html /var/www/html/index.html
 sudo cp ~/Linux-Repo/LH2.gif /var/www/html/LH2.gif
 sudo cp ~/Linux-Repo/app.py ~/lemp-app/app.py
-sudo cp ~/Linux-Repo/lemp-app /etc/nginx/sites-available/lemp-app
+sudo cp ~/Linux-Repo/lemp-app/etc/nginx/sites-available/lemp-app
 sudo cp ~/Linux-Repo/lemp-app.service /etc/systemd/system/lemp-app.service
-sudo cp ~/Linux-Repo/streamlit_test.py /home/ubuntu/streamlit_test.py
+sudo cp ~/Linux-Repo/lemp-app/streamlit_test.py /home/ubuntu/streamlit_test.py
 
 # Startataan service uudelleen
 sudo systemctl reload nginx
