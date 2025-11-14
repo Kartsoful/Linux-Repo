@@ -19,9 +19,6 @@ def main():
 
     df = load_data()
 
-    st.write("Raakadata:")
-    st.dataframe(df)
-
     # Kaikki sarakkeet jotka eivät ole pvm tai id = paikkakuntia
     city_cols = [c for c in df.columns if c not in ("pvm", "id")]
 
