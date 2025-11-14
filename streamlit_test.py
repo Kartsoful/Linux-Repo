@@ -19,7 +19,7 @@ def main():
 
     fig = px.line(
         df,
-        x="Date",
+        x="Aika [kk]",
         y=y_cols,
         markers=True,
         title="Trendiviivat"
