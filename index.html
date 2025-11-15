@@ -69,9 +69,13 @@
             }
         }
 
+        #welcome-wrapper {
+            position: relative;
+        }
+
         #sql-clock {
             position: absolute;
-            top: 80px;          /* säädä tätä ylös/alas */
+            top: -60px;     /* säädä tästä kellon etäisyys */
             left: 50%;
             transform: translateX(-50%);
             color: #ffffff;
@@ -84,7 +88,10 @@
 </head>
 
 <body>
+    <div id="welcome-wrapper">
     <div id="sql-clock">SQL-aika: <span id="sql-time">...</span></div>
+
+    <div class="welcome-box">
 
     <div class="container">
         <h1>Tervetuloa</h1>
