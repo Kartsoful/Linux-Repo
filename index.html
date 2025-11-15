@@ -68,12 +68,56 @@
                 transform: translateY(0);
             }
         }
+
+        #banner {
+            width: 100%;
+            padding: 15px 0;
+            background: rgba(255,255,255,0.65);
+            backdrop-filter: blur(4px);
+            text-align: center;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #ddd;
+        }
+
+        #banner h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        #banner button {
+            margin-top: 0.4rem;
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
+            background: #007bff;
+            color: white;
+        }
+
+        #sql-clock {
+            margin-top: 0.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #007bff;
+        }
     </style>
 
 </head>
 
 <body>
     
+    <div id="banner">
+        <h1>Tervetuloa</h1>
+        <button onclick="window.location='/data-analysis/'">
+            Data-analyysi
+        </button>
+
+        <div id="sql-clock">
+            SQL-palvelimen aika: <span id="sql-time">...</span>
+        </div>
+    </div>
+
     <div class="container">
         <h1>Tervetuloa</h1>
         <p>Avaa streamlit lämpötilojen tarkastelu sovellus.</p>
@@ -89,10 +133,9 @@
 async function updateSqlTime() {
   try {
     const r = await fetch('/time', { cache: 'no-store' });
-    if (!r.ok) throw new Error('HTTP ' + r.status);
     const j = await r.json();
-    document.getElementById('sql-time').textContent = j.time || 'virhe';
-  } catch (e) {
+    document.getElementById('sql-time').textContent = j.time;
+  } catch (_) {
     document.getElementById('sql-time').textContent = 'virhe';
   }
 }
@@ -100,3 +143,4 @@ async function updateSqlTime() {
 updateSqlTime();
 setInterval(updateSqlTime, 1000);
 </script>
+
