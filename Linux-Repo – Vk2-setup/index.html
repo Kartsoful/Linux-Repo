@@ -1,0 +1,370 @@
+<!doctype html><html lang="fi"><meta charset="utf-8">
+<title>LEMP-demo</title>
+
+<style>
+  html, body {
+    height: 100%;
+    margin: 0;
+  }
+
+  body {
+    font-family: system-ui;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background: #f8f9fa;
+    line-height: 1.2;
+    overflow: hidden;        /* estää sivun vierityksen */
+  }
+
+  h1 { margin: 0.5rem 0 0.25rem 0; }
+
+  p {
+    font-size: 1.25rem;
+    margin: 0.3rem 0;
+  }
+
+  .time {
+    font-weight: 700;
+    color: #007bff;
+    font-size: 1.5rem;
+  }
+
+  img {
+    margin-top: 0.5rem;
+    max-width: 90%;
+    height: auto;
+  }
+
+  #scoreboard {
+    margin-top: 0.5rem;
+    font-weight: 600;
+    font-size: 1rem;
+  }
+
+  canvas#game {
+    margin-top: 0.5rem;
+    border: 1px solid #ccc;
+    background: #fff;
+    width: 40vw;   /* täyttää lähes koko leveydeltä */
+    height: 40vw;  /* pitää neliön muodon */
+    max-width: 300px;
+    max-height: 300px;
+  }
+
+  @keyframes bgshift {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  body {
+    background: linear-gradient(270deg, #74b9ff, #81ecec, #55efc4, #ffeaa7, #fab1a0, #ff7675);
+    background-size: 1200% 1200%;
+    animation: bgshift 20s ease infinite;
+  }
+
+  #spede {
+    margin-top: .5rem;
+    display: grid;
+    grid-template-columns: repeat(3, 70px);
+    grid-template-rows: repeat(3, 70px);
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+  }
+  /* sijoitus: ylös, vasen, oikea, alas ristikkoon */
+  #spede .cell[data-dir="UP"]    { grid-column: 2; grid-row: 1; }
+  #spede .cell[data-dir="LEFT"]  { grid-column: 1; grid-row: 2; }
+  #spede .cell[data-dir="RIGHT"] { grid-column: 3; grid-row: 2; }
+  #spede .cell[data-dir="DOWN"]  { grid-column: 2; grid-row: 3; }
+
+#spede .cell {
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid #ccc; border-radius: 10px;
+  font-size: 28px; width: 70px; height: 70px;
+  background: #fff; cursor: pointer;
+  /* EI siirtymiä -> ei “pehmeää painumista” */
+  transition: none;
+}
+
+/* ei koskaan “paina pohjaan” */
+#spede .cell:focus { outline: none; }
+#spede .cell.active {
+  border-color: #007bff !important;
+  box-shadow: 0 0 10px rgba(0,0,0,.1) !important;
+  transform: scale(1.05) !important;
+}
+
+/* Käyttäjän klikin "painalluslook" pois, mutta ilman !important:ia */
+#spede .cell:active {
+  transform: none;
+  box-shadow: none;
+  filter: none;
+  background: #fff;
+}
+</style>
+
+
+
+<h1>Staattisen Nginx-sivun testailua</h1>
+<p>SQL-palvelimen aika: <span id="t" class="time">...</span></p>
+
+<p><p></p>
+<img src="LH2.gif" alt="Linux harjoitus GIF" width="400">
+<p><p></p>
+
+<!-- ===== Speden pelit ===== -->
+<div id="scoreboard">
+  Pisteet: <span id="score">0</span> — Oma ennätys: <span id="best">0</span>
+</div>
+
+<button id="startBtn" style="margin-top:0.5rem;padding:10px 20px;font-size:1.1rem;border-radius:8px;border:none;background:#007bff;color:#fff;">Aloita peli</button>
+
+<div id="spede">
+  <div class="cell" data-dir="UP">▲</div>
+  <div class="cell" data-dir="LEFT">◀</div>
+  <div class="cell" data-dir="RIGHT">▶</div>
+  <div class="cell" data-dir="DOWN">▼</div>
+</div>
+
+<p class="muted">Välilyönti käynnistää pelin — nuolinäppäimillä perässä</p>
+<p class="muted">Peli kiihtyy max 4Hz taajuudelle</p>
+
+
+<div id="top10" style="margin-top:.75rem; max-width: 360px;"></div>
+
+<!-- ===== Spede END ===== -->
+
+
+<script>
+/* ——— SQL-aika päivittyy ——— */
+async function updateTime() {
+  try {
+    const r = await fetch('/time', {cache:'no-store'});
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const j = await r.json();
+    document.getElementById('t').textContent = j.time || 'virhe';
+  } catch(e) {
+    document.getElementById('t').textContent = 'virhe';
+  }
+}
+updateTime();
+setInterval(updateTime, 1000);
+
+/* ——— Speden pelit ——— */
+const cells = Array.from(document.querySelectorAll('#spede .cell'));
+const scoreEl = document.getElementById('score');
+const bestEl  = document.getElementById('best');
+
+let score = 0, best = Number(localStorage.getItem('best_spede') || 0);
+bestEl.textContent = best;
+
+const DIRS  = ['UP','DOWN','LEFT','RIGHT'];
+const FREQS = { UP: 880, RIGHT: 660, DOWN: 330, LEFT: 440 };
+
+let running = false;       // peli käynnissä
+let period  = 1000;        // ms / arvonta (1 Hz alku)
+let draws   = 0;           // arvontojen laskuri (nopeutus 10 välein)
+let lastDir = null;        // ettei samaa peräkkäin
+let queue   = [];          // sisäinen jono (ei näytetä)
+let prodTimer = null;      // tuottajan interval
+const FLASH_MS   = 160;    // kuinka kauan valo vilkkuu
+const MIN_PERIOD = 250;    // alaraja tahdille
+let started = false;
+
+/* ÄÄNET */
+function playTone(dir, dur=0.12){
+  try {
+    window._actx = window._actx || new (window.AudioContext||window.webkitAudioContext)();
+    if (_actx.state === 'suspended') _actx.resume();
+    const o=_actx.createOscillator(), g=_actx.createGain();
+    o.type='sine'; o.frequency.value = FREQS[dir] || 440;
+    g.gain.value=0.0001; o.connect(g); g.connect(_actx.destination);
+    const t=_actx.currentTime;
+    g.gain.exponentialRampToValueAtTime(0.22, t+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, t+dur);
+    o.start(t); o.stop(t+dur+0.02);
+  } catch(_) {}
+}
+function playFail(dur = 1) {
+  try {
+    window._actx = window._actx || new (window.AudioContext||window.webkitAudioContext)();
+    if (_actx.state === 'suspended') _actx.resume();
+    const o = _actx.createOscillator();
+    const g = _actx.createGain();
+    o.type = 'square';
+    o.connect(g); g.connect(_actx.destination);
+    const now = _actx.currentTime;
+    o.frequency.setValueAtTime(500, now);
+    o.frequency.exponentialRampToValueAtTime(180, now + dur);
+    g.gain.setValueAtTime(0.0001, now);
+    g.gain.exponentialRampToValueAtTime(0.25, now + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+    o.start(now); o.stop(now + dur + 0.02);
+  } catch(_) {}
+}
+
+// Estä scroll, fokus ja “nappi pohjaan”
+window.addEventListener('keydown', e=>{
+  if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key)) e.preventDefault();
+},{passive:false});
+
+cells.forEach(c => {
+  c.setAttribute('draggable','false');
+  c.setAttribute('tabindex','-1');
+  c.addEventListener('mousedown', e => e.preventDefault());
+  c.addEventListener('touchstart', e => {
+    e.preventDefault();
+    if (running) onHit(c.dataset.dir);
+  }, {passive:false});
+  c.addEventListener('click', () => { if (running) onHit(c.dataset.dir); });
+});
+
+/* syöte: nuolinäppäimet */
+window.addEventListener('keydown', e=>{
+  if (!running) return;
+  if (e.key === 'ArrowUp')    onHit('UP');
+  if (e.key === 'ArrowDown')  onHit('DOWN');
+  if (e.key === 'ArrowLeft')  onHit('LEFT');
+  if (e.key === 'ArrowRight') onHit('RIGHT');
+});
+
+// Space = start
+window.addEventListener('keydown', e => {
+  if (e.key === ' ' && !running) {
+    started = true;
+    startGame();
+  }
+});
+
+/* (valinnainen) klikkituki */
+cells.forEach(c => c.addEventListener('click', ()=>{ if (running) onHit(c.dataset.dir); }));
+
+function clearStates(){ cells.forEach(c=>c.classList.remove('active','good','bad')); }
+
+function flash(dir){
+  clearStates();
+  const el = cells.find(c => c.dataset.dir === dir);
+  if (!el) return;
+  el.classList.add('active');
+  playTone(dir);
+  setTimeout(()=>{ el.classList.remove('active'); }, FLASH_MS);
+}
+
+function pickDir(){
+  const choices = DIRS.filter(d => d !== lastDir);
+  const d = choices[Math.floor(Math.random()*choices.length)];
+  lastDir = d;
+  return d;
+}
+
+function produceOnce(){
+  if (!running) return;
+  const d = pickDir();
+  queue.push(d);             // jono kasvaa jatkuvasti
+  draws += 1;
+  if (draws % 10 === 0) {    // nopeutus joka 10. arvonnan jälkeen
+    period = Math.max(MIN_PERIOD, Math.round(period * 0.9));
+    rescheduleProducer();
+  }
+  flash(d);                  // vilauta tämän iskun nuoli
+}
+
+function rescheduleProducer(){
+  clearInterval(prodTimer);
+  prodTimer = setInterval(produceOnce, period);
+}
+
+document.getElementById('startBtn').addEventListener('click', () => {
+  if (!running) {
+    if (!started) started = true;
+    startGame();
+  }
+});
+
+
+function startGame(){
+  queue = [];
+  score = 0;
+  draws = 0;
+  period = 1000;
+  scoreEl.textContent = score;
+  running = true;
+  rescheduleProducer();
+  produceOnce();             // heti eka arvonta
+}
+
+async function postScore(finalScore){
+  try {
+    // kysytään nimi joka kerta
+    let nick = prompt('Nimimerkki (max 32 merkkiä)?') || 'anon';
+    nick = nick.trim().slice(0,32);
+
+    await fetch('/score', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({nick, score: finalScore})
+    });
+  } catch (e) {
+    console.error('Pisteen tallennus epäonnistui:', e);
+  }
+}
+
+
+function stopGame(){
+  running = false;
+  clearInterval(prodTimer);
+  // tallenna ennätys selaimeen kuten ennen
+  if (score > best) {
+    best = score; localStorage.setItem('best_spede', best); bestEl.textContent = best;
+  }
+  // LÄHETÄ PISTE PALVELIMELLE
+  postScore(score);
+}
+
+function onHit(dir){
+  if (!running) return;
+
+  // väärä nuoli -> “kämmi”-ääni ja stop
+  if (queue.length === 0 || dir !== queue[0]) {
+    const el = cells.find(c => c.dataset.dir === dir);
+    if (el) { el.classList.add('bad'); setTimeout(clearStates, 200); }
+    playFail();
+    return stopGame();
+  }
+
+  // oikein -> syödään jonon kärki ja piste
+  queue.shift();
+  score += 1;
+  scoreEl.textContent = score;
+
+  // pieni vihreä väläys palautteeksi
+  const el = cells.find(c => c.dataset.dir === dir);
+  if (el) { el.classList.add('good'); setTimeout(()=>el.classList.remove('good'), 120); }
+}
+
+async function refreshTop(){
+  try{
+    const r = await fetch('/scores', {cache:'no-store'});
+    if(!r.ok) return;
+    const list = await r.json();
+    const el = document.getElementById('top10');
+    el.innerHTML = `
+      <h3 style="margin:.25rem 0 .25rem 0">Top 10</h3>
+      <ol style="padding-left:1.2rem; text-align:left; margin:.25rem auto;">
+        ${list.map(i => `<li><b>${escapeHtml(i.nick)}</b> — ${i.score}</li>`).join('')}
+      </ol>`;
+  }catch(_){}
+}
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+// hae alussa ja vaikka 10 sek välein
+refreshTop();
+setInterval(refreshTop, 10000);
+
+</script>

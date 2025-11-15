@@ -1,0 +1,2 @@
+Tänne tulisi laittaa riippuvuudet, mitä pitäisi asentaa jos tyhjästä lähtisi tätä tekemään.
+Toistaiseksi täällä ei niitä ole
