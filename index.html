@@ -68,12 +68,24 @@
                 transform: translateY(0);
             }
         }
+
+        #sql-clock {
+            position: absolute;
+            top: 80px;          /* säädä tätä ylös/alas */
+            left: 50%;
+            transform: translateX(-50%);
+            color: #ffffff;
+            font-size: 1.4rem;
+            font-weight: 600;
+            text-shadow: 0 0 6px rgba(0,0,0,0.4);
+        }
     </style>
 
 </head>
 
 <body>
-    
+    <div id="sql-clock">SQL-aika: <span id="sql-time">...</span></div>
+
     <div class="container">
         <h1>Tervetuloa</h1>
         <p>Avaa streamlit lämpötilojen tarkastelu sovellus.</p>
@@ -83,3 +95,17 @@
 
 </body>
 
+<script>
+    async function updateSqlTime() {
+    try {
+        const r = await fetch('/time', { cache:'no-store' });
+        const j = await r.json();
+        document.getElementById('sql-time').textContent = j.time;
+    } catch {
+        document.getElementById('sql-time').textContent = 'virhe';
+    }
+    }
+
+    updateSqlTime();
+    setInterval(updateSqlTime, 1000);
+</script>
