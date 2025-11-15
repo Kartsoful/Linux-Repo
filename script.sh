@@ -17,7 +17,8 @@ sudo cp ~/Linux-Repo/Electric_prices.csv /home/ubuntu/lemp-app/Electric_prices.c
 sudo cp ~/Linux-Repo/streamlit.service /etc/systemd/system/streamlit.service
 
 # Startataan service uudelleen
+sudo systemctl daemon-reload
 sudo systemctl reload nginx
 sudo systemctl restart lemp-app
-sudo systemctl daemon-reload
+
 
