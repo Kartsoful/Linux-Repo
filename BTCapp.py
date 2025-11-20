@@ -116,7 +116,7 @@ def main():
     conn.close()
     st.title('BTC hintakehitys')    
     st.markdown("<h4>Dataa kerätty 20.11.2025 19:40 UTC+2 alkaen. Näytteenkeruuväli 10min</h4>", unsafe_allow_html=True)
-    
+    st.caption("Näytteenkeruu voi loppua, jos API-rajapinnan käyttörajat tulee vastaan. Näin ei pitäisi kuitenkaan käydä")
     st.dataframe(df)
 
     st.markdown("<h1>Kerätty BTC:n hintakehitys</h1>", unsafe_allow_html=True)
