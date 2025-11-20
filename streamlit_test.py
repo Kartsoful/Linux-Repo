@@ -136,13 +136,13 @@ def main():
         template="plotly_dark",
     )
 
-    # fig.update_layout(
-    #     xaxis_title="Päivämäärä",
-    #     yaxis_title="Lämpötila (°C)",
-    #     legend_title="Kaupunki",
-    # )
+    fig.update_layout(
+        xaxis_title="Päivämäärä",
+        yaxis_title="Lämpötila (°C)",
+        legend_title="Kaupunki",
+    )
 
-    # st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True)
 
 if __name__ == "__main__":
     main()
