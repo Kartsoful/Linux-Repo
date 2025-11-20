@@ -2,10 +2,10 @@
 import requests
 import mysql.connector
 from datetime import datetime
-API_KEY = '3795421700577f29d731bfa875dd2b2c'
+API_KEY = 'YOUR_API_KEY'
 CITY = 'Helsinki'
 URL = f'https://api.openweathermap.org/data/2.5/weather?q={CITY}&appid={API_KEY}&units=metric'
-conn = mysql.connector.connect(host='localhost', user='kartso', password='kartso123', database='weather')
+conn = mysql.connector.connect(host='localhost', user='<user>', password='<password>', database='db_name')
 cursor = conn.cursor()
 cursor.execute('''CREATE TABLE IF NOT EXISTS weather_data (id INT AUTO_INCREMENT PRIMARY KEY, city VARCHAR(50), temperature FLOAT, description VARCHAR(100), timestamp DATETIME)''')
 response = requests.get(URL)

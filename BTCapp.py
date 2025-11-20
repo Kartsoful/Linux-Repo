@@ -111,7 +111,7 @@ def main():
         </style>
     """, unsafe_allow_html=True)
 
-    conn = mysql.connector.connect(host='localhost', user='kartso', password='kartso123', database='BTC')
+    conn = mysql.connector.connect(host='localhost', user='<user>', password='<pass>', database='db_name')
     df = pd.read_sql('SELECT * FROM crypto_prices ORDER BY timestamp',conn)
     conn.close()
     st.title('BTC hintakehitys')    

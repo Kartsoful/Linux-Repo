@@ -100,7 +100,7 @@ def main():
         </style>
     """, unsafe_allow_html=True)
 
-    conn = mysql.connector.connect(host='localhost', user='kartso', password='kartso123', database='weather')
+    conn = mysql.connector.connect(host='localhost', user='<user>', password='<password>', database='db_name')
     df = pd.read_sql('SELECT * FROM weather_data ORDER BY timestamp DESC LIMIT 50',conn)
     conn.close()
     st.title('Säädata Helsingistä')    
