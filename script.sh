@@ -19,6 +19,7 @@ sudo cp ~/Linux-Repo/lemp-app_configure/config.toml /home/ubuntu/lemp-app/.strea
 sudo cp ~/Linux-Repo/fetch_BTC.py /home/ubuntu/crypto/fetch_BTC.py
 sudo cp ~/Linux-Repo/BTCapp.py /home/ubuntu/crypto/BTCapp.py
 sudo cp ~/Linux-Repo/btc_configure/config.toml /home/ubuntu/crypto/.streamlit/config.toml
+sudo cp ~/Linux-Repo/btc-trend.service /etc/systemd/system/btc-trend.service
 
 # Startataan service uudelleen
 sudo systemctl daemon-reload
