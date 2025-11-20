@@ -49,8 +49,7 @@ st.markdown("""
 # ---------- DATA ----------
 
 
-conn = mysql.connector.connect(host='localhost', user='your_mysql_user',
-password='your_mysql_password', database='weather_db')
+conn = mysql.connector.connect(host='localhost', user='kartso', password='kartso123', database='weather')
 df = pd.read_sql('SELECT * FROM weather_data ORDER BY timestamp DESC LIMIT 50',
 conn)
 conn.close()
