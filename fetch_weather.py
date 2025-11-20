@@ -2,24 +2,20 @@
 import requests
 import mysql.connector
 from datetime import datetime
-API_KEY = 'YOUR_API_KEY'
+API_KEY = '3795421700577f29d731bfa875dd2b2c'
 CITY = 'Helsinki'
 URL =
 f'https://api.openweathermap.org/data/2.5/weather?q={CITY}&appid={API_KEY}&unit
 s=metric'
-conn = mysql.connector.connect(host='localhost', user='your_mysql_user',
-password='your_mysql_password', database='weather_db')
+conn = mysql.connector.connect(host='localhost', user='kartso', password='kartso123', database='weather')
 cursor = conn.cursor()
-cursor.execute('''CREATE TABLE IF NOT EXISTS weather_data (id INT
-AUTO_INCREMENT PRIMARY KEY, city VARCHAR(50), temperature FLOAT, description
-VARCHAR(100), timestamp DATETIME)''')
+cursor.execute('''CREATE TABLE IF NOT EXISTS weather_data (id INT AUTO_INCREMENT PRIMARY KEY, city VARCHAR(50), temperature FLOAT, description VARCHAR(100), timestamp DATETIME)''')
 response = requests.get(URL)
 data = response.json()
 temp = data['main']['temp']
 desc = data['weather'][0]['description']
 timestamp = datetime.now()
-cursor.execute('INSERT INTO weather_data (city, temperature, description,
-timestamp) VALUES (%s, %s, %s, %s)', (CITY, temp, desc, timestamp))
+cursor.execute('INSERT INTO weather_data (city, temperature, description, timestamp) VALUES (%s, %s, %s, %s)', (CITY, temp, desc, timestamp))
 conn.commit()
 cursor.close()
 conn.close()
