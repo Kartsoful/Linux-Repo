@@ -1,6 +1,6 @@
 import streamlit as st
+import mysql.connector
 import pandas as pd
-import plotly.express as px
 
 # ---------- PERUS-TYYLIT (staattinen osa) ----------
 st.markdown("""
@@ -49,13 +49,11 @@ st.markdown("""
 # ---------- DATA ----------
 
 
-def main():
-
-    conn = mysql.connector.connect(host='localhost', user='kartso', password='kartso123', database='weather')
-    df = pd.read_sql('SELECT * FROM weather_data ORDER BY timestamp DESC LIMIT 50',conn)
-    conn.close()
-    st.title('Säädata Helsingistä')
-    st.dataframe(df)
+conn = mysql.connector.connect(host='localhost', user='kartso', password='kartso123', database='weather')
+df = pd.read_sql('SELECT * FROM weather_data ORDER BY timestamp DESC LIMIT 50',conn)
+conn.close()
+st.title('Säädata Helsingistä')
+st.dataframe(df)
 
     # st.markdown("<h1>Helsingin lämpötilat MySQL-tietokannasta</h1>", unsafe_allow_html=True)
     # st.markdown(
@@ -149,5 +147,5 @@ def main():
 
     # st.plotly_chart(fig, use_container_width=True)
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
