@@ -56,17 +56,13 @@ def main():
     st.dataframe(df)
 
     st.markdown("<h1>Helsingin lämpötilat MySQL-tietokannasta</h1>", unsafe_allow_html=True)
-    st.markdown(
-        "<p style='text-align:center; margin-bottom:25px;'>Valitse yksi tai useampi kaupunki, joiden vuorokauden keskilämpötilat haluat nähdä.</p>",
-        unsafe_allow_html=True,
-    )
-
+ 
     # # Kaikki sarakkeet jotka eivät ole pvm tai id = paikkakuntia
-    # city_cols = [c for c in df.columns if c not in ('timestamp', 'id')]
+    city_cols = [c for c in df.columns if c not in ('timestamp', 'id')]
 
-    # if not city_cols:
-    #     st.error("Tietokannasta ei löytynyt yhtään kaupunkisaraketta.")
-    #     return
+    if not city_cols:
+        st.error("Tietokannasta ei löytynyt yhtään kaupunkisaraketta.")
+        return
 
     # # Oletuksena Oulu jos löytyy, muuten kaikki
     # default_selection = ['Helsinki'] if 'Oulu' in city_cols else city_cols
