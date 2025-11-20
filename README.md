@@ -1,7 +1,6 @@
-Tämä repositori sisältää tiedostoja, joita on käytetty linuxin LEMP-stack harjoituksiin.
-Sisältö on nyt enemmän VK3-harjoituksen mukainen.
+Tämä repositori sisältää tiedostoja, joita on käytetty kurssin "Linux adminstrator"-kurssin harjoituksiin
 
-Kansiosta "Linux-Reop - VK2-setup" löytyy enemmän VK2-harjoitukseen liittyvää tietoa. Sielläkin on osin jo VK3-harjoituksen tietoa.
+Viikkojen 2 ja 3 sisällöt ovat omissa kansioissaan. Nykyinen juuri muotoutuu hissukseen harjoituksen 4 edetessä.
 
 Linkki VK3 harjoitukseen:
 http://86.50.20.94/
