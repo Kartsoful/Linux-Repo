@@ -74,21 +74,21 @@ def main():
     # )
 
     # # Oletusgradientti (jos aiempaa ei ole tallessa)
-    # default_gradient = "linear-gradient(135deg, #0a0f24 0%, #1a2a6c 50%, #3d9ecf 100%)"
+    default_gradient = "linear-gradient(135deg, #0a0f24 0%, #1a2a6c 50%, #3d9ecf 100%)"
 
-    # # Jos jotain valittu → laske keskiarvo ja gradientti
-    # if selected:
-    #     avg_temp = df[selected].stack().mean()
+    # Jos jotain valittu → laske keskiarvo ja gradientti
+    if selected:
+        avg_temp = df[selected].stack().mean()
 
-    #     if avg_temp <= 3:
-    #         bg_gradient = "linear-gradient(135deg, #001f3f 0%, #003f7f 40%, #0074d9 100%)"
-    #         label = "Kylmä"
-    #     elif avg_temp <= 8:
-    #         bg_gradient = "linear-gradient(135deg, #1a2a6c 0%, #3d5afe 40%, #00bcd4 100%)"
-    #         label = "Viileä"
-    #     else:
-    #         bg_gradient = "linear-gradient(135deg, #7b1fa2 0%, #ff7043 40%, #ff9800 100%)"
-    #         label = "Lämmin"
+        if avg_temp <= 3:
+            bg_gradient = "linear-gradient(135deg, #001f3f 0%, #003f7f 40%, #0074d9 100%)"
+            label = "Kylmä"
+        elif avg_temp <= 8:
+            bg_gradient = "linear-gradient(135deg, #1a2a6c 0%, #3d5afe 40%, #00bcd4 100%)"
+            label = "Viileä"
+        else:
+            bg_gradient = "linear-gradient(135deg, #7b1fa2 0%, #ff7043 40%, #ff9800 100%)"
+            label = "Lämmin"
 
     #     # Talleta viimeisin gradientti ja label sessioon
     #     st.session_state["last_bg_gradient"] = bg_gradient
