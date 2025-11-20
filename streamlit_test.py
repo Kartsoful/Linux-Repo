@@ -1,6 +1,7 @@
 import streamlit as st
 import mysql.connector
 import pandas as pd
+import plotly.express as px
 
 # ---------- PERUS-TYYLIT (staattinen osa) ----------
 st.markdown("""
