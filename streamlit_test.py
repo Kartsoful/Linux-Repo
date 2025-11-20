@@ -48,18 +48,18 @@ st.markdown("""
 
 # ---------- DATA ----------
 
+def main():
+    conn = mysql.connector.connect(host='localhost', user='kartso', password='kartso123', database='weather')
+    df = pd.read_sql('SELECT * FROM weather_data ORDER BY timestamp DESC LIMIT 50',conn)
+    conn.close()
+    st.title('Säädata Helsingistä')
+    st.dataframe(df)
 
-conn = mysql.connector.connect(host='localhost', user='kartso', password='kartso123', database='weather')
-df = pd.read_sql('SELECT * FROM weather_data ORDER BY timestamp DESC LIMIT 50',conn)
-conn.close()
-st.title('Säädata Helsingistä')
-st.dataframe(df)
-
-    # st.markdown("<h1>Helsingin lämpötilat MySQL-tietokannasta</h1>", unsafe_allow_html=True)
-    # st.markdown(
-    #     "<p style='text-align:center; margin-bottom:25px;'>Valitse yksi tai useampi kaupunki, joiden vuorokauden keskilämpötilat haluat nähdä.</p>",
-    #     unsafe_allow_html=True,
-    # )
+    st.markdown("<h1>Helsingin lämpötilat MySQL-tietokannasta</h1>", unsafe_allow_html=True)
+    st.markdown(
+        "<p style='text-align:center; margin-bottom:25px;'>Valitse yksi tai useampi kaupunki, joiden vuorokauden keskilämpötilat haluat nähdä.</p>",
+        unsafe_allow_html=True,
+    )
 
     # # Kaikki sarakkeet jotka eivät ole pvm tai id = paikkakuntia
     # city_cols = [c for c in df.columns if c not in ('timestamp', 'id')]
@@ -147,5 +147,5 @@ st.dataframe(df)
 
     # st.plotly_chart(fig, use_container_width=True)
 
-# if __name__ == "__main__":
-#     main()
+if __name__ == "__main__":
+    main()
