@@ -16,6 +16,8 @@ sudo cp ~/Linux-Repo/streamlit_test.py /home/ubuntu/lemp-app/streamlit_test.py
 sudo cp ~/Linux-Repo/streamlit.service /etc/systemd/system/streamlit.service
 sudo cp ~/Linux-Repo/fetch_weather.sh /home/ubuntu/cron_assignment/fetch_weather.sh
 sudo cp ~/Linux-Repo/fetch_weather.py /home/ubuntu/cron_assignment/fetch_weather.py
+sudo cp ~/Linux-Repo/config.toml /home/ubuntu/lemp-app/.streamlit/config.toml
+
 
 # Startataan service uudelleen
 sudo systemctl daemon-reload
