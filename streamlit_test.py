@@ -39,6 +39,17 @@ st.markdown("""
 # ---------- DATA ----------
 
 def main():
+    bg_gradient = "linear-gradient(135deg, #1a2a6c 0%, #3d5afe 40%, #00bcd4 100%)"
+    st.markdown(f"""
+        <style>
+            .stApp {{
+                background: {bg_gradient};
+                color: white;
+                transition: background 1.2s ease-in-out;
+            }}
+        </style>
+    """, unsafe_allow_html=True)
+
     conn = mysql.connector.connect(host='localhost', user='kartso', password='kartso123', database='weather')
     df = pd.read_sql('SELECT * FROM weather_data ORDER BY timestamp DESC LIMIT 50',conn)
     conn.close()
