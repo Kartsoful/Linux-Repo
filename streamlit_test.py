@@ -21,7 +21,7 @@ st.markdown("""
         }
 
         h1, h2, h3, h4 {
-            color: #4DB0C9 !important;
+            color: #947F47 !important;
             text-align: center;
         }
 
