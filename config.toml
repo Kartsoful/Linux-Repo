@@ -1,6 +1,6 @@
 [server]
 port = 8501
 address = "127.0.0.1"
-baseUrlPath = "data-analysis"
+baseUrlPath = "HEL-temperatures"
 enableCORS = false
 enableXsrfProtection = false
