@@ -6,46 +6,96 @@ import plotly.express as px
 # ---------- PERUS-TYYLIT (staattinen osa) ----------
 st.markdown("""
     <style>
-        /* Card-tyyppinen keskialue */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+        .stApp, .block-container, * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Keskialue (card) */
         .block-container {
-            max-width: 900px;
-            padding-top: 40px;
-            padding-bottom: 40px;
-            background: rgba(255, 255, 255, 0.04);
-            margin-top: 40px;
-            border-radius: 16px;
-            padding-left: 40px;
-            padding-right: 40px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.18);
+            max-width: 960px;
+            padding: 48px 48px 56px 48px;
+            background: rgba(255, 255, 255, 0.06);
+            margin-top: 32px;
+            border-radius: 20px;
+            backdrop-filter: blur(18px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.35);
         }
 
         h1, h2, h3, h4 {
-            color: #3C2042 !important;
+            color: #F5F7FA !important;
             text-align: center;
+            letter-spacing: .5px;
         }
 
-        p, label, span {
-            color: #f0f0f0 !important;
+        p, label, span, .stMarkdown, .stText, .stDataFrame, .stPlotlyChart {
+            color: #E6E9ED !important;
         }
 
-        /* Varoitukset tummemmaksi */
+        /* Napit */
+        .stButton > button {
+            background: linear-gradient(135deg,#3d5afe 0%,#00bcd4 80%);
+            color: #fff;
+            border: none;
+            padding: .6rem 1.1rem;
+            font-weight: 600;
+            border-radius: 10px;
+            transition: transform .15s ease, box-shadow .15s ease;
+        }
+        .stButton > button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(0,188,212,0.35);
+        }
+
+        /* Alertit */
         .stAlert {
-            background-color: rgba(0, 0, 0, 0.45) !important;
+            background: rgba(0,0,0,0.55) !important;
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 12px;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg,#3d5afe,#00bcd4);
+            border-radius: 20px;
+        }
+
+        /* DataFrame header */
+        .stDataFrame [data-testid="column-header"] {
+            background: linear-gradient(135deg,#283e91,#006b88) !important;
+            color: #fff !important;
+        }
+
+        /* Linkit */
+        a {
+            color: #7ddfff !important;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
         }
     </style>
 """, unsafe_allow_html=True)
 
-# ---------- DATA ----------
-
 def main():
-    bg_gradient = "linear-gradient(135deg, #1a2a6c 0%, #3d5afe 40%, #00bcd4 100%)"
+    bg_gradient = "linear-gradient(140deg, #1a2a6c 0%, #243b89 30%, #0b6685 65%, #008fa1 100%)"
     st.markdown(f"""
         <style>
             .stApp {{
                 background: {bg_gradient};
-                color: white;
-                transition: background 1.2s ease-in-out;
+                animation: fadeIn 1.2s ease;
+            }}
+            @keyframes fadeIn {{
+                from {{ opacity: 0; transform: scale(.985); }}
+                to   {{ opacity: 1; transform: scale(1); }}
             }}
         </style>
     """, unsafe_allow_html=True)
