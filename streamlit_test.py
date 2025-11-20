@@ -130,7 +130,7 @@ def main():
     fig = px.line(
         df,
         x="timestamp",
-        y="Helsinki",
+        y="temperature",
         markers=True,
         title="Lämpötila",
         template="plotly_dark",
