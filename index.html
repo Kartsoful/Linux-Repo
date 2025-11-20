@@ -20,58 +20,22 @@
     .stack {
         display:flex;
         flex-direction:column;
-        gap:40px;
+        gap:40px; /* space between boxes */
     }
     .container {
         max-width:480px;
+        backdrop-filter:blur(12px);
+        background:rgba(255,255,255,0.06);
         padding:40px 35px;
-        border-radius:18px;
-        box-shadow:0 6px 32px rgba(0,0,0,0.35);
-        border:1.5px solid rgba(255,255,255,0.18);
+        border-radius:14px;
+        box-shadow:0 4px 30px rgba(0,0,0,0.3);
+        border:1px solid rgba(255,255,255,0.15);
         animation:fadeIn 0.7s ease;
-        position:relative;
-        overflow:hidden;
-    }
-    /* First box: glassy blue with gradient border */
-    .container:first-child {
-        background:rgba(30,60,180,0.18);
-        border:2.5px solid;
-        border-image:linear-gradient(120deg,#00c6fb,#005bea) 1;
-        box-shadow:0 8px 36px rgba(0,198,251,0.13);
-        backdrop-filter:blur(14px);
-    }
-    /* Second box: dark with orange accent and pattern */
-    .container:last-child {
-        background:rgba(30,20,40,0.22);
-        border:2.5px solid #ffb347;
-        box-shadow:0 8px 36px rgba(255,179,71,0.10);
-        backdrop-filter:blur(10px);
-    }
-    .container:last-child::before {
-        content:"";
-        position:absolute;
-        top:0; left:0; right:0; bottom:0;
-        background:repeating-linear-gradient(
-            135deg,
-            rgba(255,179,71,0.07) 0 2px,
-            transparent 2px 16px
-        );
-        pointer-events:none;
-        border-radius:18px;
     }
     h1 {
         font-size:34px;
         margin-bottom:18px;
         letter-spacing:1px;
-    }
-    .container:first-child h1 {
-        color:#00c6fb;
-        text-shadow:0 2px 8px #005bea44;
-    }
-    .container:last-child p {
-        color:#ffb347;
-        font-weight:500;
-        letter-spacing:0.5px;
     }
     p {
         font-size:18px;
@@ -83,22 +47,14 @@
         padding:14px 34px;
         font-size:20px;
         color:#ffffff;
-        background:linear-gradient(90deg,#00a8ff 60%,#005bea 100%);
+        background:#00a8ff;
         text-decoration:none;
         border-radius:8px;
         transition:0.25s ease-in-out;
-        box-shadow:0 2px 10px #00a8ff33;
-        font-weight:500;
-        letter-spacing:0.5px;
-    }
-    .container:last-child a.button {
-        background:linear-gradient(90deg,#ffb347 60%,#ffcc80 100%);
-        color:#2d1a00;
-        box-shadow:0 2px 10px #ffb34733;
     }
     a.button:hover {
-        filter:brightness(1.08) saturate(1.2);
-        transform:translateY(-2px) scale(1.03);
+        background:#0086cc;
+        transform:translateY(-2px);
     }
     @keyframes fadeIn {
         from { opacity:0; transform:translateY(10px); }
