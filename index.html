@@ -1,117 +1,95 @@
 <!DOCTYPE html>
 <html lang="fi">
 <head>
-    <meta charset="UTF-8">
-    <title>Data-analyysi</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: "Segoe UI", Arial, sans-serif;
-            background: linear-gradient(135deg, #0a0f24 0%, #1a2a6c 50%, #3d9ecf 100%);
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #ffffff;
-            text-align: center;
-        }
-
-        .container {
-            max-width: 480px;
-            backdrop-filter: blur(12px);
-            background: rgba(255, 255, 255, 0.06);
-            padding: 40px 35px;
-            border-radius: 14px;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            animation: fadeIn 0.7s ease;
-        }
-
-        h1 {
-            font-size: 34px;
-            margin-bottom: 18px;
-            letter-spacing: 1px;
-        }
-
-        p {
-            font-size: 18px;
-            opacity: 0.85;
-            margin-bottom: 32px;
-        }
-
-        a.button {
-            display: inline-block;
-            padding: 14px 34px;
-            font-size: 20px;
-            color: #ffffff;
-            background: #00a8ff;
-            text-decoration: none;
-            border-radius: 8px;
-            transition: 0.25s ease-in-out;
-        }
-
-        a.button:hover {
-            background: #0086cc;
-            transform: translateY(-2px);
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        #welcome-wrapper {
-            position: relative;
-        }
-
-    </style>
-
+<meta charset="UTF-8">
+<title>Data-analyysi</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+    body {
+        margin:0;
+        padding:0;
+        font-family:"Segoe UI", Arial, sans-serif;
+        background:linear-gradient(135deg,#0a0f24 0%,#1a2a6c 50%,#3d9ecf 100%);
+        min-height:100vh;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        color:#ffffff;
+        text-align:center;
+    }
+    .stack {
+        display:flex;
+        flex-direction:column;
+        gap:40px; /* space between boxes */
+    }
+    .container {
+        max-width:480px;
+        backdrop-filter:blur(12px);
+        background:rgba(255,255,255,0.06);
+        padding:40px 35px;
+        border-radius:14px;
+        box-shadow:0 4px 30px rgba(0,0,0,0.3);
+        border:1px solid rgba(255,255,255,0.15);
+        animation:fadeIn 0.7s ease;
+    }
+    h1 {
+        font-size:34px;
+        margin-bottom:18px;
+        letter-spacing:1px;
+    }
+    p {
+        font-size:18px;
+        opacity:0.85;
+        margin-bottom:32px;
+    }
+    a.button {
+        display:inline-block;
+        padding:14px 34px;
+        font-size:20px;
+        color:#ffffff;
+        background:#00a8ff;
+        text-decoration:none;
+        border-radius:8px;
+        transition:0.25s ease-in-out;
+    }
+    a.button:hover {
+        background:#0086cc;
+        transform:translateY(-2px);
+    }
+    @keyframes fadeIn {
+        from { opacity:0; transform:translateY(10px); }
+        to { opacity:1; transform:translateY(0); }
+    }
+</style>
 </head>
-
 <body>
-    <div id="welcome-wrapper">
-    <div class="welcome-box">
-
+  <div class="stack">
     <div class="container">
         <h1>Tervetuloa</h1>
         <p>Tarkastele helsingin lämpötiloja alla olevasta linkistä</p>
-
         <a class="button" href="/HEL-temperatures/">Helsingin lämpötilat</a>
     </div>
-</body>
-
-<body>
-    <div id="welcome-wrapper">
-    <div class="welcome-box">
 
     <div class="container">
-
         <p>Tarkastele BTC:n hintakehitysä</p>
-
         <a class="button" href="/BTC/">BTC price chart</a>
     </div>
-</body>
+  </div>
 
 <script>
-    async function updateSqlTime() {
-    try {
-        const r = await fetch('/time', { cache:'no-store' });
-        const j = await r.json();
-        document.getElementById('sql-time').textContent = j.time;
-    } catch {
-        document.getElementById('sql-time').textContent = 'virhe';
-    }
-    }
-
-    updateSqlTime();
-    setInterval(updateSqlTime, 1000);
+async function updateSqlTime() {
+  try {
+    const r = await fetch('/time', { cache:'no-store' });
+    const j = await r.json();
+    const el = document.getElementById('sql-time');
+    if (el) el.textContent = j.time;
+  } catch {
+    const el = document.getElementById('sql-time');
+    if (el) el.textContent = 'virhe';
+  }
+}
+updateSqlTime();
+setInterval(updateSqlTime, 1000);
 </script>
+</body>
+</html>
