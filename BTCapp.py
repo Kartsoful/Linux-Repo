@@ -50,38 +50,37 @@ def main():
         </style>
     """, unsafe_allow_html=True)
 
-    conn = mysql.connector.connect(host='localhost', user='kartso', password='kartso123', database='weather')
-    df = pd.read_sql('SELECT * FROM weather_data ORDER BY timestamp DESC LIMIT 50',conn)
+    conn = mysql.connector.connect(host='localhost', user='kartso', password='kartso123', database='BTC')
+    df = pd.read_sql('SELECT * FROM crypto_prices ORDER BY timestamp',conn)
     conn.close()
-    st.title('Säädata Helsingistä')    
-    st.markdown("<h4>Dataa kerätty 20.11.2025 18:00 UTC+2 alkaen. Näytteenkeruuväli 15min</h4>", unsafe_allow_html=True)
-    st.markdown("<h4>Kellonaika on UTC-ajassa</h4>", unsafe_allow_html=True)
+    st.title('BTC hintakehitys')    
+    st.markdown("<h4>Dataa kerätty 20.11.2025 19:40 UTC+2 alkaen. Näytteenkeruuväli 10min</h4>", unsafe_allow_html=True)
     
     st.dataframe(df)
 
-    st.markdown("<h1>Helsingin lämpötilat MySQL-tietokannasta</h1>", unsafe_allow_html=True)
+    st.markdown("<h1>Kerätty BTC:n hintakehitys</h1>", unsafe_allow_html=True)
  
     # # Kaikki sarakkeet jotka eivät ole pvm tai id = paikkakuntia
-    city_cols = [c for c in df.columns if c not in ('timestamp', 'id')]
+    cols = [c for c in df.columns if c not in ('timestamp', 'id')]
 
-    if not city_cols:
-        st.error("Tietokannasta ei löytynyt yhtään kaupunkisaraketta.")
+    if not cols:
+        st.error("Tietokannasta ei löytynyt yhtään hintasaraketta.")
         return
 
     # Piirrä kuvaaja
     fig = px.line(
         df,
         x="timestamp",
-        y="temperature",
+        y="price_usd",
         markers=True,
-        title="Lämpötila",
+        title="Hinta [USD]",
         template="plotly_dark",
     )
 
     fig.update_layout(
         xaxis_title="Päivämäärä",
-        yaxis_title="Lämpötila (°C)",
-        legend_title="Kaupunki",
+        yaxis_title="Hinta [USD]",
+        legend_title="BTC",
     )
 
     st.plotly_chart(fig, use_container_width=True)
