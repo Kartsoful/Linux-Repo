@@ -21,7 +21,7 @@ st.markdown("""
         }
 
         h1, h2, h3, h4 {
-            color: #ffffff !important;
+            color: #4DB0C9 !important;
             text-align: center;
         }
 
@@ -37,7 +37,7 @@ st.markdown("""
 
         /* Selectin tekstit */
         .stMultiSelect div[data-baseweb="select"] * {
-            color: #ffffff !important;
+            color: #4DB0C9 !important;
         }
 
         /* Varoitukset tummemmaksi */
