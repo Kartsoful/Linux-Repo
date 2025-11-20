@@ -26,7 +26,7 @@ conn = mysql.connector.connect(
     host='localhost',
     user='kartso',
     password='kartso123',
-    database='BRC'
+    database='BTC'
 )
 cursor = conn.cursor()
 
