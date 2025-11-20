@@ -20,5 +20,4 @@ sudo cp ~/Linux-Repo/streamlit.service /etc/systemd/system/streamlit.service
 sudo systemctl daemon-reload
 sudo systemctl reload nginx
 sudo systemctl restart lemp-app
-
-
+sudo systemctl restart streamlit
