@@ -5,11 +5,14 @@
 <title>Data-analyysi</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
+    :root {
+        --blur: 14px;
+    }
     body {
         margin:0;
         padding:0;
         font-family:"Segoe UI", Arial, sans-serif;
-        background:linear-gradient(135deg,#0a0f24 0%,#1a2a6c 50%,#3d9ecf 100%);
+        background:linear-gradient(135deg,#08111f 0%,#132e57 45%,#236b9d 100%);
         min-height:100vh;
         display:flex;
         justify-content:center;
@@ -20,59 +23,116 @@
     .stack {
         display:flex;
         flex-direction:column;
-        gap:40px; /* space between boxes */
+        gap:42px;
     }
     .container {
         max-width:480px;
-        backdrop-filter:blur(12px);
-        background:rgba(255,255,255,0.06);
-        padding:40px 35px;
-        border-radius:14px;
-        box-shadow:0 4px 30px rgba(0,0,0,0.3);
-        border:1px solid rgba(255,255,255,0.15);
+        padding:44px 40px 38px;
+        border-radius:18px;
+        position:relative;
+        overflow:hidden;
+        backdrop-filter:blur(var(--blur));
+        -webkit-backdrop-filter:blur(var(--blur));
         animation:fadeIn 0.7s ease;
     }
+    .container::before {
+        content:"";
+        position:absolute;
+        inset:0;
+        pointer-events:none;
+        opacity:.55;
+    }
+    .variant-a {
+        background:rgba(20,36,78,0.55);
+        border:1px solid rgba(120,180,255,0.35);
+        box-shadow:0 8px 28px -6px rgba(0,40,120,.55);
+    }
+    .variant-a::before {
+        background:
+          radial-gradient(circle at 80% 15%,rgba(0,174,255,.35),transparent 60%),
+          linear-gradient(135deg,rgba(0,140,255,.18),rgba(0,204,255,.05));
+    }
+    .variant-b {
+        background:linear-gradient(145deg,rgba(60,28,80,0.55),rgba(28,20,60,0.55));
+        border:1px solid rgba(220,140,255,0.35);
+        box-shadow:0 8px 32px -8px rgba(110,0,160,.6);
+    }
+    .variant-b::before {
+        background:
+          radial-gradient(circle at 20% 20%,rgba(255,120,230,.35),transparent 65%),
+          linear-gradient(160deg,rgba(180,60,255,.25),rgba(120,40,200,.10));
+    }
     h1 {
-        font-size:34px;
-        margin-bottom:18px;
+        font-size:36px;
+        margin:0 0 20px;
         letter-spacing:1px;
     }
     p {
-        font-size:18px;
-        opacity:0.85;
-        margin-bottom:32px;
+        font-size:19px;
+        opacity:0.88;
+        margin:0 0 32px;
     }
     a.button {
         display:inline-block;
-        padding:14px 34px;
+        padding:15px 36px;
         font-size:20px;
         color:#ffffff;
-        background:#00a8ff;
+        background:linear-gradient(90deg,#00a8ff,#0076ff);
         text-decoration:none;
-        border-radius:8px;
-        transition:0.25s ease-in-out;
+        border-radius:10px;
+        font-weight:600;
+        letter-spacing:.5px;
+        position:relative;
+        overflow:hidden;
+        transition:.28s cubic-bezier(.4,.2,.2,1);
+    }
+    a.button::after {
+        content:"";
+        position:absolute;
+        inset:0;
+        background:linear-gradient(120deg,transparent 0%,rgba(255,255,255,.18) 50%,transparent 100%);
+        opacity:0;
+        transition:.4s;
     }
     a.button:hover {
-        background:#0086cc;
-        transform:translateY(-2px);
+        transform:translateY(-3px);
+        box-shadow:0 6px 20px -6px rgba(0,120,255,.55);
+    }
+    a.button:hover::after { opacity:1; }
+    .variant-b a.button {
+        background:linear-gradient(90deg,#ff6ad5,#9c4be8);
+        box-shadow:0 6px 22px -8px rgba(150,0,180,.55);
+    }
+    .variant-b a.button:hover {
+        box-shadow:0 8px 26px -6px rgba(170,40,200,.7);
+    }
+    small.hint {
+        display:block;
+        margin-top:10px;
+        font-size:12px;
+        letter-spacing:.5px;
+        opacity:.7;
+        text-transform:uppercase;
+        font-weight:500;
     }
     @keyframes fadeIn {
-        from { opacity:0; transform:translateY(10px); }
+        from { opacity:0; transform:translateY(14px); }
         to { opacity:1; transform:translateY(0); }
     }
 </style>
 </head>
 <body>
   <div class="stack">
-    <div class="container">
+    <div class="container variant-a">
         <h1>Tervetuloa</h1>
-        <p>Tarkastele helsingin lämpötiloja alla olevasta linkistä</p>
+        <p>Tarkastele Helsingin lämpötiloja alla olevasta linkistä</p>
         <a class="button" href="/HEL-temperatures/">Helsingin lämpötilat</a>
     </div>
 
-    <div class="container">
-        <p>Tarkastele BTC:n hintakehitysä</p>
+    <div class="container variant-b">
+        <p>Tarkastele BTC:n hintakehitystä</p>
         <a class="button" href="/BTC/">BTC price chart</a>
+        <small class="hint">Ns. eksta API</small>
     </div>
   </div>
 
