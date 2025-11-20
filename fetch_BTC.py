@@ -39,3 +39,4 @@ cursor.close()
 conn.close()
 
 print(f'Data tallennettu: bitcoin ${price:.2f}')
+
