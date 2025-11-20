@@ -15,7 +15,7 @@ sudo cp ~/Linux-Repo/streamlit_test.py /home/ubuntu/lemp-app/streamlit_test.py
 sudo cp ~/Linux-Repo/streamlit.service /etc/systemd/system/streamlit.service
 sudo cp ~/Linux-Repo/fetch_weather.sh /home/ubuntu/cron_assignment/fetch_weather.sh
 sudo cp ~/Linux-Repo/fetch_weather.py /home/ubuntu/cron_assignment/fetch_weather.py
-sudo cp ~/Linux-Repo/lemp-app/config.toml /home/ubuntu/lemp-app/.streamlit/config.toml
+sudo cp ~/Linux-Repo/lemp-app_configure/config.toml /home/ubuntu/lemp-app/.streamlit/config.toml
 sudo cp ~/Linux-Repo/fetch_BTC.py /home/ubuntu/crypto/fetch_BTC.py
 sudo cp ~/Linux-Repo/BTCapp.py /home/ubuntu/crypto/BTCapp.py
 sudo cp ~/Linux-Repo/btc_configure/config.toml /home/ubuntu/crypto/.streamlit/config.toml
