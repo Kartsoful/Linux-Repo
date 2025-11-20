@@ -17,7 +17,7 @@ sudo cp ~/Linux-Repo/streamlit.service /etc/systemd/system/streamlit.service
 sudo cp ~/Linux-Repo/fetch_weather.sh /home/ubuntu/cron_assignment/fetch_weather.sh
 sudo cp ~/Linux-Repo/fetch_weather.py /home/ubuntu/cron_assignment/fetch_weather.py
 sudo cp ~/Linux-Repo/config.toml /home/ubuntu/lemp-app/.streamlit/config.toml
-sudo cp ~/Linux-Repo/fetch_btc.py /home/ubuntu/crypto/fetch_btc.py
+sudo cp ~/Linux-Repo/fetch_BTC.py /home/ubuntu/crypto/fetch_BTC.py
 
 
 # Startataan service uudelleen
