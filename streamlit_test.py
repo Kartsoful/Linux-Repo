@@ -54,7 +54,7 @@ def main():
     df = pd.read_sql('SELECT * FROM weather_data ORDER BY timestamp DESC LIMIT 50',conn)
     conn.close()
     st.title('Säädata Helsingistä')
-    st.markdown("<h4>Dataa kerätty 20.11.2025 18:00 alkaen. Näytteenkeruuväli 15min</h4>")
+    st.markdown("<h4>Dataa kerätty 20.11.2025 18:00 alkaen. Näytteenkeruuväli 15min</h4>", unsafe_allow_html=True)
     st.dataframe(df)
 
     st.markdown("<h1>Helsingin lämpötilat MySQL-tietokannasta</h1>", unsafe_allow_html=True)
