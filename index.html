@@ -3,251 +3,93 @@
 <head>
 <meta charset="UTF-8">
 <title>Data-analyysi</title>
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-:root {
-    --bg-grad: linear-gradient(135deg,#091428 0%,#142e5e 45%,#1c4f7d 70%,#237fa8 100%);
-    --radius: 18px;
-    --blur: 14px;
-    --border-glass: 1px solid rgba(255,255,255,0.18);
-    --ease: cubic-bezier(.16,.8,.34,1);
-    --accent-hel: linear-gradient(135deg,#ffb347,#ff7746);
-    --accent-btc: linear-gradient(135deg,#ffcc33,#ff8800);
-    --text-light: #ffffff;
-    --shadow: 0 8px 24px -6px rgba(0,0,0,.55),0 2px 4px rgba(0,0,0,.4);
-}
-* { box-sizing: border-box; }
-body {
-    margin:0;
-    font-family: "Segoe UI", Arial, sans-serif;
-    background: var(--bg-grad);
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    color:var(--text-light);
-    padding:40px 26px;
-}
-.main {
-    width:100%;
-    max-width:1040px;
-    display:grid;
-    gap:46px;
-    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-}
-.panel {
-    position:relative;
-    padding:46px 38px 54px;
-    backdrop-filter: blur(var(--blur));
-    background:rgba(255,255,255,0.06);
-    border: var(--border-glass);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    overflow:hidden;
-    isolation:isolate;
-    animation: fadeIn .7s var(--ease);
-    display:flex;
-    flex-direction:column;
-    gap:22px;
-}
-.panel:before,
-.panel:after {
-    content:"";
-    position:absolute;
-    inset:0;
-    pointer-events:none;
-    opacity:.55;
-    mix-blend-mode:overlay;
-    transition:.7s var(--ease);
-}
-.panel.temperature:before {
-    background:
-        radial-gradient(circle at 18% 20%,rgba(255,190,130,.55),transparent 60%),
-        radial-gradient(circle at 82% 78%,rgba(255,118,70,.55),transparent 65%);
-}
-.panel.btc:before {
-    background:
-        radial-gradient(circle at 22% 78%,rgba(255,204,70,.55),transparent 62%),
-        radial-gradient(circle at 84% 26%,rgba(255,136,0,.55),transparent 65%);
-}
-.panel:hover:before { opacity:.85; filter:brightness(1.1); }
-
-.panel h1 {
-    font-size: clamp(1.9rem,3.6vw,2.4rem);
-    margin:0;
-    letter-spacing:.5px;
-    line-height:1.15;
-}
-.panel p {
-    margin:0;
-    font-size:17px;
-    line-height:1.45;
-    opacity:.9;
-}
-.badge {
-    font-size:13px;
-    letter-spacing:.7px;
-    font-weight:600;
-    text-transform:uppercase;
-    padding:6px 12px 5px;
-    border-radius:40px;
-    display:inline-flex;
-    align-items:center;
-    gap:6px;
-    background:rgba(255,255,255,.12);
-    backdrop-filter:blur(4px);
-}
-.badge span {
-    font-size:15px;
-    display:inline-block;
-}
-
-.actions {
-    margin-top:auto;
-    display:flex;
-    flex-wrap:wrap;
-    gap:14px;
-    justify-content: center;
-}
-
-.button {
-    --btn-bg: #0f5fa0;
-    --btn-hover: #1574c3;
-    position:relative;
-    display:inline-flex;
-    align-items:center;
-    gap:10px;
-    font-size:16px;
-    font-weight:600;
-    padding:14px 24px 13px;
-    border-radius:12px;
-    text-decoration:none;
-    color:var(--text-light);
-    background:var(--btn-bg);
-    letter-spacing:.4px;
-    overflow:hidden;
-    transition:.35s var(--ease);
-    box-shadow:0 4px 14px -4px rgba(0,0,0,.55);
-}
-.button:before {
-    content:"";
-    position:absolute;
-    inset:0;
-    background:linear-gradient(135deg,#ffffff10,#ffffff03);
-    opacity:0;
-    transition:.35s var(--ease);
-}
-.button:hover {
-    background:var(--btn-hover);
-    transform:translateY(-3px);
-}
-.button:hover:before { opacity:1; }
-.button--accent {
-    --btn-bg:#ff7a2f;
-    --btn-hover:#ff934f;
-}
-.button--gold {
-    --btn-bg:#ff9d00;
-    --btn-hover:#ffb436;
-}
-.button svg {
-    width:20px;
-    height:20px;
-    stroke:currentColor;
-    stroke-width:2;
-    fill:none;
-}
-
-.accent-strip {
-    position:absolute;
-    inset:0;
-    pointer-events:none;
-    opacity:.22;
-    mix-blend-mode:screen;
-    background:
-         linear-gradient(145deg,#ffffff05 0%,#ffffff15 50%,#ffffff05 100%);
-}
-.panel.temperature .accent-strip {
-    background:
-        linear-gradient(145deg,#ffb34725 0%,#ff774640 50%,#ff3d1e25 100%);
-}
-.panel.btc .accent-strip {
-    background:
-        linear-gradient(145deg,#ffcc3325 0%,#ff880040 55%,#ff620025 100%);
-}
-
-@media (hover:none) {
-    .button:hover { transform:none; }
-}
-
-@keyframes fadeIn {
-    from { opacity:0; transform:translateY(16px) scale(.98); }
-    to { opacity:1; transform:translateY(0) scale(1); }
-}
-footer {
-    margin-top:60px;
-    text-align:center;
-    font-size:13px;
-    opacity:.55;
-}
-
-/* optional subtle floating */
-@media (prefers-reduced-motion:no-preference) {
-    .panel {
-        animation: float 12s linear infinite;
-        animation-delay: calc(var(--i) * -2s);
+    body {
+        margin:0;
+        padding:0;
+        font-family:"Segoe UI", Arial, sans-serif;
+        background:linear-gradient(135deg,#0a0f24 0%,#1a2a6c 50%,#3d9ecf 100%);
+        min-height:100vh;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        color:#ffffff;
+        text-align:center;
     }
-    @keyframes float {
-        0%,100% { transform:translateY(0); }
-        50% { transform:translateY(-10px); }
+    .stack {
+        display:flex;
+        flex-direction:column;
+        gap:40px; /* space between boxes */
     }
-}
+    .container {
+        max-width:480px;
+        backdrop-filter:blur(12px);
+        background:rgba(255,255,255,0.06);
+        padding:40px 35px;
+        border-radius:14px;
+        box-shadow:0 4px 30px rgba(0,0,0,0.3);
+        border:1px solid rgba(255,255,255,0.15);
+        animation:fadeIn 0.7s ease;
+    }
+    h1 {
+        font-size:34px;
+        margin-bottom:18px;
+        letter-spacing:1px;
+    }
+    p {
+        font-size:18px;
+        opacity:0.85;
+        margin-bottom:32px;
+    }
+    a.button {
+        display:inline-block;
+        padding:14px 34px;
+        font-size:20px;
+        color:#ffffff;
+        background:#00a8ff;
+        text-decoration:none;
+        border-radius:8px;
+        transition:0.25s ease-in-out;
+    }
+    a.button:hover {
+        background:#0086cc;
+        transform:translateY(-2px);
+    }
+    @keyframes fadeIn {
+        from { opacity:0; transform:translateY(10px); }
+        to { opacity:1; transform:translateY(0); }
+    }
 </style>
 </head>
 <body>
-    <div class="main">
-        <section class="panel temperature" style="--i:0">
-            <div class="accent-strip"></div>
-            <div class="badge"><span>🌡️</span>DATASET</div>
-            <h1>Helsingin lämpötilat</h1>
-            <p>Tarkastele Helsingin lämpötilojen kehitystä ja päivittäisiä vaihteluita vuorokauden aikana interaktiivisesti.</p>
-            <div class="actions">
-                <a class="button button--accent" href="/HEL-temperatures/">
-                    <svg viewBox="0 0 24 24"><path d="M3 12h18M12 3v18"/></svg>
-                    Avaa kaavio
-                </a>
-            </div>
-        </section>
-
-        <section class="panel btc" style="--i:1">
-            <div class="accent-strip"></div>
-            <div class="badge"><span>₿</span>CRYPTO</div>
-            <h1>BTC hintakehitys</h1>
-            <p>Seuraa Bitcoinin reaaliaikaista hintaa ja viimeisintä kehitystä visuaalisella kaaviolla.</p>
-            <div class="actions">
-                <a class="button button--gold" href="/BTC/">
-                    <svg viewBox="0 0 24 24"><path d="M5 3h14v18H5z M9 7h6M9 11h6M9 15h4"/></svg>
-                    Avaa kaavio
-                </a>
-            </div>
-        </section>
+  <div class="stack">
+    <div class="container">
+        <h1>Tervetuloa</h1>
+        <p>Tarkastele helsingin lämpötiloja alla olevasta linkistä</p>
+        <a class="button" href="/HEL-temperatures/">Helsingin lämpötilat</a>
     </div>
+
+    <div class="container">
+        <p>Tarkastele BTC:n hintakehitysä</p>
+        <a class="button" href="/BTC/">BTC price chart</a>
+    </div>
+  </div>
 
 <script>
 async function updateSqlTime() {
-    try {
-        const r = await fetch('/time',{cache:'no-store'});
-        if (!r.ok) throw 0;
-        const j = await r.json();
-        const el = document.getElementById('sql-time');
-        if (el) el.textContent = 'Aikaleima: ' + j.time;
-    } catch(e) {
-        const el = document.getElementById('sql-time');
-        if (el) el.textContent = 'Virhe aikaleimassa';
-    }
+  try {
+    const r = await fetch('/time', { cache:'no-store' });
+    const j = await r.json();
+    const el = document.getElementById('sql-time');
+    if (el) el.textContent = j.time;
+  } catch {
+    const el = document.getElementById('sql-time');
+    if (el) el.textContent = 'virhe';
+  }
 }
 updateSqlTime();
-setInterval(updateSqlTime, 3000);
+setInterval(updateSqlTime, 1000);
 </script>
 </body>
 </html>
