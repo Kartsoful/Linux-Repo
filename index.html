@@ -107,6 +107,7 @@ body {
     display:flex;
     flex-wrap:wrap;
     gap:14px;
+    justify-content: center;
 }
 
 .button {
@@ -215,10 +216,6 @@ footer {
                     <svg viewBox="0 0 24 24"><path d="M3 12h18M12 3v18"/></svg>
                     Avaa kaavio
                 </a>
-                <a class="button" href="/HEL-temperatures/?view=raw">
-                    <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z M9 9h6v6H9z"/></svg>
-                    Raaka data
-                </a>
             </div>
         </section>
 
@@ -231,10 +228,6 @@ footer {
                 <a class="button button--gold" href="/BTC/">
                     <svg viewBox="0 0 24 24"><path d="M5 3h14v18H5z M9 7h6M9 11h6M9 15h4"/></svg>
                     Avaa kaavio
-                </a>
-                <a class="button" href="/BTC/?interval=1h">
-                    <svg viewBox="0 0 24 24"><path d="M4 18 10 12l4 4 6-10"/></svg>
-                    1h näkymä
                 </a>
             </div>
         </section>
@@ -259,4 +252,4 @@ updateSqlTime();
 setInterval(updateSqlTime, 3000);
 </script>
 </body>
-</html></a>
+</html>
