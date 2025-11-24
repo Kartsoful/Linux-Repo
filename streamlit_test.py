@@ -101,7 +101,7 @@ def main():
     """, unsafe_allow_html=True)
 
     conn = mysql.connector.connect(host='localhost', user='<user>', password='<password>', database='db_name')
-    df = pd.read_sql('SELECT * FROM weather_data ORDER BY timestamp DESC LIMIT 50',conn)
+    df = pd.read_sql('SELECT * FROM weather_data ORDER BY timestamp',conn)
     conn.close()
     st.title('Säädata Helsingistä')    
     st.markdown("<h4>Dataa kerätty 20.11.2025 18:00 UTC+2 alkaen. Näytteenkeruuväli 15min</h4>", unsafe_allow_html=True)
