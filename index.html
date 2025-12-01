@@ -1,30 +1,22 @@
-<!DOCTYPE html>
-<html lang="fi">
-<head>
-<meta charset="UTF-8">
-<title>Linux VK5-harjoitus</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 :root {
-    --blur: 18px;
-    --radius: 22px;
-    --ease: cubic-bezier(.4,.2,.2,1);
+    --blur: 8px;
+    --radius: 18px;
+    --ease: cubic-bezier(.6,.1,.3,1);
 }
 * { box-sizing:border-box; }
 body {
     margin:0;
-    font-family:"Segoe UI", Arial, sans-serif;
+    font-family:"Montserrat", Arial, sans-serif;
     background:
-        radial-gradient(circle at 25% 20%, #0a2f61 0%, transparent 60%),
-        radial-gradient(circle at 80% 70%, #082042 0%, transparent 65%),
-        linear-gradient(135deg,#061224 0%,#0d2746 48%,#155b8a 100%);
+        linear-gradient(120deg,#232526 0%,#414345 100%);
     min-height:100vh;
     display:flex;
     justify-content:center;
     align-items:center;
-    color:#fff;
+    color:#222;
     text-align:center;
-    padding:34px 26px;
+    padding:40px 20px;
     overflow:hidden;
 }
 body::before {
@@ -32,105 +24,103 @@ body::before {
     position:fixed;
     inset:0;
     background:
-        linear-gradient(115deg,rgba(0,160,255,.08),transparent 55%),
-        linear-gradient(245deg,rgba(180,80,255,.06),transparent 60%);
+        repeating-linear-gradient(135deg,rgba(255,255,255,.04) 0 2px,transparent 2px 20px);
     pointer-events:none;
 }
 .stack {
     display:flex;
     flex-direction:column;
-    gap:46px;
+    gap:32px;
     width:100%;
-    max-width:620px;
+    max-width:540px;
 }
 .container {
-    padding:56px 50px 48px;
+    padding:38px 32px 32px;
     border-radius:var(--radius);
     position:relative;
-    backdrop-filter:blur(var(--blur)) saturate(130%);
-    -webkit-backdrop-filter:blur(var(--blur)) saturate(130%);
+    backdrop-filter:blur(var(--blur)) saturate(120%);
+    -webkit-backdrop-filter:blur(var(--blur)) saturate(120%);
     overflow:hidden;
     isolation:isolate;
-    animation:fadeIn .8s var(--ease);
+    animation:fadeIn .7s var(--ease);
+    background:rgba(255,255,255,.85);
+    box-shadow:0 8px 32px -8px rgba(60,60,60,.18);
+    border:1px solid #e0e0e0;
 }
 .container::before {
     content:"";
     position:absolute;
     inset:0;
-    background:linear-gradient(160deg,rgba(255,255,255,.14),rgba(255,255,255,0) 40%);
+    background:linear-gradient(120deg,rgba(0,0,0,.04),rgba(0,0,0,0) 60%);
     mix-blend-mode:overlay;
-    opacity:.55;
+    opacity:.7;
     pointer-events:none;
 }
 .variant-a {
-    background:rgba(24,48,102,.42);
-    border:1px solid rgba(110,180,255,.38);
-    box-shadow:
-        0 4px 14px -4px rgba(0,80,160,.55),
-        0 8px 34px -10px rgba(0,70,140,.55);
+    border-left:8px solid #00b894;
 }
 .variant-a::after {
     content:"";
     position:absolute;
-    top:-20%; left:10%;
-    width:340px; height:340px;
-    background:radial-gradient(circle at center, rgba(0,170,255,.40), transparent 70%);
-    filter:blur(40px);
-    opacity:.55;
+    top:-16%; left:-10%;
+    width:180px; height:180px;
+    background:radial-gradient(circle at center, #00b89433 0%, transparent 80%);
+    filter:blur(18px);
+    opacity:.7;
     pointer-events:none;
 }
 .variant-b {
-    background:linear-gradient(140deg,rgba(70,30,110,.60),rgba(32,20,70,.55));
-    border:1px solid rgba(210,140,255,.40);
-    box-shadow:
-        0 4px 16px -4px rgba(130,0,170,.55),
-        0 10px 40px -12px rgba(120,0,160,.55);
+    border-left:8px solid #0984e3;
 }
 .variant-b::after {
     content:"";
     position:absolute;
-    bottom:-18%; right:-8%;
-    width:400px; height:400px;
-    background:radial-gradient(circle at center, rgba(255,130,235,.35), transparent 72%);
-    filter:blur(42px);
-    opacity:.6;
+    bottom:-14%; right:-10%;
+    width:180px; height:180px;
+    background:radial-gradient(circle at center, #0984e333 0%, transparent 80%);
+    filter:blur(18px);
+    opacity:.7;
     pointer-events:none;
 }
 h1 {
-    font-size:42px;
-    margin:0 0 22px;
-    letter-spacing:.75px;
-    background:linear-gradient(90deg,#8fd9ff,#fff);
+    font-size:32px;
+    margin:0 0 18px;
+    letter-spacing:.5px;
+    background:linear-gradient(90deg,#00b894,#0984e3);
     -webkit-background-clip:text;
     color:transparent;
-    filter:drop-shadow(0 2px 6px rgba(0,140,255,.35));
+    filter:drop-shadow(0 1px 3px rgba(0,0,0,.08));
+    font-family:"Montserrat", Arial, sans-serif;
+    font-weight:700;
 }
 p {
-    font-size:19px;
-    line-height:1.4;
-    margin:0 0 34px;
-    opacity:.9;
+    font-size:17px;
+    line-height:1.5;
+    margin:0 0 28px;
+    opacity:.85;
+    color:#333;
 }
-.actions { display:flex; flex-wrap:wrap; gap:18px; justify-content:center; }
+.actions { display:flex; flex-wrap:wrap; gap:14px; justify-content:center; }
 
 a.button {
-    --grad-a:#00a8ff;
-    --grad-b:#0070ff;
+    --grad-a:#00b894;
+    --grad-b:#0984e3;
     position:relative;
     display:inline-flex;
     align-items:center;
     justify-content:center;
-    padding:16px 40px;
-    font-size:19px;
+    padding:13px 32px;
+    font-size:17px;
     font-weight:600;
-    letter-spacing:.6px;
+    letter-spacing:.5px;
     color:#fff;
     text-decoration:none;
     background:linear-gradient(95deg,var(--grad-a),var(--grad-b));
-    border-radius:14px;
-    box-shadow:0 6px 22px -8px rgba(0,120,255,.55);
-    transition:.5s var(--ease);
+    border-radius:10px;
+    box-shadow:0 4px 14px -6px rgba(0,184,148,.18);
+    transition:.4s var(--ease);
     overflow:hidden;
+    border:none;
 }
 a.button span {
     position:relative;
@@ -141,83 +131,54 @@ a.button::before {
     position:absolute;
     inset:0;
     background:
-        radial-gradient(circle at 30% 50%,rgba(255,255,255,.22),transparent 60%),
-        radial-gradient(circle at 70% 50%,rgba(255,255,255,.18),transparent 65%);
+        radial-gradient(circle at 50% 50%,rgba(255,255,255,.12),transparent 70%);
     opacity:0;
-    transition:.6s var(--ease);
+    transition:.5s var(--ease);
 }
 a.button::after {
     content:"";
     position:absolute;
     inset:0;
-    background:linear-gradient(120deg,transparent 0%,rgba(255,255,255,.25) 50%,transparent 100%);
-    transform:translateX(-120%);
-    transition:transform .9s var(--ease);
-    opacity:.65;
+    background:linear-gradient(120deg,transparent 0%,rgba(255,255,255,.18) 50%,transparent 100%);
+    transform:translateX(-100%);
+    transition:transform .7s var(--ease);
+    opacity:.5;
 }
 a.button:hover {
-    transform:translateY(-4px);
-    box-shadow:0 10px 30px -10px rgba(0,150,255,.6), 0 4px 10px -2px rgba(0,140,255,.5);
+    transform:translateY(-2px) scale(1.04);
+    box-shadow:0 8px 24px -8px rgba(0,184,148,.22), 0 2px 8px -2px rgba(9,132,227,.18);
 }
 a.button:hover::before { opacity:1; }
-a.button:hover::after { transform:translateX(120%); }
+a.button:hover::after { transform:translateX(100%); }
 
 .variant-b a.button {
-    --grad-a:#ff6ad5;
-    --grad-b:#9c4be8;
-    box-shadow:0 6px 24px -8px rgba(160,0,190,.55);
+    --grad-a:#0984e3;
+    --grad-b:#00b894;
+    box-shadow:0 4px 14px -6px rgba(9,132,227,.18);
 }
 .variant-b a.button:hover {
-    box-shadow:0 12px 36px -12px rgba(180,40,210,.65), 0 4px 10px -2px rgba(160,40,200,.5);
+    box-shadow:0 10px 28px -10px rgba(9,132,227,.22), 0 2px 8px -2px rgba(0,184,148,.18);
 }
 
 small.hint {
     display:block;
-    margin-top:16px;
-    font-size:11px;
+    margin-top:14px;
+    font-size:10px;
     font-weight:500;
-    letter-spacing:1px;
-    opacity:.65;
+    letter-spacing:.8px;
+    opacity:.55;
     text-transform:uppercase;
+    color:#555;
 }
 
 @media (max-width:640px) {
-    .container { padding:48px 34px 42px; }
-    h1 { font-size:36px; }
+    .container { padding:28px 12px 22px; }
+    h1 { font-size:24px; }
     a.button { width:100%; }
 }
 
 @keyframes fadeIn {
-    from { opacity:0; transform:translateY(26px) scale(.98); }
+    from { opacity:0; transform:translateY(18px) scale(.98); }
     to { opacity:1; transform:translateY(0) scale(1); }
 }
 </style>
-</head>
-<body>
-    <div class="stack">
-        <div class="container variant-a">
-            <h1>Tervetuloa</h1>
-            <p>Avaa chat-sovellus alla olevasta linkistä</p>
-            <div class="actions">
-                <a class="button" href="/chat"><span>Chat</span></a>
-            </div>
-        </div>
-    </div>
-
-<script>
-async function updateSqlTime() {
-    try {
-        const r = await fetch('/time',{cache:'no-store'});
-        const j = await r.json();
-        const el = document.getElementById('sql-time');
-        if (el) el.textContent = j.time;
-    } catch {
-        const el = document.getElementById('sql-time');
-        if (el) el.textContent = 'virhe';
-    }
-}
-updateSqlTime();
-setInterval(updateSqlTime,1000);
-</script>
-</body>
-</html>
