@@ -220,11 +220,48 @@
             localStorage.setItem('mqtt_nickname', nicknameInput.value);
         });
         
+        // Lataa vanhat viestit tietokannasta
+        async function loadHistoryFromDatabase() {
+            try {
+                const response = await fetch('http://localhost:5000/api/messages?limit=50');
+                if (response.ok) {
+                    const messages = await response.json();
+                    messagesDiv.innerHTML = ''; // Tyhjennä "Yhdistetään..." -viesti
+                    
+                    messages.forEach(msg => {
+                        const time = new Date(msg.created_at).toLocaleTimeString('fi-FI', {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        });
+                        
+                        const messageDiv = document.createElement('div');
+                        messageDiv.className = 'message';
+                        messageDiv.innerHTML = `
+                            <div class="message-bubble">${escapeHtml(msg.message)}</div>
+                            <div class="message-meta">${escapeHtml(msg.nickname)} • ${time}</div>
+                        `;
+                        messagesDiv.appendChild(messageDiv);
+                    });
+                    
+                    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                    addSystemMessage(`Ladattu ${messages.length} viestiä historiasta`);
+                } else {
+                    console.error('Virhe ladattaessa historiaa:', response.status);
+                }
+            } catch (error) {
+                console.error('Virhe ladattaessa historiaa:', error);
+                addSystemMessage('Historiaa ei voitu ladata');
+            }
+        }
+        
         client.on('connect', () => {
             console.log('Yhdistetty MQTT brokeriin');
             statusDot.classList.add('connected');
             messageInput.disabled = false;
             sendBtn.disabled = false;
+            
+            // Lataa historia ensin
+            loadHistoryFromDatabase();
             
             addSystemMessage('Yhdistetty chat-palvelimeen!');
             
