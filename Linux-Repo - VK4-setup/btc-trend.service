@@ -1,0 +1,12 @@
+[Unit]
+Description=Streamlit BTC Trend
+After=network.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/home/ubuntu/crypto
+ExecStart=/bin/bash -c "source /home/ubuntu/crypto/venv/bin/activate && streamlit run /home/ubuntu/crypto/BTCapp.py --server.port 8502"
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
