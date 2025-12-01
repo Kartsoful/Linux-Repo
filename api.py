@@ -8,8 +8,8 @@ CORS(app)
 
 DB_CONFIG = {
     "host": "localhost",
-    "user": "kartso",
-    "password": "kartso123",
+    "user": "user",
+    "password": "pass",
     "database": "mqtt_chat"
 }
 
