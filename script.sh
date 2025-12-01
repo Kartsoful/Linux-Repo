@@ -19,6 +19,7 @@ git pull
 # sudo cp ~/Linux-Repo/btc_configure/config.toml /home/ubuntu/crypto/.streamlit/config.toml
 # sudo cp ~/Linux-Repo/btc-trend.service /etc/systemd/system/btc-trend.service
 sudo cp ~/Linux-Repo/index.html /var/www/html/index.html
+sudo cp ~/Linux-Repo/index_chat.html /var/www/html/chat/index_chat.html
 sudo cp ~/Linux-Repo/lemp-app /etc/nginx/sites-available/lemp-app
 sudo cp ~/Linux-Repo/mosquitto.conf /home/ubuntu/mqtt-chat/mosquitto/config/mosquitto.conf
 sudo cp ~/Linux-Repo/docker-compose.yml /home/ubuntu/mqtt-chat/docker-compose.yml
