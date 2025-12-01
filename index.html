@@ -1,231 +1,319 @@
 <!DOCTYPE html>
 <html lang="fi">
 <head>
-<meta charset="UTF-8">
-<title>Linux VK4-harjoitus</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-:root {
-    --blur: 18px;
-    --radius: 22px;
-    --ease: cubic-bezier(.4,.2,.2,1);
-}
-* { box-sizing:border-box; }
-body {
-    margin:0;
-    font-family:"Segoe UI", Arial, sans-serif;
-    background:
-        radial-gradient(circle at 25% 20%, #0a2f61 0%, transparent 60%),
-        radial-gradient(circle at 80% 70%, #082042 0%, transparent 65%),
-        linear-gradient(135deg,#061224 0%,#0d2746 48%,#155b8a 100%);
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    color:#fff;
-    text-align:center;
-    padding:34px 26px;
-    overflow:hidden;
-}
-body::before {
-    content:"";
-    position:fixed;
-    inset:0;
-    background:
-        linear-gradient(115deg,rgba(0,160,255,.08),transparent 55%),
-        linear-gradient(245deg,rgba(180,80,255,.06),transparent 60%);
-    pointer-events:none;
-}
-.stack {
-    display:flex;
-    flex-direction:column;
-    gap:46px;
-    width:100%;
-    max-width:620px;
-}
-.container {
-    padding:56px 50px 48px;
-    border-radius:var(--radius);
-    position:relative;
-    backdrop-filter:blur(var(--blur)) saturate(130%);
-    -webkit-backdrop-filter:blur(var(--blur)) saturate(130%);
-    overflow:hidden;
-    isolation:isolate;
-    animation:fadeIn .8s var(--ease);
-}
-.container::before {
-    content:"";
-    position:absolute;
-    inset:0;
-    background:linear-gradient(160deg,rgba(255,255,255,.14),rgba(255,255,255,0) 40%);
-    mix-blend-mode:overlay;
-    opacity:.55;
-    pointer-events:none;
-}
-.variant-a {
-    background:rgba(24,48,102,.42);
-    border:1px solid rgba(110,180,255,.38);
-    box-shadow:
-        0 4px 14px -4px rgba(0,80,160,.55),
-        0 8px 34px -10px rgba(0,70,140,.55);
-}
-.variant-a::after {
-    content:"";
-    position:absolute;
-    top:-20%; left:10%;
-    width:340px; height:340px;
-    background:radial-gradient(circle at center, rgba(0,170,255,.40), transparent 70%);
-    filter:blur(40px);
-    opacity:.55;
-    pointer-events:none;
-}
-.variant-b {
-    background:linear-gradient(140deg,rgba(70,30,110,.60),rgba(32,20,70,.55));
-    border:1px solid rgba(210,140,255,.40);
-    box-shadow:
-        0 4px 16px -4px rgba(130,0,170,.55),
-        0 10px 40px -12px rgba(120,0,160,.55);
-}
-.variant-b::after {
-    content:"";
-    position:absolute;
-    bottom:-18%; right:-8%;
-    width:400px; height:400px;
-    background:radial-gradient(circle at center, rgba(255,130,235,.35), transparent 72%);
-    filter:blur(42px);
-    opacity:.6;
-    pointer-events:none;
-}
-h1 {
-    font-size:42px;
-    margin:0 0 22px;
-    letter-spacing:.75px;
-    background:linear-gradient(90deg,#8fd9ff,#fff);
-    -webkit-background-clip:text;
-    color:transparent;
-    filter:drop-shadow(0 2px 6px rgba(0,140,255,.35));
-}
-p {
-    font-size:19px;
-    line-height:1.4;
-    margin:0 0 34px;
-    opacity:.9;
-}
-.actions { display:flex; flex-wrap:wrap; gap:18px; justify-content:center; }
-
-a.button {
-    --grad-a:#00a8ff;
-    --grad-b:#0070ff;
-    position:relative;
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    padding:16px 40px;
-    font-size:19px;
-    font-weight:600;
-    letter-spacing:.6px;
-    color:#fff;
-    text-decoration:none;
-    background:linear-gradient(95deg,var(--grad-a),var(--grad-b));
-    border-radius:14px;
-    box-shadow:0 6px 22px -8px rgba(0,120,255,.55);
-    transition:.5s var(--ease);
-    overflow:hidden;
-}
-a.button span {
-    position:relative;
-    z-index:2;
-}
-a.button::before {
-    content:"";
-    position:absolute;
-    inset:0;
-    background:
-        radial-gradient(circle at 30% 50%,rgba(255,255,255,.22),transparent 60%),
-        radial-gradient(circle at 70% 50%,rgba(255,255,255,.18),transparent 65%);
-    opacity:0;
-    transition:.6s var(--ease);
-}
-a.button::after {
-    content:"";
-    position:absolute;
-    inset:0;
-    background:linear-gradient(120deg,transparent 0%,rgba(255,255,255,.25) 50%,transparent 100%);
-    transform:translateX(-120%);
-    transition:transform .9s var(--ease);
-    opacity:.65;
-}
-a.button:hover {
-    transform:translateY(-4px);
-    box-shadow:0 10px 30px -10px rgba(0,150,255,.6), 0 4px 10px -2px rgba(0,140,255,.5);
-}
-a.button:hover::before { opacity:1; }
-a.button:hover::after { transform:translateX(120%); }
-
-.variant-b a.button {
-    --grad-a:#ff6ad5;
-    --grad-b:#9c4be8;
-    box-shadow:0 6px 24px -8px rgba(160,0,190,.55);
-}
-.variant-b a.button:hover {
-    box-shadow:0 12px 36px -12px rgba(180,40,210,.65), 0 4px 10px -2px rgba(160,40,200,.5);
-}
-
-small.hint {
-    display:block;
-    margin-top:16px;
-    font-size:11px;
-    font-weight:500;
-    letter-spacing:1px;
-    opacity:.65;
-    text-transform:uppercase;
-}
-
-@media (max-width:640px) {
-    .container { padding:48px 34px 42px; }
-    h1 { font-size:36px; }
-    a.button { width:100%; }
-}
-
-@keyframes fadeIn {
-    from { opacity:0; transform:translateY(26px) scale(.98); }
-    to { opacity:1; transform:translateY(0) scale(1); }
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MQTT Chat</title>
+    <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .chat-container {
+            width: 100%;
+            max-width: 600px;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .chat-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ff6b6b;
+            transition: background 0.3s;
+        }
+        
+        .status-dot.connected {
+            background: #51cf66;
+            box-shadow: 0 0 10px #51cf66;
+        }
+        
+        .chat-header h1 {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        
+        .messages {
+            height: 400px;
+            overflow-y: auto;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        
+        .message {
+            margin-bottom: 12px;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .message.own {
+            text-align: right;
+        }
+        
+        .message-bubble {
+            display: inline-block;
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            background: #e9ecef;
+            color: #333;
+        }
+        
+        .message.own .message-bubble {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .message-meta {
+            font-size: 0.75rem;
+            color: #868e96;
+            margin-top: 4px;
+        }
+        
+        .message.own .message-meta {
+            color: #adb5bd;
+        }
+        
+        .input-area {
+            display: flex;
+            padding: 20px;
+            gap: 12px;
+            background: #fff;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .nickname-input {
+            width: 120px;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            transition: border-color 0.3s;
+        }
+        
+        .nickname-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .message-input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            transition: border-color 0.3s;
+        }
+        
+        .message-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .send-btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .send-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .system-message {
+            text-align: center;
+            color: #868e96;
+            font-size: 0.85rem;
+            padding: 8px;
+        }
+    </style>
 </head>
 <body>
-    <div class="stack">
-        <div class="container variant-a">
-            <h1>Tervetuloa</h1>
-            <p>Tarkastele Helsingin lämpötiloja alla olevasta linkistä interaktiivisesti</p>
-            <div class="actions">
-                <a class="button" href="/HEL-temperatures/"><span>Helsingin lämpötilat</span></a>
-            </div>
+    <div class="chat-container">
+        <div class="chat-header">
+            <div class="status-dot" id="statusDot"></div>
+            <h1>MQTT Chat</h1>
         </div>
-
-        <div class="container variant-b">
-            <p>Tarkastele BTC:n hintakehitystä interaktiivisesti</p>
-            <div class="actions">
-                <a class="button" href="/BTC/"><span>BTC price chart</span></a>
-            </div>
-            <small class="hint">Ns. eksta API</small>
+        
+        <div class="messages" id="messages">
+            <div class="system-message">Yhdistetään palvelimeen...</div>
+        </div>
+        
+        <div class="input-area">
+            <input type="text" 
+                   class="nickname-input" 
+                   id="nickname" 
+                   placeholder="Nimimerkki"
+                   maxlength="20">
+            <input type="text" 
+                   class="message-input" 
+                   id="messageInput" 
+                   placeholder="Kirjoita viesti..."
+                   disabled>
+            <button class="send-btn" id="sendBtn" disabled>Lähetä</button>
         </div>
     </div>
 
-<script>
-async function updateSqlTime() {
-    try {
-        const r = await fetch('/time',{cache:'no-store'});
-        const j = await r.json();
-        const el = document.getElementById('sql-time');
-        if (el) el.textContent = j.time;
-    } catch {
-        const el = document.getElementById('sql-time');
-        if (el) el.textContent = 'virhe';
-    }
-}
-updateSqlTime();
-setInterval(updateSqlTime,1000);
-</script>
+    <script>
+        const TOPIC = 'chat/messages';
+        
+        // Yhdistä MQTT brokeriin WebSocketin kautta
+        const wsUrl = `ws://${window.location.hostname}:9001/mqtt`;
+        const client = mqtt.connect(wsUrl, {
+            clientId: 'web_' + Math.random().toString(16).substr(2, 8),
+            clean: true,
+            reconnectPeriod: 3000
+        });
+        
+        const messagesDiv = document.getElementById('messages');
+        const messageInput = document.getElementById('messageInput');
+        const nicknameInput = document.getElementById('nickname');
+        const sendBtn = document.getElementById('sendBtn');
+        const statusDot = document.getElementById('statusDot');
+        
+        // Lataa nimimerkki localStoragesta
+        nicknameInput.value = localStorage.getItem('mqtt_nickname') || '';
+        
+        nicknameInput.addEventListener('change', () => {
+            localStorage.setItem('mqtt_nickname', nicknameInput.value);
+        });
+        
+        client.on('connect', () => {
+            console.log('Yhdistetty MQTT brokeriin');
+            statusDot.classList.add('connected');
+            messageInput.disabled = false;
+            sendBtn.disabled = false;
+            
+            addSystemMessage('Yhdistetty chat-palvelimeen!');
+            
+            // Tilaa chat-viestit
+            client.subscribe(TOPIC, (err) => {
+                if (err) {
+                    console.error('Tilausvirhe:', err);
+                }
+            });
+        });
+        
+        client.on('disconnect', () => {
+            statusDot.classList.remove('connected');
+            messageInput.disabled = true;
+            sendBtn.disabled = true;
+            addSystemMessage('Yhteys katkesi...');
+        });
+        
+        client.on('error', (err) => {
+            console.error('MQTT virhe:', err);
+            addSystemMessage('Yhteysvirhe: ' + err.message);
+        });
+        
+        client.on('message', (topic, message) => {
+            try {
+                const data = JSON.parse(message.toString());
+                addMessage(data.nickname, data.text, data.clientId === client.options.clientId);
+            } catch (e) {
+                // Jos viesti ei ole JSON, näytä sellaisenaan
+                addMessage('Tuntematon', message.toString(), false);
+            }
+        });
+        
+        function addMessage(nickname, text, isOwn) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message' + (isOwn ? ' own' : '');
+            
+            const time = new Date().toLocaleTimeString('fi-FI', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            messageDiv.innerHTML = `
+                <div class="message-bubble">${escapeHtml(text)}</div>
+                <div class="message-meta">${escapeHtml(nickname)} • ${time}</div>
+            `;
+            
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+        
+        function addSystemMessage(text) {
+            const div = document.createElement('div');
+            div.className = 'system-message';
+            div.textContent = text;
+            messagesDiv.appendChild(div);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        function sendMessage() {
+            const text = messageInput.value.trim();
+            const nickname = nicknameInput.value.trim() || 'Anonyymi';
+            
+            if (text && client.connected) {
+                const payload = JSON.stringify({
+                    nickname: nickname,
+                    text: text,
+                    clientId: client.options.clientId,
+                    timestamp: Date.now()
+                });
+                
+                client.publish(TOPIC, payload);
+                messageInput.value = '';
+            }
+        }
+        
+        sendBtn.addEventListener('click', sendMessage);
+        
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
 </body>
 </html>
