@@ -24,6 +24,8 @@ sudo cp ~/Linux-Repo/mosquitto.conf /home/ubuntu/mqtt-chat/mosquitto/config/mosq
 sudo cp ~/Linux-Repo/docker-compose.yml /home/ubuntu/mqtt-chat/docker-compose.yml
 sudo cp ~/Linux-Repo/mqtt-logger.service /etc/systemd/system/mqtt-logger.service
 sudo cp ~/Linux-Repo/mqtt_logger.sh /home/ubuntu/mqtt-chat/mqtt_logger.sh
+sudo cp ~/Linux-Repo/api.sh /home/ubuntu/mqtt-chat/api.sh
+sudo cp ~/Linux-Repo/mqtt-api.service /etc/systemd/system/mqtt-api.service
 
 # Anonymisoidut - Jos muokkauksia on tehty, poista kommentointi ja palauta rivit
 # sudo cp ~/Linux-Repo/mqtt_logger.py /home/ubuntu/mqtt-chat/mqtt_logger.py
