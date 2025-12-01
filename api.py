@@ -14,7 +14,6 @@ DB_CONFIG = {
 }
 
 @app.route('/api/messages', methods=['GET'])
-
 def get_messages():
     """Hae viestit tietokannasta."""
     limit = request.args.get('limit', 50, type=int)
@@ -31,4 +30,4 @@ def get_messages():
     return jsonify(messages[::-1])
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=5000)
+    app.run(host='0.0.0.0', port=5000)
