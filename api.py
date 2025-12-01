@@ -15,17 +15,11 @@ DB_CONFIG = {
 
 @app.route('/api/messages', methods=['GET'])
 def get_messages():
+    """Hae viestit tietokannasta."""
     limit = request.args.get('limit', 50, type=int)
-
     conn = mysql.connector.connect(**DB_CONFIG)
     cursor = conn.cursor(dictionary=True)
-
-    cursor.execute(
-        'SELECT id, nickname, message, client_id, created_at '
-        'FROM messages ORDER BY created_at DESC LIMIT %s',
-        (limit,)
-    )
-
+    cursor.execute('SELECT id, nickname, message, client_id, created_at FROM messages ORDER BY created_at DESC LIMIT %s', (limit,))
     messages = cursor.fetchall()
 
     for msg in messages:
@@ -33,7 +27,6 @@ def get_messages():
 
     cursor.close()
     conn.close()
-
     return jsonify(messages[::-1])
 
 if __name__ == '__main__':
