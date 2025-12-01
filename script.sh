@@ -26,7 +26,7 @@ sudo cp ~/Linux-Repo/mqtt-logger.service /etc/systemd/system/mqtt-logger.service
 
 # Anonymisoidut - Jos muokkauksia on tehty, poista kommentointi ja palauta rivit
 # sudo cp ~/Linux-Repo/mqtt_logger.py /home/ubuntu/mqtt-chat/mqtt_logger.py
-sudo cp ~/Linux-Repo/api.py /home/ubuntu/mqtt-chat/api.py
+# sudo cp ~/Linux-Repo/api.py /home/ubuntu/mqtt-chat/api.py
 
 # Startataan service uudelleen
 sudo systemctl daemon-reload
