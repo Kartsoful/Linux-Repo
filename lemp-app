@@ -2,9 +2,9 @@ server {
     listen 80;
     server_name _;
 
-    # # Etusivu location
-    # root /var/www/html;
-    # index index.html;
+    # Etusivu location
+    root /var/www/html;
+    index index.html;
 
     # # Streamlit reverse proxy
     # location /HEL-temperatures/ {
