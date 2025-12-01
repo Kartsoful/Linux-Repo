@@ -17,8 +17,8 @@ MQTT_TOPIC = "chat/messages"
 
 DB_CONFIG = {
     "host": "localhost",
-    "user": "mqtt_user",
-    "password": "salasana123",  # Vaihda!
+    "user": "kartso",
+    "password": "kartso123",  # Vaihda!
     "database": "mqtt_chat"
 }
 
@@ -65,7 +65,7 @@ def on_connect(client, userdata, flags, rc):
         logger.info(f"Tilattu: {MQTT_TOPIC}")
     else:
         logger.error(f"Yhteysvirhe, koodi: {rc}")
-        
+
 def on_message(client, userdata, msg):
     """Käsittele saapuva MQTT-viesti."""
     try:
