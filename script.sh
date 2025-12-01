@@ -7,8 +7,7 @@ cd /home/ubuntu/Linux-Repo/
 git pull
 
 # siirtää päivitetyt tiedoston oikeisiin paikkoihin
-# sudo cp ~/Linux-Repo/LH2.gif /var/www/html/LH2.gif
-# sudo cp ~/Linux-Repo/lemp-app.service /etc/systemd/system/lemp-app.service
+sudo cp ~/Linux-Repo/lemp-app.service /etc/systemd/system/lemp-app.service
 # sudo cp ~/Linux-Repo/streamlit_test.py /home/ubuntu/lemp-app/streamlit_test.py
 # sudo cp ~/Linux-Repo/streamlit.service /etc/systemd/system/streamlit.service
 # sudo cp ~/Linux-Repo/fetch_weather.sh /home/ubuntu/cron_assignment/fetch_weather.sh
@@ -27,6 +26,7 @@ sudo cp ~/Linux-Repo/mqtt-logger.service /etc/systemd/system/mqtt-logger.service
 
 # Anonymisoidut - Jos muokkauksia on tehty, poista kommentointi ja palauta rivit
 # sudo cp ~/Linux-Repo/mqtt_logger.py /home/ubuntu/mqtt-chat/mqtt_logger.py
+sudo cp ~/Linux-Repo/api.py /home/ubuntu/mqtt-chat/api.py
 
 # Startataan service uudelleen
 sudo systemctl daemon-reload
