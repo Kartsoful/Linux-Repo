@@ -23,6 +23,7 @@ sudo cp ~/Linux-Repo/lemp-app /etc/nginx/sites-available/lemp-app
 sudo cp ~/Linux-Repo/mosquitto.conf /home/ubuntu/mqtt-chat/mosquitto/config/mosquitto.conf
 sudo cp ~/Linux-Repo/docker-compose.yml /home/ubuntu/mqtt-chat/docker-compose.yml
 sudo cp ~/Linux-Repo/mqtt-logger.service /etc/systemd/system/mqtt-logger.service
+sudo cp ~/Linux-Repo/mqtt_logger.sh /home/ubuntu/mqtt-chat/mqtt_logger.sh
 
 # Anonymisoidut - Jos muokkauksia on tehty, poista kommentointi ja palauta rivit
 # sudo cp ~/Linux-Repo/mqtt_logger.py /home/ubuntu/mqtt-chat/mqtt_logger.py
