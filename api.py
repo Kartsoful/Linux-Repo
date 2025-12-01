@@ -8,8 +8,8 @@ CORS(app)
 
 DB_CONFIG = {
     "host": "localhost",
-    "user": "user",
-    "password": "password",
+    "user": "kartso",
+    "password": "kartso123",
     "database": "mqtt_chat"
 }
 
@@ -20,10 +20,7 @@ def get_messages():
     limit = request.args.get('limit', 50, type=int)
     conn = mysql.connector.connect(**DB_CONFIG)
     cursor = conn.cursor(dictionary=True)
-    cursor.execute('''
-        SELECT id, nickname, message, client_id, created_at
-        FROM messages ORDER BY created_at DESC LIMIT %s
-    ''', (limit,))
+    cursor.execute('SELECT id, nickname, message, client_id, created_at FROM messages ORDER BY created_at DESC LIMIT %s', (limit,))
     messages = cursor.fetchall()
 
     for msg in messages:
