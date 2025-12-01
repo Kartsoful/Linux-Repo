@@ -23,7 +23,9 @@ sudo cp ~/Linux-Repo/index_chat.html /var/www/html/chat/index_chat.html
 sudo cp ~/Linux-Repo/lemp-app /etc/nginx/sites-available/lemp-app
 sudo cp ~/Linux-Repo/mosquitto.conf /home/ubuntu/mqtt-chat/mosquitto/config/mosquitto.conf
 sudo cp ~/Linux-Repo/docker-compose.yml /home/ubuntu/mqtt-chat/docker-compose.yml
-sudo cp ~/Linux-Repo/mqtt_logger.py /home/ubuntu/mqtt-chat/mqtt_logger.py
+
+# Anonymisoidut - Jos muokkauksia on tehty, poista kommentointi ja palauta rivit
+# sudo cp ~/Linux-Repo/mqtt_logger.py /home/ubuntu/mqtt-chat/mqtt_logger.py
 
 # Startataan service uudelleen
 sudo systemctl daemon-reload
