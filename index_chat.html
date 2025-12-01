@@ -223,7 +223,7 @@
         // Lataa vanhat viestit tietokannasta
         async function loadHistoryFromDatabase() {
             try {
-                const response = await fetch('http://localhost:5000/api/messages?limit=50');
+                const response = await fetch('/api/messages?limit=50');
                 if (response.ok) {
                     const messages = await response.json();
                     messagesDiv.innerHTML = ''; // Tyhjennä "Yhdistetään..." -viesti
