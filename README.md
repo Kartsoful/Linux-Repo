@@ -5,5 +5,5 @@ Eri viikkojen tiedostosisällöt ovat omissa kansioissaan. Juuressa olevat tiedo
 Linkki VK4 harjoitukseen:
 http://86.50.20.24/
 
-Linkki VK5 harjoitukseen (kesken):
+Linkki VK5 harjoitukseen:
 http://86.50.20.94/
