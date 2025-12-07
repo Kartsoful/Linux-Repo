@@ -7,20 +7,18 @@ cd /home/ubuntu/Linux-Repo/
 git pull
 
 # siirtää päivitetyt tiedoston oikeisiin paikkoihin
-sudo cp ~/Linux-Repo/lemp-app.service /etc/systemd/system/lemp-app.service
-sudo cp ~/Linux-Repo/index.html /var/www/html/index.html
-sudo cp ~/Linux-Repo/index_chat.html /var/www/html/chat/index_chat.html
-sudo cp ~/Linux-Repo/lemp-app /etc/nginx/sites-available/lemp-app
-sudo cp ~/Linux-Repo/mosquitto.conf /home/ubuntu/mqtt-chat/mosquitto/config/mosquitto.conf
-sudo cp ~/Linux-Repo/docker-compose.yml /home/ubuntu/mqtt-chat/docker-compose.yml
-sudo cp ~/Linux-Repo/mqtt-logger.service /etc/systemd/system/mqtt-logger.service
-sudo cp ~/Linux-Repo/mqtt_logger.sh /home/ubuntu/mqtt-chat/mqtt_logger.sh
-sudo cp ~/Linux-Repo/api.sh /home/ubuntu/mqtt-chat/api.sh
-sudo cp ~/Linux-Repo/mqtt-api.service /etc/systemd/system/mqtt-api.service
+sudo cp ~/Linux-Repo/app.py /home/ubuntu/lemp-containers/backend/app.py
+# sudo cp ~/Linux-Repo/lemp-app.service /etc/systemd/system/lemp-app.service
+# sudo cp ~/Linux-Repo/index.html /var/www/html/index.html
+# sudo cp ~/Linux-Repo/index_chat.html /var/www/html/chat/index_chat.html
+# sudo cp ~/Linux-Repo/lemp-app /etc/nginx/sites-available/lemp-app
+# sudo cp ~/Linux-Repo/mosquitto.conf /home/ubuntu/mqtt-chat/mosquitto/config/mosquitto.conf
+# sudo cp ~/Linux-Repo/docker-compose.yml /home/ubuntu/mqtt-chat/docker-compose.yml
+# sudo cp ~/Linux-Repo/mqtt-logger.service /etc/systemd/system/mqtt-logger.service
+# sudo cp ~/Linux-Repo/mqtt_logger.sh /home/ubuntu/mqtt-chat/mqtt_logger.sh
+# sudo cp ~/Linux-Repo/api.sh /home/ubuntu/mqtt-chat/api.sh
+# sudo cp ~/Linux-Repo/mqtt-api.service /etc/systemd/system/mqtt-api.service
 
-# Anonymisoidut - Jos muokkauksia on tehty, poista kommentointi ja palauta rivit
-# sudo cp ~/Linux-Repo/mqtt_logger.py /home/ubuntu/mqtt-chat/mqtt_logger.py
-# sudo cp ~/Linux-Repo/api.py /home/ubuntu/mqtt-chat/api.py
 
 # Startataan service uudelleen
 sudo systemctl daemon-reload
