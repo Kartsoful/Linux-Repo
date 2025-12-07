@@ -6,6 +6,7 @@ echo "Päivitetään lemp-containers repoa..."
 git pull
 
 # siirtää päivitetyt tiedoston oikeisiin paikkoihin
+# Tuli tehtyä samalla myös docker-LEMP-kontti
 sudo cp ~/Linux-Repo/backend/requirements.txt /home/ubuntu/lemp-containers/backend/requirements.txt
 sudo cp ~/Linux-Repo/backend/Dockerfile /home/ubuntu/lemp-containers/backend/Dockerfile
 sudo cp ~/Linux-Repo/frontend/index.html /home/ubuntu/lemp-containers/frontend/index.html
@@ -17,6 +18,16 @@ sudo cp ~/Linux-Repo/docker-compose.prod.yml /home/ubuntu/lemp-containers/docker
 # Anonymisoidut
 # sudo cp ~/Linux-Repo/db/init/init.sql /home/ubuntu/lemp-containers/db/init/init.sql
 # sudo cp ~/Linux-Repo/backend/app.py /home/ubuntu/lemp-containers/backend/app.py
+
+
+
+# Varsinainen kubernetes
+sudo cp ~/Linux-Repo/mysql-deployment.yaml /home/ubuntu/kube/mysql-deployment.yaml
+
+# Anonymisoidut
+# sudo cp ~/Linux-Repo/mysql-secret.yaml /home/ubuntu/kube/mysql-secret.yaml
+
+
 
 
 echo "Päivitys valmis!"
