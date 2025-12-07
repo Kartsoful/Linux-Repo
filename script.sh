@@ -2,8 +2,7 @@
 
 # Scriptillä ladataan git repo ja siirretään
 # päivitetyt tiedostot niille kuuluville sijainneille
-
-cd /home/ubuntu/Linux-Repo/
+echo "Päivitetään lemp-containers repoa..."
 git pull
 
 # siirtää päivitetyt tiedoston oikeisiin paikkoihin
@@ -18,12 +17,6 @@ sudo cp ~/Linux-Repo/docker-compose.prod.yml /home/ubuntu/lemp-containers/docker
 # Anonymisoidut
 # sudo cp ~/Linux-Repo/db/init/init.sql /home/ubuntu/lemp-containers/db/init/init.sql
 # sudo cp ~/Linux-Repo/backend/app.py /home/ubuntu/lemp-containers/backend/app.py
-
-
-# Startataan service uudelleen
-sudo systemctl daemon-reload
-# sudo systemctl reload nginx
-# sudo systemctl restart lemp-app
 
 
 echo "Päivitys valmis!"
