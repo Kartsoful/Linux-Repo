@@ -15,8 +15,8 @@ sudo cp ~/Linux-Repo/frontend/Dockerfile /home/ubuntu/lemp-containers/frontend/D
 sudo cp ~/Linux-Repo/docker-compose.dev.yml /home/ubuntu/lemp-containers/docker-compose.dev.yml
 
 # Anonymisoidut
-# sudo cp ~/Linux-Repo/db/init/init.sql /home/ubuntu/lemp-containers/db/init/init.sql
-# sudo cp ~/Linux-Repo/backend/app.py /home/ubuntu/lemp-containers/backend/app.py
+sudo cp ~/Linux-Repo/db/init/init.sql /home/ubuntu/lemp-containers/db/init/init.sql
+sudo cp ~/Linux-Repo/backend/app.py /home/ubuntu/lemp-containers/backend/app.py
 
 
 # Startataan service uudelleen
