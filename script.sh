@@ -7,7 +7,10 @@ cd /home/ubuntu/Linux-Repo/
 git pull
 
 # siirtää päivitetyt tiedoston oikeisiin paikkoihin
-sudo cp ~/Linux-Repo/app.py /home/ubuntu/lemp-containers/backend/app.py
+sudo cp ~/Linux-Repo/backend/app.py /home/ubuntu/lemp-containers/backend/app.py
+sudo cp ~/Linux-Repo/backend/requirements.txt /home/ubuntu/lemp-containers/backend/requirements.txt
+sudo cp ~/Linux-Repo/backend/Dockerfile /home/ubuntu/lemp-containers/backend/Dockerfile
+
 # sudo cp ~/Linux-Repo/lemp-app.service /etc/systemd/system/lemp-app.service
 # sudo cp ~/Linux-Repo/index.html /var/www/html/index.html
 # sudo cp ~/Linux-Repo/index_chat.html /var/www/html/chat/index_chat.html
