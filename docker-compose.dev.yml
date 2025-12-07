@@ -1,4 +1,5 @@
 version: "3.9"
+
 services:
   db:
     image: mysql:8.4
@@ -13,29 +14,29 @@ services:
       timeout: 3s
       retries: 20
 
-backend:
-  build:
-    context: .
-    dockerfile: backend/Dockerfile
-  environment:
-    DB_HOST: ${DB_HOST}
-    DB_USER: ${DB_USER}
-    DB_PASSWORD: ${DB_PASSWORD}
-    DB_NAME: ${DB_NAME}
-  depends_on:
-    db:
-      condition: service_healthy
-  ports:
-    - "8000:8000" # optional for direct dev testing
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8000:8000" # optional for direct dev testing
 
-frontend:
-  build:
-    context: .
-    dockerfile: frontend/Dockerfile
-  depends_on:
-    - backend
-  ports:
-    - "8080:80"
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    depends_on:
+      - backend
+    ports:
+      - "8080:80"
 
-volumes:
-  db_data:
+  volumes:
+    db_data:
