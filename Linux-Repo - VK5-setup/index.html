@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tervetuloa Chattiin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Yleiset Tyylit */
+        :root {
+            --primary-color: #0d1117; 
+            --secondary-color: #161b22; 
+            --text-color: #f0f6fc; 
+            --accent-color: #38a169; 
+            --shadow-color: rgba(56, 161, 105, 0.4);
+            --font-stack: 'Montserrat', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-stack);
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        /* Stack & Container Tyylit */
+        .stack {
+            width: 100%;
+            padding: 20px;
+        }
+
+        .container.variant-a {
+            background-color: var(--secondary-color);
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            padding: 40px 30px;
+            max-width: 400px;
+            margin: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .container.variant-a:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Otsikot & Kappaleet */
+        h1 {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: var(--accent-color);
+            text-shadow: 0 0 5px var(--shadow-color);
+        }
+
+        p {
+            font-size: 1.1em;
+            font-weight: 500;
+            margin-top: 0;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        /* Toiminnot (Nappi) */
+        .actions {
+            margin-bottom: 25px;
+        }
+
+        .button {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            text-decoration: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1em;
+            letter-spacing: 0.5px;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0 15px var(--shadow-color); 
+            border: none;
+        }
+
+        .button:hover {
+            background-color: #48bb78; 
+            box-shadow: 0 0 20px var(--accent-color);
+        }
+        
+        .button span {
+            display: block;
+        }
+
+        
+        .hint {
+            display: block;
+            font-size: 0.85em;
+            font-weight: 300;
+            opacity: 0.6;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="stack">
+        <div class="container variant-a">
+            <h1>Welcome</h1>
+            <p>Tervetuloa chattiin</p>
+            <div class="actions">
+                <a href="/chat" class="button">
+                    <span>Go to Chat</span>
+                </a>
+            </div>
+            <small class="hint">Click to start chatting</small>
+        </div>
+    </div>
+</body>
+</html>
