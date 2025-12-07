@@ -3,8 +3,8 @@ import os
 import mysql.connector
 app = Flask(__name__)
 DB_HOST = os.getenv('DB_HOST', 'db')
-DB_USER = os.getenv('DB_USER', 'appuser')
-DB_PASSWORD = os.getenv('DB_PASSWORD', 'changeme')
+DB_USER = os.getenv('DB_USER', 'kartso')
+DB_PASSWORD = os.getenv('DB_PASSWORD', 'kartso123')
 DB_NAME = os.getenv('DB_NAME', 'appdb')
 
 @app.get('/api/health')
