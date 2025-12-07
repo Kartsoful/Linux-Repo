@@ -7,7 +7,6 @@ cd /home/ubuntu/Linux-Repo/
 git pull
 
 # siirtää päivitetyt tiedoston oikeisiin paikkoihin
-sudo cp ~/Linux-Repo/backend/app.py /home/ubuntu/lemp-containers/backend/app.py
 sudo cp ~/Linux-Repo/backend/requirements.txt /home/ubuntu/lemp-containers/backend/requirements.txt
 sudo cp ~/Linux-Repo/backend/Dockerfile /home/ubuntu/lemp-containers/backend/Dockerfile
 sudo cp ~/Linux-Repo/frontend/index.html /home/ubuntu/lemp-containers/frontend/index.html
@@ -17,6 +16,7 @@ sudo cp ~/Linux-Repo/docker-compose.dev.yml /home/ubuntu/lemp-containers/docker-
 
 # Anonymisoidut
 # sudo cp ~/Linux-Repo/db/init/init.sql /home/ubuntu/lemp-containers/db/init/init.sql
+# sudo cp ~/Linux-Repo/backend/app.py /home/ubuntu/lemp-containers/backend/app.py
 
 
 # Startataan service uudelleen
