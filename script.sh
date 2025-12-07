@@ -14,6 +14,7 @@ sudo cp ~/Linux-Repo/frontend/index.html /home/ubuntu/lemp-containers/frontend/i
 sudo cp ~/Linux-Repo/frontend/nginx.conf /home/ubuntu/lemp-containers/frontend/nginx.conf
 sudo cp ~/Linux-Repo/frontend/Dockerfile /home/ubuntu/lemp-containers/frontend/Dockerfile
 sudo cp ~/Linux-Repo/db/init/init.sql /home/ubuntu/lemp-containers/db/init/init.sql
+sudo cp ~/Linux-Repo/docker-compose.dev.yml /home/ubuntu/lemp-containers/docker-compose.dev.yml
 
 
 # sudo cp ~/Linux-Repo/lemp-app.service /etc/systemd/system/lemp-app.service
