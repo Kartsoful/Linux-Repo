@@ -1,4 +1,4 @@
 CREATE DATABASE IF NOT EXISTS appdb;
-CREATE USER IF NOT EXISTS 'appuser'@'%' IDENTIFIED BY 'changeme';
-GRANT ALL PRIVILEGES ON appdb.* TO 'appuser'@'%';
+CREATE USER IF NOT EXISTS 'kartso'@'localhost' IDENTIFIED BY 'kartso123';
+GRANT ALL PRIVILEGES ON appdb.* TO 'kartso'@'localhost';
 FLUSH PRIVILEGES;
