@@ -12,6 +12,7 @@ sudo cp ~/Linux-Repo/backend/requirements.txt /home/ubuntu/lemp-containers/backe
 sudo cp ~/Linux-Repo/backend/Dockerfile /home/ubuntu/lemp-containers/backend/Dockerfile
 sudo cp ~/Linux-Repo/frontend/index.html /home/ubuntu/lemp-containers/frontend/index.html
 sudo cp ~/Linux-Repo/frontend/nginx.conf /home/ubuntu/lemp-containers/frontend/nginx.conf
+sudo cp ~/Linux-Repo/frontend/Dockerfile /home/ubuntu/lemp-containers/frontend/Dockerfile
 
 # sudo cp ~/Linux-Repo/lemp-app.service /etc/systemd/system/lemp-app.service
 # sudo cp ~/Linux-Repo/index.html /var/www/html/index.html
