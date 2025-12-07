@@ -13,28 +13,18 @@ sudo cp ~/Linux-Repo/backend/Dockerfile /home/ubuntu/lemp-containers/backend/Doc
 sudo cp ~/Linux-Repo/frontend/index.html /home/ubuntu/lemp-containers/frontend/index.html
 sudo cp ~/Linux-Repo/frontend/nginx.conf /home/ubuntu/lemp-containers/frontend/nginx.conf
 sudo cp ~/Linux-Repo/frontend/Dockerfile /home/ubuntu/lemp-containers/frontend/Dockerfile
-sudo cp ~/Linux-Repo/db/init/init.sql /home/ubuntu/lemp-containers/db/init/init.sql
 sudo cp ~/Linux-Repo/docker-compose.dev.yml /home/ubuntu/lemp-containers/docker-compose.dev.yml
 
-
-# sudo cp ~/Linux-Repo/lemp-app.service /etc/systemd/system/lemp-app.service
-# sudo cp ~/Linux-Repo/index.html /var/www/html/index.html
-# sudo cp ~/Linux-Repo/index_chat.html /var/www/html/chat/index_chat.html
-# sudo cp ~/Linux-Repo/lemp-app /etc/nginx/sites-available/lemp-app
-# sudo cp ~/Linux-Repo/mosquitto.conf /home/ubuntu/mqtt-chat/mosquitto/config/mosquitto.conf
-# sudo cp ~/Linux-Repo/docker-compose.yml /home/ubuntu/mqtt-chat/docker-compose.yml
-# sudo cp ~/Linux-Repo/mqtt-logger.service /etc/systemd/system/mqtt-logger.service
-# sudo cp ~/Linux-Repo/mqtt_logger.sh /home/ubuntu/mqtt-chat/mqtt_logger.sh
-# sudo cp ~/Linux-Repo/api.sh /home/ubuntu/mqtt-chat/api.sh
-# sudo cp ~/Linux-Repo/mqtt-api.service /etc/systemd/system/mqtt-api.service
+# Anonymisoidut
+# sudo cp ~/Linux-Repo/db/init/init.sql /home/ubuntu/lemp-containers/db/init/init.sql
 
 
 # Startataan service uudelleen
-sudo systemctl daemon-reload
-sudo systemctl reload nginx
-sudo systemctl restart lemp-app
-sudo systemctl restart streamlit
-sudo systemctl restart btc-trend
+# sudo systemctl daemon-reload
+# sudo systemctl reload nginx
+# sudo systemctl restart lemp-app
+# sudo systemctl restart streamlit
+# sudo systemctl restart btc-trend
 
 echo "Päivitys valmis!"
 
