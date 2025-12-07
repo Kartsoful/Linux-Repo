@@ -7,5 +7,3 @@ http://86.50.20.94/
 
 Linkki VK6 harjoitukseen (kesken):
 http://86.50.20.24/
-
-testi
