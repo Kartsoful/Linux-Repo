@@ -20,11 +20,10 @@ sudo cp ~/Linux-Repo/docker-compose.dev.yml /home/ubuntu/lemp-containers/docker-
 
 
 # Startataan service uudelleen
-# sudo systemctl daemon-reload
+sudo systemctl daemon-reload
 # sudo systemctl reload nginx
 # sudo systemctl restart lemp-app
-# sudo systemctl restart streamlit
-# sudo systemctl restart btc-trend
+
 
 echo "Päivitys valmis!"
 
