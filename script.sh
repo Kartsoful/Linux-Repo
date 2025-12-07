@@ -10,6 +10,7 @@ git pull
 sudo cp ~/Linux-Repo/backend/app.py /home/ubuntu/lemp-containers/backend/app.py
 sudo cp ~/Linux-Repo/backend/requirements.txt /home/ubuntu/lemp-containers/backend/requirements.txt
 sudo cp ~/Linux-Repo/backend/Dockerfile /home/ubuntu/lemp-containers/backend/Dockerfile
+sudo cp ~/Linux-Repo/frontend/index.html /home/ubuntu/lemp-containers/frontend/index.html
 
 # sudo cp ~/Linux-Repo/lemp-app.service /etc/systemd/system/lemp-app.service
 # sudo cp ~/Linux-Repo/index.html /var/www/html/index.html
