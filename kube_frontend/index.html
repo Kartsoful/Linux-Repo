@@ -88,29 +88,29 @@
             }
         }
 
-        async function addUser() {
-            const name = prompt("Enter name:");
-            const email = prompt("Enter email:");
+        // async function addUser() {
+        //     const name = prompt("Enter name:");
+        //     const email = prompt("Enter email:");
 
-            if (!name || !email) {
-                resultDiv.textContent = "Error: Name or email missing.";
-                return;
-            }
+        //     if (!name || !email) {
+        //         resultDiv.textContent = "Error: Name or email missing.";
+        //         return;
+        //     }
 
-            try {
-                const response = await fetch('api/add-user', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, email })
-                });
+        //     try {
+        //         const response = await fetch('api/add-user', {
+        //             method: 'POST',
+        //             headers: { 'Content-Type': 'application/json' },
+        //             body: JSON.stringify({ name, email })
+        //         });
 
-                const data = await response.json();
-                resultDiv.textContent = 'Add User: ' + JSON.stringify(data, null, 2);
-            } catch (error) {
-                resultDiv.textContent = 'Error: ' + error.message;
-            }
-        }
-        
+        //         const data = await response.json();
+        //         resultDiv.textContent = 'Add User: ' + JSON.stringify(data, null, 2);
+        //     } catch (error) {
+        //         resultDiv.textContent = 'Error: ' + error.message;
+        //     }
+        // }
+
     </script>
 </body>
 </html>
