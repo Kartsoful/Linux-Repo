@@ -35,12 +35,7 @@ server {
     
     # Minikube palvelun proxy
     location /kube/ {
-        # ← Kun käyttäjä avaa: http://203.0.113.50/kube
-        #    Nginx ohjaa pyynnön Minikubeen:
-
         proxy_pass http://192.168.49.2:30336/;
-        #              ↑            ↑        ↑
-        #              Minikube IP  NodePort  Path
 
         # HTTP-headerit välitetään:
         proxy_set_header Host $host;                    # → Alkuperäinen host
