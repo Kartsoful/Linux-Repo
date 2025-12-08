@@ -42,7 +42,8 @@
 <body>
     <div class="container">
         <h1>LEMP Stack on Kubernetes</h1>
-        <p>Frontend: Nginx | Backend: Python/Flask | Database: MySQL | Add user</p>
+        <p>Frontend: Nginx | Backend: Python/Flask | Database: MySQL</p>
+
         <div>
             <button onclick="checkHealth()">Check Backend Health</button>
             <button onclick="initDB()">Initialize Database</button>
@@ -54,11 +55,10 @@
 
     <script>
         const resultDiv = document.getElementById('result');
-        const API_BASE = '/kube/api';
 
         async function checkHealth() {
             try {
-                const response = await fetch(API_BASE + '/health');
+                const response = await fetch('/api/health');
                 const data = await response.json();
                 resultDiv.textContent = 'Health Check: ' + JSON.stringify(data, null, 2);
             } catch (error) {
@@ -68,7 +68,7 @@
 
         async function initDB() {
             try {
-                const response = await fetch(API_BASE + '/init-db');
+                const response = await fetch('/api/init-db');
                 const data = await response.json();
                 resultDiv.textContent = 'DB Init: ' + JSON.stringify(data, null, 2);
             } catch (error) {
@@ -78,14 +78,13 @@
 
         async function getUsers() {
             try {
-                const response = await fetch(API_BASE + '/users');
+                const response = await fetch('/api/users');
                 const data = await response.json();
                 resultDiv.textContent = 'Users: ' + JSON.stringify(data, null, 2);
             } catch (error) {
                 resultDiv.textContent = 'Error: ' + error.message;
             }
         }
-
     </script>
 </body>
 </html>
