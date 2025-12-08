@@ -13,7 +13,7 @@ server {
         try_files $uri $uri/ /chat/index_chat.html;
     }
 
-    WebSocket proxy MQTT brokerille
+    # WebSocket proxy MQTT brokerille
     location /mqtt {
         proxy_pass http://127.0.0.1:9001;
         proxy_http_version 1.1;
@@ -24,6 +24,7 @@ server {
         proxy_send_timeout 86400;
     }
 
+    # API proxy Flask-sovellukselle
     location /api/ {
         proxy_pass http://127.0.0.1:5001/api/;
         proxy_set_header Host $host;
@@ -32,6 +33,7 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
     }
     
+    # Minikube palvelun proxy
     location /kube {
         # ← Kun käyttäjä avaa: http://203.0.113.50/kube
         #    Nginx ohjaa pyynnön Minikubeen:
