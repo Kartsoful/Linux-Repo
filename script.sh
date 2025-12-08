@@ -39,7 +39,9 @@ sudo cp ~/Linux-Repo/lemp-app /etc/nginx/sites-available/lemp-app
 # Anonymisoidut
 # sudo cp ~/Linux-Repo/mysql-secret.yaml /home/ubuntu/kube/mysql-secret.yaml
 
-
+sudo systemctl reload nginx
+sudo systemctl daemon-reload
+sudo systemctl restart lemp-app
 
 
 echo "Päivitys valmis!"
