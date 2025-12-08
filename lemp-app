@@ -34,7 +34,7 @@ server {
     # }
     
     # Minikube palvelun proxy
-    location /kube/ {
+    location /kube {
         proxy_pass http://192.168.49.2:30336/;
 
         # HTTP-headerit välitetään:
