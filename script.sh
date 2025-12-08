@@ -6,14 +6,14 @@ echo "Päivitetään lemp-containers repoa..."
 git pull
 
 # siirtää päivitetyt tiedoston oikeisiin paikkoihin
-# Tuli tehtyä samalla myös docker-LEMP-kontti
-sudo cp ~/Linux-Repo/docker_backend/requirements.txt /home/ubuntu/lemp-containers/backend/requirements.txt
-sudo cp ~/Linux-Repo/docker_backend/Dockerfile /home/ubuntu/lemp-containers/backend/Dockerfile
-sudo cp ~/Linux-Repo/docker_frontend/index.html /home/ubuntu/lemp-containers/frontend/index.html
-sudo cp ~/Linux-Repo/docker_frontend/nginx.conf /home/ubuntu/lemp-containers/frontend/nginx.conf
-sudo cp ~/Linux-Repo/docker_frontend/Dockerfile /home/ubuntu/lemp-containers/frontend/Dockerfile
-sudo cp ~/Linux-Repo/docker_yml-files/docker-compose.dev.yml /home/ubuntu/lemp-containers/docker-compose.dev.yml
-sudo cp ~/Linux-Repo/docker_yml-files/docker-compose.prod.yml /home/ubuntu/lemp-containers/docker-compose.prod.yml
+# # Tuli tehtyä samalla myös docker-LEMP-kontti
+# sudo cp ~/Linux-Repo/docker_backend/requirements.txt /home/ubuntu/lemp-containers/backend/requirements.txt
+# sudo cp ~/Linux-Repo/docker_backend/Dockerfile /home/ubuntu/lemp-containers/backend/Dockerfile
+# sudo cp ~/Linux-Repo/docker_frontend/index.html /home/ubuntu/lemp-containers/frontend/index.html
+# sudo cp ~/Linux-Repo/docker_frontend/nginx.conf /home/ubuntu/lemp-containers/frontend/nginx.conf
+# sudo cp ~/Linux-Repo/docker_frontend/Dockerfile /home/ubuntu/lemp-containers/frontend/Dockerfile
+# sudo cp ~/Linux-Repo/docker_yml-files/docker-compose.dev.yml /home/ubuntu/lemp-containers/docker-compose.dev.yml
+# sudo cp ~/Linux-Repo/docker_yml-files/docker-compose.prod.yml /home/ubuntu/lemp-containers/docker-compose.prod.yml
 
 # Anonymisoidut
 # sudo cp ~/Linux-Repo/docker_db/init/init.sql /home/ubuntu/lemp-containers/db/init/init.sql
