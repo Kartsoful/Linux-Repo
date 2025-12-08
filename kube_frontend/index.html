@@ -54,6 +54,7 @@
     </div>
 
     <script>
+        const API_BASE_URL = 'http://86.50.20.24:5000';
         const resultDiv = document.getElementById('result');
 
         async function checkHealth() {
@@ -78,7 +79,7 @@
 
         async function getUsers() {
             try {
-                const response = await fetch('/api/users');
+                const response = await fetch(`${API_BASE_URL}/api/users`);
                 const data = await response.json();
                 resultDiv.textContent = 'Users: ' + JSON.stringify(data, null, 2);
             } catch (error) {
