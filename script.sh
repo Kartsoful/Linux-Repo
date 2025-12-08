@@ -29,7 +29,7 @@ sudo cp ~/Linux-Repo/kube_backend/requirements.txt /home/ubuntu/kube/backend/req
 sudo cp ~/Linux-Repo/kube_backend/Dockerfile /home/ubuntu/kube/backend/Dockerfile
 
 # Anonymisoidut
-# sudo cp ~/Linux-Repo/mysql-secret.yaml /home/ubuntu/kube/mysql-secret.yaml
+sudo cp ~/Linux-Repo/mysql-secret.yaml /home/ubuntu/kube/mysql-secret.yaml
 
 
 
