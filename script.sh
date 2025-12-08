@@ -26,9 +26,15 @@ sudo cp ~/Linux-Repo/mysql-deployment.yaml /home/ubuntu/kube/mysql-deployment.ya
 sudo cp ~/Linux-Repo/mysql-pvc.yaml /home/ubuntu/kube/mysql-pvc.yaml
 sudo cp ~/Linux-Repo/backend-configmap.yaml /home/ubuntu/kube/backend-configmap.yaml
 sudo cp ~/Linux-Repo/backend-deployment.yaml /home/ubuntu/kube/backend-deployment.yaml
+sudo cp ~/Linux-Repo/frontend-deployment.yaml /home/ubuntu/kube/frontend-deployment.yaml
 sudo cp ~/Linux-Repo/kube_backend/app.py /home/ubuntu/kube/backend/app.py
 sudo cp ~/Linux-Repo/kube_backend/requirements.txt /home/ubuntu/kube/backend/requirements.txt
 sudo cp ~/Linux-Repo/kube_backend/Dockerfile /home/ubuntu/kube/backend/Dockerfile
+sudo cp ~/Linux-Repo/kube_frontend/nginx.conf /home/ubuntu/kube/frontend/nginx.conf
+sudo cp ~/Linux-Repo/kube_frontend/Dockerfile /home/ubuntu/kube/frontend/Dockerfile
+sudo cp ~/Linux-Repo/kube_frontend/index.html /home/ubuntu/kube/frontend/index.html
+
+
 
 # Anonymisoidut
 sudo cp ~/Linux-Repo/mysql-secret.yaml /home/ubuntu/kube/mysql-secret.yaml
