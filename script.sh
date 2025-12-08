@@ -35,9 +35,8 @@ sudo cp ~/Linux-Repo/kube_frontend/Dockerfile /home/ubuntu/kube/frontend/Dockerf
 sudo cp ~/Linux-Repo/kube_frontend/index.html /home/ubuntu/kube/frontend/index.html
 
 
-
 # Anonymisoidut
-sudo cp ~/Linux-Repo/mysql-secret.yaml /home/ubuntu/kube/mysql-secret.yaml
+# sudo cp ~/Linux-Repo/mysql-secret.yaml /home/ubuntu/kube/mysql-secret.yaml
 
 
 
