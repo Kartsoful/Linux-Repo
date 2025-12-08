@@ -25,6 +25,8 @@ sudo cp ~/Linux-Repo/docker-compose.prod.yml /home/ubuntu/lemp-containers/docker
 sudo cp ~/Linux-Repo/mysql-deployment.yaml /home/ubuntu/kube/mysql-deployment.yaml
 sudo cp ~/Linux-Repo/mysql-pvc.yaml /home/ubuntu/kube/mysql-pvc.yaml
 sudo cp ~/Linux-Repo/kube_backend/app.py /home/ubuntu/kube/backend/app.py
+sudo cp ~/Linux-Repo/kube_backend/requirements.txt /home/ubuntu/kube/backend/requirements.txt
+sudo cp ~/Linux-Repo/kube_backend/Dockerfile /home/ubuntu/kube/backend/Dockerfile
 
 # Anonymisoidut
 # sudo cp ~/Linux-Repo/mysql-secret.yaml /home/ubuntu/kube/mysql-secret.yaml
