@@ -33,6 +33,7 @@ sudo cp ~/Linux-Repo/kube_backend/Dockerfile /home/ubuntu/kube/backend/Dockerfil
 sudo cp ~/Linux-Repo/kube_frontend/nginx.conf /home/ubuntu/kube/frontend/nginx.conf
 sudo cp ~/Linux-Repo/kube_frontend/Dockerfile /home/ubuntu/kube/frontend/Dockerfile
 sudo cp ~/Linux-Repo/kube_frontend/index.html /home/ubuntu/kube/frontend/index.html
+sudo cp ~/Linux-Repo/lemp-app /etc/nginx/sites-available/lemp-app
 
 
 # Anonymisoidut
