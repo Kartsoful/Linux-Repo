@@ -64,11 +64,12 @@
             opacity: 0.9;
         }
 
-        .actions {
+        .block {
             margin-bottom: 25px;
-            display: flex;
-            justify-content: center;
-            gap: 15px; /* nappien väli */
+            padding: 20px;
+            background-color: #21262d;
+            border-radius: 10px;
+            border: 1px solid #30363d;
         }
 
         .button {
@@ -90,7 +91,7 @@
             background-color: #48bb78; 
             box-shadow: 0 0 20px var(--accent-color);
         }
-        
+
         .button span {
             display: block;
         }
@@ -108,16 +109,23 @@
     <div class="stack">
         <div class="container variant-a">
             <h1>Welcome</h1>
-            <p>Tervetuloa chattiin</p>
-            <div class="actions">
+            <p>Tervetuloa harjoituksiin</p>
+
+            <div class="block">
+                <p>VK5-harjoitus</p>
                 <a href="/chat" class="button">
                     <span>Go to Chat</span>
                 </a>
+            </div>
+
+            <div class="block">
+                <p>VK6-harjoitus</p>
                 <a href="/kube" class="button">
                     <span>Kubernetes</span>
                 </a>
             </div>
-            <small class="hint">Click to start chatting or access Kubernetes</small>
+
+            <small class="hint">Valitse harjoitus painamalla nappia</small>
         </div>
     </div>
 </body>
