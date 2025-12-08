@@ -32,7 +32,7 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
     }
     
-    location /kube/ {
+    location /kube {
         # ← Kun käyttäjä avaa: http://203.0.113.50/kube
         #    Nginx ohjaa pyynnön Minikubeen:
 
