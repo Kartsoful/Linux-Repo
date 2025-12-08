@@ -24,6 +24,7 @@ sudo cp ~/Linux-Repo/docker_yml-files/docker-compose.prod.yml /home/ubuntu/lemp-
 # Varsinainen kubernetes
 sudo cp ~/Linux-Repo/mysql-deployment.yaml /home/ubuntu/kube/mysql-deployment.yaml
 sudo cp ~/Linux-Repo/mysql-pvc.yaml /home/ubuntu/kube/mysql-pvc.yaml
+sudo cp ~/Linux-Repo/backend-configmap.yaml /home/ubuntu/kube/backend-configmap.yaml
 sudo cp ~/Linux-Repo/kube_backend/app.py /home/ubuntu/kube/backend/app.py
 sudo cp ~/Linux-Repo/kube_backend/requirements.txt /home/ubuntu/kube/backend/requirements.txt
 sudo cp ~/Linux-Repo/kube_backend/Dockerfile /home/ubuntu/kube/backend/Dockerfile
