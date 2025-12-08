@@ -48,6 +48,7 @@
             <button onclick="checkHealth()">Check Backend Health</button>
             <button onclick="initDB()">Initialize Database</button>
             <button onclick="getUsers()">Get Users</button>
+            <button onclick="addUser()">Add User</button>
         </div>
 
         <div id="result"></div>
@@ -82,6 +83,29 @@
                 const response = await fetch(API_BASE + '/users');
                 const data = await response.json();
                 resultDiv.textContent = 'Users: ' + JSON.stringify(data, null, 2);
+            } catch (error) {
+                resultDiv.textContent = 'Error: ' + error.message;
+            }
+        }
+
+        async function addUser() {
+            const name = prompt("Enter name:");
+            const email = prompt("Enter email:");
+
+            if (!name || !email) {
+                resultDiv.textContent = "Error: Name or email missing.";
+                return;
+            }
+
+            try {
+                const response = await fetch('api/add-user', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email })
+                });
+
+                const data = await response.json();
+                resultDiv.textContent = 'Add User: ' + JSON.stringify(data, null, 2);
             } catch (error) {
                 resultDiv.textContent = 'Error: ' + error.message;
             }
