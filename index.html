@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tervetuloa Chattiin</title>
+    <title>Linux harjoituksia</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        /* CSS-muuttujat helpottamaan teeman hallintaa (dark mode -tyyli) */
+        /* CSS-muuttujat: Muutettu vaaleaan teemaan */
         :root {
-            --primary-color: #0d1117; /* Tausta, tumma */
-            --secondary-color: #161b22; /* Konttien tausta */
-            --text-color: #f0f6fc; /* Vaalea teksti */
-            --accent-color: #38a169; /* Korostusväri (vihreä) */
-            --shadow-color: rgba(56, 161, 105, 0.4); /* Korostusvarjon väri */
+            --primary-color: #f4f7f9; /* Vaaleanharmaa tausta */
+            --secondary-color: #ffffff; /* Konttien tausta (valkoinen) */
+            --text-color: #333333; /* Tumma teksti */
+            --accent-color: #007bff; /* Kirkas sininen korostusväri */
+            --shadow-color: rgba(0, 123, 255, 0.3); /* Sininen varjo */
             --font-stack: 'Montserrat', sans-serif;
         }
 
@@ -23,8 +23,8 @@
             margin: 0;
             padding: 0;
             display: flex;
-            justify-content: center; /* Keskittää sisällön vaakasuunnassa */
-            align-items: center; /* Keskittää sisällön pystysuunnassa */
+            justify-content: center;
+            align-items: center;
             min-height: 100vh;
         }
 
@@ -35,18 +35,20 @@
 
         .container.variant-a {
             background-color: var(--secondary-color);
-            border: 1px solid #30363d;
-            border-radius: 12px;
+            border: none; /* Poistettu tumma reuna */
+            border-radius: 16px; /* Hieman pyöreämmät kulmat */
             padding: 40px 30px;
-            max-width: 750px; /* Leveämpi kontti kahdelle vierekkäiselle lohkolle */
+            max-width: 750px;
             margin: auto;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            /* Pehmeämpi ja vaaleampi varjo */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); 
             transition: transform 0.3s ease-in-out;
-            text-align: center; /* Keskittää tekstit kontin sisällä */
+            text-align: center;
         }
 
         .container.variant-a:hover {
             transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15); /* Varjo kasvaa hoverissa */
         }
 
         h1 {
@@ -54,7 +56,7 @@
             font-weight: 700;
             margin-bottom: 5px;
             color: var(--accent-color);
-            text-shadow: 0 0 5px var(--shadow-color);
+            text-shadow: none; /* Poistettu varjo otsikosta */
         }
 
         p {
@@ -62,44 +64,53 @@
             font-weight: 500;
             margin-top: 0;
             margin-bottom: 30px;
-            opacity: 0.9;
+            color: var(--text-color);
+            opacity: 0.85; /* Tekstin kirkkaus */
         }
 
-        /* Flexbox-kontti, joka asettaa harjoituslohkot vierekkäin */
         .blocks-container {
             display: flex;
-            gap: 20px; /* Väli lohkojen välillä */
+            gap: 20px;
             margin-bottom: 25px; 
             padding-top: 15px;
         }
 
         .block {
-            margin-bottom: 0; /* Poistetaan aiempi marginaali */
-            padding: 20px;
-            background-color: #21262d;
-            border-radius: 10px;
-            border: 1px solid #30363d;
-            flex: 1; /* Antaa molemmille lohkoille yhtä suuren tilan */
+            margin-bottom: 0;
+            padding: 25px 20px; /* Pientä pystytilan lisäystä */
+            /* Vaaleampi sisälohkojen tausta */
+            background-color: #f8f9fa; 
+            border-radius: 12px;
+            border: 1px solid #e0e0e0; /* Vaalea, hienovarainen reuna */
+            flex: 1;
+        }
+        
+        /* Korvataan tummat tekstit .block-sisällä tummemmilla */
+        .block p {
+            color: #495057;
+            margin-bottom: 20px;
         }
 
         .button {
             display: inline-block;
             background-color: var(--accent-color);
-            color: var(--primary-color);
+            color: #ffffff; /* Valkoinen teksti napissa */
             text-decoration: none;
             padding: 12px 30px;
-            border-radius: 8px;
+            border-radius: 25px; /* Kapselin muotoinen nappi */
             font-weight: 700;
             font-size: 1em;
             letter-spacing: 0.5px;
             transition: background-color 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 0 15px var(--shadow-color); 
+            box-shadow: 0 4px 15px var(--shadow-color); /* Hienovarainen sininen varjo */
             border: none;
+            text-transform: uppercase; /* Tehdään napin tekstistä isoja kirjaimia */
         }
 
         .button:hover {
-            background-color: #48bb78; /* Hieman vaaleampi vihreä hoverissa */
-            box-shadow: 0 0 20px var(--accent-color);
+            background-color: #0056b3; /* Tummempi sininen hoverissa */
+            box-shadow: 0 6px 20px var(--shadow-color);
+            transform: translateY(-1px); /* Pieni nostoefekti */
         }
 
         .button span {
@@ -109,9 +120,20 @@
         .hint {
             display: block;
             font-size: 0.85em;
-            font-weight: 300;
-            opacity: 0.6;
+            font-weight: 400;
+            opacity: 0.7;
             margin-top: 15px;
+            color: var(--text-color);
+        }
+
+        /* Responsive design pienemmille näytöille */
+        @media (max-width: 600px) {
+            .blocks-container {
+                flex-direction: column;
+            }
+            .container.variant-a {
+                max-width: 100%;
+            }
         }
     </style>
 </head>
