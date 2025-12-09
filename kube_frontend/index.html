@@ -86,38 +86,6 @@
             }
         }
 
-        async function addUser() {
-            const name = document.getElementById('nameInput').value.trim();
-            const email = document.getElementById('emailInput').value.trim();
-
-            if (!name || !email) {
-                alert('Täytä sekä nimi että sähköposti!');
-                return;
-            }
-
-            try {
-                const response = await fetch('api/add-user', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({name: name, email: email})
-                });
-
-                const data = await response.json();
-
-                if (response.ok) {
-                    document.getElementById('result').textContent = 'Käyttäjä lisätty onnistuneesti!';
-                    // Tyhjennä kentät
-                    document.getElementById('nameInput').value = '';
-                    document.getElementById('emailInput').value = '';
-                } else {
-                    document.getElementById('result').textContent = 'Virhe: ' + data.error;
-                }
-            } catch (error) {
-                    document.getElementById('result').textContent = 'Virhe: ' + error.message;
-            }
-        }
-        
-
         async function getUsers() {
             try {
                 const response = await fetch('api/users');
