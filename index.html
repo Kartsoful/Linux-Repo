@@ -6,12 +6,13 @@
     <title>Tervetuloa Chattiin</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
+        /* CSS-muuttujat helpottamaan teeman hallintaa (dark mode -tyyli) */
         :root {
-            --primary-color: #0d1117; 
-            --secondary-color: #161b22; 
-            --text-color: #f0f6fc; 
-            --accent-color: #38a169; 
-            --shadow-color: rgba(56, 161, 105, 0.4);
+            --primary-color: #0d1117; /* Tausta, tumma */
+            --secondary-color: #161b22; /* Konttien tausta */
+            --text-color: #f0f6fc; /* Vaalea teksti */
+            --accent-color: #38a169; /* Korostusväri (vihreä) */
+            --shadow-color: rgba(56, 161, 105, 0.4); /* Korostusvarjon väri */
             --font-stack: 'Montserrat', sans-serif;
         }
 
@@ -22,10 +23,9 @@
             margin: 0;
             padding: 0;
             display: flex;
-            justify-content: center;
-            align-items: center;
+            justify-content: center; /* Keskittää sisällön vaakasuunnassa */
+            align-items: center; /* Keskittää sisällön pystysuunnassa */
             min-height: 100vh;
-            text-align: center;
         }
 
         .stack {
@@ -38,10 +38,11 @@
             border: 1px solid #30363d;
             border-radius: 12px;
             padding: 40px 30px;
-            max-width: 400px;
+            max-width: 750px; /* Leveämpi kontti kahdelle vierekkäiselle lohkolle */
             margin: auto;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             transition: transform 0.3s ease-in-out;
+            text-align: center; /* Keskittää tekstit kontin sisällä */
         }
 
         .container.variant-a:hover {
@@ -64,12 +65,21 @@
             opacity: 0.9;
         }
 
+        /* Flexbox-kontti, joka asettaa harjoituslohkot vierekkäin */
+        .blocks-container {
+            display: flex;
+            gap: 20px; /* Väli lohkojen välillä */
+            margin-bottom: 25px; 
+            padding-top: 15px;
+        }
+
         .block {
-            margin-bottom: 25px;
+            margin-bottom: 0; /* Poistetaan aiempi marginaali */
             padding: 20px;
             background-color: #21262d;
             border-radius: 10px;
             border: 1px solid #30363d;
+            flex: 1; /* Antaa molemmille lohkoille yhtä suuren tilan */
         }
 
         .button {
@@ -88,7 +98,7 @@
         }
 
         .button:hover {
-            background-color: #48bb78; 
+            background-color: #48bb78; /* Hieman vaaleampi vihreä hoverissa */
             box-shadow: 0 0 20px var(--accent-color);
         }
 
@@ -110,19 +120,22 @@
         <div class="container variant-a">
             <h1>Welcome</h1>
             <p>Tervetuloa harjoituksiin</p>
+            
+            <div class="blocks-container"> 
+                
+                <div class="block">
+                    <p>VK5-harjoitus</p>
+                    <a href="/chat" class="button">
+                        <span>Go to Chat</span>
+                    </a>
+                </div>
 
-            <div class="block">
-                <p>VK5-harjoitus</p>
-                <a href="/chat" class="button">
-                    <span>Go to Chat</span>
-                </a>
-            </div>
-
-            <div class="block">
-                <p>VK6-harjoitus</p>
-                <a href="/kube" class="button">
-                    <span>Kubernetes</span>
-                </a>
+                <div class="block">
+                    <p>VK6-harjoitus</p>
+                    <a href="/kube" class="button">
+                        <span>Kubernetes</span>
+                    </a>
+                </div>
             </div>
 
             <small class="hint">Valitse harjoitus painamalla nappia</small>
