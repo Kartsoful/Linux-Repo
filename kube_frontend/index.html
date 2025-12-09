@@ -153,6 +153,7 @@
         }
 
         async function initDB() {
+        window.alert("Database on alustettu. Lisätään 2 oletuskäyttäjää: John & Jane.");
             try {
                 const response = await fetch('api/init-db');
                 const data = await response.json();
