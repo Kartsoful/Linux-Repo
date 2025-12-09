@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LEMP Stack K8s Demo</title>
+    <base href="/kube/">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -43,6 +44,7 @@
     <div class="container">
         <h1>LEMP Stack on Kubernetes</h1>
         <p>Frontend: Nginx | Backend: Python/Flask | Database: MySQL</p>
+        <p><strong>Server:</strong> <span id="serverInfo"></span></p>
 
         <div>
             <button onclick="checkHealth()">Check Backend Health</button>
@@ -50,15 +52,23 @@
             <button onclick="getUsers()">Get Users</button>
         </div>
 
+        <div style="margin-top: 20px;">
+            <input type="text" id="nameInput" placeholder="Nimi" />
+            <input type="email" id="emailInput" placeholder="Sähköposti" />
+            <button onclick="addUser()">Add User</button>
+        </div>
+
         <div id="result"></div>
     </div>
 
     <script>
         const resultDiv = document.getElementById('result');
+        const serverInfo = document.getElementById('serverInfo');
+        serverInfo.textContent = window.location.href;
 
         async function checkHealth() {
             try {
-                const response = await fetch('/api/health');
+                const response = await fetch('api/health');
                 const data = await response.json();
                 resultDiv.textContent = 'Health Check: ' + JSON.stringify(data, null, 2);
             } catch (error) {
@@ -68,7 +78,7 @@
 
         async function initDB() {
             try {
-                const response = await fetch('/api/init-db');
+                const response = await fetch('api/init-db');
                 const data = await response.json();
                 resultDiv.textContent = 'DB Init: ' + JSON.stringify(data, null, 2);
             } catch (error) {
@@ -76,9 +86,41 @@
             }
         }
 
+        async function addUser() {
+            const name = document.getElementById('nameInput').value.trim();
+            const email = document.getElementById('emailInput').value.trim();
+
+            if (!name || !email) {
+                alert('Täytä sekä nimi että sähköposti!');
+                return;
+            }
+
+            try {
+                const response = await fetch('api/add-user', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({name: name, email: email})
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    document.getElementById('result').textContent = 'Käyttäjä lisätty onnistuneesti!';
+                    // Tyhjennä kentät
+                    document.getElementById('nameInput').value = '';
+                    document.getElementById('emailInput').value = '';
+                } else {
+                    document.getElementById('result').textContent = 'Virhe: ' + data.error;
+                }
+            } catch (error) {
+                    document.getElementById('result').textContent = 'Virhe: ' + error.message;
+            }
+        }
+        
+
         async function getUsers() {
             try {
-                const response = await fetch('/api/users');
+                const response = await fetch('api/users');
                 const data = await response.json();
                 resultDiv.textContent = 'Users: ' + JSON.stringify(data, null, 2);
             } catch (error) {

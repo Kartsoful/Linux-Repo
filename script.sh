@@ -33,12 +33,12 @@ sudo cp ~/Linux-Repo/kube_backend/Dockerfile /home/ubuntu/kube/backend/Dockerfil
 sudo cp ~/Linux-Repo/kube_frontend/nginx.conf /home/ubuntu/kube/frontend/nginx.conf
 sudo cp ~/Linux-Repo/kube_frontend/Dockerfile /home/ubuntu/kube/frontend/Dockerfile
 sudo cp ~/Linux-Repo/kube_frontend/index.html /home/ubuntu/kube/frontend/index.html
-sudo cp ~/Linux-Repo/lemp-app /etc/nginx/sites-available/lemp-app
-sudo cp ~/Linux-Repo/index.html /var/www/html/index.html
+# sudo cp ~/Linux-Repo/lemp-app /etc/nginx/sites-available/lemp-app
+# sudo cp ~/Linux-Repo/index.html /var/www/html/index.html
 
 
 # Anonymisoidut
-# sudo cp ~/Linux-Repo/mysql-secret.yaml /home/ubuntu/kube/mysql-secret.yaml
+sudo cp ~/Linux-Repo/mysql-secret.yaml /home/ubuntu/kube/mysql-secret.yaml
 
 sudo systemctl reload nginx
 sudo systemctl daemon-reload
