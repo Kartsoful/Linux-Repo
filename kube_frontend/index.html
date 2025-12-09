@@ -52,6 +52,12 @@
             <button onclick="getUsers()">Get Users</button>
         </div>
 
+        <div>
+            <input type="text" id="nameInput" placeholder="Name">
+            <input type="email" id="emailInput" placeholder="Email">
+            <button onclick="addUser()">Add User</button>
+        </div>
+
         <div id="result"></div>
     </div>
 
@@ -89,6 +95,30 @@
                 resultDiv.textContent = 'Error: ' + error.message;
             }
         }
+
+        async function addUser() {
+            const name = document.getElementById('nameInput').value;
+            const email = document.getElementById('emailInput').value;
+
+            if (!name || !email) {
+                resultDiv.textContent = 'Error: Name and email are required';
+                return;
+            }
+
+            try {
+                const response = await fetch('api/users', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email })
+                });
+                const data = await response.json();
+                resultDiv.textContent = 'Add User: ' + JSON.stringify(data, null, 2);
+                getUsers(); // Päivittää käyttäjälistan heti
+            } catch (error) {
+                resultDiv.textContent = 'Error: ' + error.message;
+            }
+        }
+
     </script>
 </body>
 </html>
