@@ -5,38 +5,114 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LEMP Stack K8s Demo</title>
     <base href="/kube/">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
+        /* Moderni tumma teema */
+        :root {
+            --bg-primary: #1e1e2f; 
+            --bg-secondary: #27293d; 
+            --text-color: #e0e0e0;
+            --accent-color: #6a82fb; /* Kirkas sininen */
+            --hover-color: #4f64d9;
+            --success-color: #48bb78; /* Vihreä onnistuneille viesteille */
+            --shadow-light: rgba(0, 0, 0, 0.4);
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
+            font-family: 'Roboto', sans-serif;
+            max-width: 900px;
             margin: 50px auto;
             padding: 20px;
-            background: #f5f5f5;
+            background: var(--bg-primary);
+            color: var(--text-color);
+            line-height: 1.6;
         }
+
         .container {
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background: var(--bg-secondary);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px var(--shadow-light);
         }
+
+        h1 {
+            color: var(--accent-color);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        
+        strong {
+            color: var(--text-color);
+        }
+
+        /* Flexbox nappien ja syötekenttien asetteluun */
+        .button-group, .input-group {
+            display: flex;
+            gap: 15px; /* Väli elementtien välillä */
+            margin-bottom: 20px;
+            flex-wrap: wrap; /* Salli rivitys pienemmillä näytöillä */
+        }
+        .input-group {
+            align-items: center; /* Keskittää syötekentät ja napin pystysuunnassa */
+        }
+
         button {
-            background: #007bff;
+            /* Yleinen nappityyli */
+            flex-grow: 1; /* Antaa napeille tilaa tasaisesti ryhmässä */
+            background: var(--accent-color);
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
+            padding: 12px 25px;
+            border-radius: 8px;
             cursor: pointer;
-            margin: 5px;
+            font-size: 1em;
+            font-weight: 700;
+            transition: background 0.3s ease, transform 0.1s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
         }
+        
         button:hover {
-            background: #0056b3;
+            background: var(--hover-color);
+            transform: translateY(-2px); /* Pieni nostoefekti */
         }
+        button:active {
+            transform: translateY(0);
+        }
+        /* Erillinen tyyli "Add User" -napille, jotta se näyttää erilaiselta */
+        .input-group button {
+            background: var(--success-color);
+        }
+        .input-group button:hover {
+            background: #38a169;
+        }
+
+
+        input[type="text"], input[type="email"] {
+            /* Syötekenttien tyylit tummaan teemaan */
+            flex: 1; 
+            padding: 12px;
+            border: 1px solid #4a4a68;
+            border-radius: 8px;
+            background-color: #1e1e2f;
+            color: var(--text-color);
+            transition: border-color 0.3s;
+            min-width: 150px; /* Estää kutistumisen liian pieneksi */
+        }
+        input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
         #result {
-            margin-top: 20px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 4px;
+            margin-top: 30px;
+            padding: 20px;
+            background: #14141e; /* Todella tumma alue tuloksille */
+            border-radius: 8px;
             white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 0.9em;
+            border: 1px solid #333;
         }
     </style>
 </head>
@@ -46,15 +122,15 @@
         <p>Frontend: Nginx | Backend: Python/Flask | Database: MySQL</p>
         <p><strong>Server:</strong> <span id="serverInfo"></span></p>
 
-        <div>
+        <div class="button-group">
             <button onclick="checkHealth()">Check Backend Health</button>
             <button onclick="initDB()">Initialize Database</button>
             <button onclick="getUsers()">Get Users</button>
         </div>
 
-        <div>
-            <input type="text" id="nameInput" placeholder="Name">
-            <input type="email" id="emailInput" placeholder="Email">
+        <div class="input-group">
+            <input type="text" id="nameInput" placeholder="Name" aria-label="Name">
+            <input type="email" id="emailInput" placeholder="Email" aria-label="Email">
             <button onclick="addUser()">Add User</button>
         </div>
 
