@@ -32,6 +32,7 @@ sudo cp ~/Linux-Repo/index.html /var/www/html/index.html
 sudo systemctl reload nginx
 sudo systemctl daemon-reload
 sudo systemctl restart lemp-app
+sudo systemctl restart mqtt-api.service
 
 echo "Päivitys valmis!"
 
